@@ -8,6 +8,10 @@ use October\Rain\Support\ValidationException;
 use Cms\Classes\ViewBag;
 use Cache;
 use Config;
+use Twig_Environment;
+use System\Twig\Extension as SystemTwigExtension;
+use Cms\Twig\Extension as CmsTwigExtension;
+use Cms\Twig\Loader as TwigLoader;
 
 /**
  * This is a base class for CMS objects that have multiple sections - pages, partials and layouts.
@@ -56,6 +60,8 @@ class CmsCompoundObject extends CmsObject
 
     protected $viewBagCache = false;
 
+    protected $originalData = [];
+
     protected static $objectComponentPropertyMap = null;
 
     /**
@@ -77,6 +83,10 @@ class CmsCompoundObject extends CmsObject
         $obj->settings = $parsedData['settings'];
         $obj->code = $parsedData['code'];
         $obj->markup = $parsedData['markup'];
+
+        $obj->originalData['settings'] = $obj->settings;
+        $obj->originalData['code'] = $obj->code;
+        $obj->originalData['markup'] = $obj->markup;
 
         $obj->parseComponentSettings();
         $obj->parseSettings();
@@ -203,11 +213,14 @@ class CmsCompoundObject extends CmsObject
             $content[] = FileHelper::formatIniString($this->settings);
 
         if ($this->code) {
-            $code = preg_replace('/^\<\?php/', '', $this->code);
-            $code = preg_replace('/^\<\?/', '', $code);
-            $code = preg_replace('/\?>$/', '', $code);
+            if ($this->wrapCodeToPhpTags() && $this->originalData['code'] != $this->code) {
+                $code = preg_replace('/^\<\?php/', '', $this->code);
+                $code = preg_replace('/^\<\?/', '', $code);
+                $code = preg_replace('/\?>$/', '', $code);
 
-            $content[] = '<?php'.PHP_EOL.$this->code.PHP_EOL.'?>';
+                $content[] = '<?php'.PHP_EOL.$this->code.PHP_EOL.'?>';
+            } else
+                $content[] = $this->code;
         }
 
         $content[] = $this->markup;
@@ -248,23 +261,36 @@ class CmsCompoundObject extends CmsObject
      */
     public function getComponent($componentName)
     {
-        if (!$this->hasComponent($componentName))
+        if (!($componentSection = $this->hasComponent($componentName)))
             return null;
 
         return ComponentManager::instance()->makeComponent(
             $componentName, 
             null, 
-            $this->settings['components'][$componentName]);
+            $this->settings['components'][$componentSection]);
     }
 
     /**
      * Checks if the object has a component with the specified name.
      * @param string $componentName Specifies the component name.
-     * @return boolean Returns true if the component exists.
+     * @return mixed Return false or the full component name used on the page (it could include the alias).
      */
     public function hasComponent($componentName)
     {
-        return isset($this->settings['components'][$componentName]);
+        foreach ($this->settings['components'] as $sectionName=>$values) {
+            if ($sectionName == $componentName)
+                return $componentName;
+
+            $parts = explode(' ', $sectionName);
+
+            if (count($parts) < 2)
+                continue;
+
+            if (trim($parts[0]) == $componentName)
+                return $sectionName;
+        }
+
+        return false;
     }
 
     /**
@@ -300,6 +326,10 @@ class CmsCompoundObject extends CmsObject
             $objectComponentMap[$objectCode] = [];
         else {
             foreach ($this->settings['components'] as $componentName=>$componentSettings) {
+                $nameParts = explode(' ', $componentName);
+                if (count($nameParts > 1))
+                    $componentName = trim($nameParts[0]);
+
                 $component = $this->getComponent($componentName);
                 if (!$component)
                     continue;
@@ -330,6 +360,26 @@ class CmsCompoundObject extends CmsObject
     {
         $key = crc32($theme->getPath()).'component-properties';
         Cache::forget($key);
+    }
+
+    /**
+     * Returns Twig node tree generated from the object's markup.
+     * This method is used by the system internally and shouldn't
+     * participate in the front-end request processing.
+     * @link http://twig.sensiolabs.org/doc/internals.html Twig internals
+     * @param mixed $markup Specifies the markup content. 
+     * Use FALSE to load the content from the markup section.
+     * @return Twig_Node_Module A node tree
+     */
+    public function getTwigNodeTree($markup = false)
+    {
+        $loader = new TwigLoader();
+        $twig = new Twig_Environment($loader, []);
+        $twig->addExtension(new CmsTwigExtension());
+        $twig->addExtension(new SystemTwigExtension);
+
+        $stream = $twig->tokenize($markup === false ? $this->markup : $markup, 'getTwigNodeTree');
+        return $twig->parse($stream);
     }
 
     /**
@@ -377,5 +427,14 @@ class CmsCompoundObject extends CmsObject
             if ($validation->fails())
                 throw new ValidationException($validation);
         }
+    }
+
+    /**
+     * Determines if the content of the code section should be wrapped to PHP tags.
+     * @return boolean
+     */
+    protected function wrapCodeToPhpTags()
+    {
+        return true;
     }
 }

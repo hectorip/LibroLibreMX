@@ -57,6 +57,11 @@ class PluginManager
     protected $disabledPlugins = [];
 
     /**
+     * @var boolean Prevent all plugins from registering or booting
+     */
+    public static $noInit = false;
+
+    /**
      * Initializes the plugin manager
      */
     protected function init()
@@ -118,7 +123,9 @@ class PluginManager
             if ($plugin->disabled)
                 continue;
 
-            $plugin->register();
+            if (!self::$noInit)
+                $plugin->register();
+
             $pluginPath = $this->getPluginPath($plugin);
             $pluginNamespace = strtolower($pluginId);
 
@@ -173,7 +180,8 @@ class PluginManager
             if ($plugin->disabled)
                 continue;
 
-            $plugin->boot();
+            if (!self::$noInit)
+                $plugin->boot();
         }
 
         $this->booted = true;

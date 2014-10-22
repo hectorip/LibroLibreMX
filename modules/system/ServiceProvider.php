@@ -5,6 +5,7 @@ use Lang;
 use Event;
 use Config;
 use Backend;
+use Request;
 use DbDongle;
 use BackendMenu;
 use BackendAuth;
@@ -59,6 +60,19 @@ class ServiceProvider extends ModuleServiceProvider
         App::singleton('backend.helper', function(){ return new \Backend\Classes\BackendHelper; });
         App::singleton('backend.menu', function() { return \Backend\Classes\NavigationManager::instance(); });
         App::singleton('backend.auth', function() { return \Backend\Classes\AuthManager::instance(); });
+
+        /*
+         * Check for CLI or system/updates route and disable any plugin initialization
+         * @todo This should be moved to middleware
+         */
+        $requestPath = \October\Rain\Router\Helper::normalizeUrl(\Request::path());
+        $systemPath = \October\Rain\Router\Helper::normalizeUrl(Config::get('cms.backendUri') . '/system/updates');
+        if (stripos($requestPath, $systemPath) === 0)
+            PluginManager::$noInit = true;
+
+        $updateCommands = ['october:up', 'october:update'];
+        if (App::runningInConsole() && count(array_intersect($updateCommands, Request::server('argv'))) > 0)
+            PluginManager::$noInit = true;
 
         /*
          * Register all plugins
@@ -204,6 +218,8 @@ class ServiceProvider extends ModuleServiceProvider
                 'snake'          => ['Str', 'snake'],
                 'camel'          => ['Str', 'camel'],
                 'studly'         => ['Str', 'studly'],
+                'trans'          => ['Lang', 'get'],
+                'transchoice'    => ['Lang', 'choice'],
                 'md'             => ['October\Rain\Support\Markdown', 'parse'],
             ]);
         });

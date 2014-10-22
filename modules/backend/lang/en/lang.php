@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'auth' => [
+        'title' => 'Administration Area',
+    ],
     'field' => [
         'invalid_type' => 'Invalid field type used :type.',
         'options_method_not_exists' => 'The model class :model must define a method :method() returning options for the ":field" form field.',
@@ -14,7 +17,7 @@ return [
         'access_denied' => [
             'label' => "Access denied",
             'help' => "You don't have the required permissions to view this page.",
-            'cms_link' => "Return to the backend",
+            'cms_link' => "Return to the back-end",
         ],
     ],
     'partial' => [
@@ -139,14 +142,18 @@ return [
         'missing_model' => 'Form behavior used in :class does not have a model defined.',
         'missing_definition' => "Form behavior does not contain a field for ':field'.",
         'not_found' => 'Form record with an ID of :id could not be found.',
+        'action_confirm' => "Are you sure?",
         'create' => 'Create',
         'create_and_close' => 'Create and close',
         'creating' => 'Creating...',
+        'creating_name' => 'Creating :name...',
         'save' => 'Save',
         'save_and_close' => 'Save and close',
         'saving' => 'Saving...',
+        'saving_name' => 'Saving :name...',
         'delete' => 'Delete',
         'deleting' => 'Deleting...',
+        'deleting_name' => 'Deleting :name...',
         'undefined_tab' => 'Misc',
         'field_off' => 'Off',
         'field_on' => 'On',
@@ -154,6 +161,8 @@ return [
         'apply' => 'Apply',
         'cancel' => 'Cancel',
         'close' => 'Close',
+        'confirm' => 'Confirm',
+        'reload' => 'Reload',
         'ok' => 'OK',
         'or' => 'or',
         'confirm_tab_close' => 'Do you really want to close the tab? Unsaved changes will be lost.',
@@ -165,16 +174,15 @@ return [
         'select_placeholder' => 'please select',
         'insert_row' => 'Insert Row',
         'delete_row' => 'Delete Row',
-        'concurrency-file-changed-title' => 'File was changed',
-        'concurrency-file-changed-description' => 'The file you\'re editing has been changed on disk by another user. You can either reload the file and lose your changes or override the file on the disk.',
-        'reload' => 'Reload',
+        'concurrency_file_changed_title' => "File was changed",
+        'concurrency_file_changed_description' => "The file you're editing has been changed on disk by another user. You can either reload the file and lose your changes or override the file on the disk.",
     ],
     'relation' => [
         'missing_definition' => "Relation behavior does not contain a definition for ':field'.",
         'missing_model' => "Relation behavior used in :class does not have a model defined.",
         'invalid_action_single' => "This action cannot be performed on a singular relationship.",
         'invalid_action_multi' => "This action cannot be performed on a multiple relationship.",
-        'help'	=> "Click on an item to add",
+        'help' => "Click on an item to add",
         'related_data' => "Related :name data",
         'add' => "Add",
         'add_selected' => "Add selected",
@@ -206,8 +214,8 @@ return [
         'extension' => 'The PHP extension :name is not installed. Please install this library and activate the extension.'
     ],
     'editor' => [
-        'menu_label' => 'Code Editor Preferences',
-        'menu_description' => 'Customize the code editor preferences, such as font size and color scheme.',
+        'menu_label' => 'Code editor preferences',
+        'menu_description' => 'Customize your code editor preferences, such as font size and color scheme.',
         'font_size' => 'Font size',
         'tab_size' => 'Tab size',
         'use_hard_tabs' => 'Indent using tabs',
@@ -226,19 +234,23 @@ return [
         'menu_description' => 'Settings relate to your administration account',
     ],
     'myaccount' => [
-        'menu_label' => 'My Account',
+        'menu_label' => 'My account',
         'menu_description' => 'Update your account details such as name, email address and password.',
         'menu_keywords' => 'security login'
     ],
+    'branding' => [
+        'menu_label' => 'Customize back-end',
+        'menu_description' => 'Customize the administration area such as name, colors and logo.',
+    ],
     'backend_preferences' => [
-        'menu_label' => 'Backend Preferences',
-        'menu_description' => 'Manage language preference and the appearance of the backend.',
+        'menu_label' => 'Back-end preferences',
+        'menu_description' => 'Manage your account preferences such as desired language.',
         'locale' => 'Language',
         'locale_comment' => 'Select your desired locale for language use.',
     ],
     'access_log' => [
         'hint' => 'This log displays a list of successful sign in attempts by administrators. Records are kept for a total of :days days.',
-        'menu_label' => 'Access Log',
+        'menu_label' => 'Access log',
         'menu_description' => 'View a list of successful back-end user sign ins.',
         'created_at' => 'Date & Time',
         'login' => 'Login',

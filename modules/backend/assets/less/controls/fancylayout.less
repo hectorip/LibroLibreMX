@@ -41,10 +41,10 @@
                 font-size: 14px;
                 color: @color-fancy-master-tabs-inactive-text;
             }
-            &:before {left: 8px;}
-            &:after {right: 8px;}
-            &.scroll-before:before {color: @color-fancy-master-tabs-active-text;}
-            &.scroll-after:after {color: @color-fancy-master-tabs-active-text;}
+            &:before { left: 8px; }
+            &:after { right: 8px; }
+            &.scroll-before:before { color: @color-fancy-master-tabs-active-text; }
+            &.scroll-after:after { color: @color-fancy-master-tabs-active-text; }
 
             > div > div.tabs-container {
                 background: @color-fancy-master-tabs-bg;
@@ -65,12 +65,12 @@
                             i {
                                 top: 4px;
                                 right: 1px;
-                                color: rgba(255, 255, 255, 0.3)!important;
-                                font: 14px bold "Helvetica Neue", Helvetica, Arial, sans-seri8;
-    
-                                &:hover {color: @color-fancy-master-tabs-active-text!important;}
+                                color: rgba(255, 255, 255, 0.3) !important;
+                                font: 14px bold "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+                                &:hover { color: @color-fancy-master-tabs-active-text !important; }
                             }
-                        
+
                         }
 
                         a {
@@ -126,7 +126,7 @@
                                 z-index: 107;
                                 color: @color-fancy-master-tabs-active-text;
                             }
-                            span.tab-close i {color: @color-fancy-master-tabs-active-text;}
+                            span.tab-close i { color: @color-fancy-master-tabs-active-text; }
 
                             a > span.title {
                                 background-color: @color-fancy-form-tabless-fields-bg;
@@ -142,17 +142,17 @@
                             }
                         }
 
-                            &[data-modified] {
-                                span.tab-close i {
-                                    top: 4px;
-                                    .hide-text();
+                        &[data-modified] {
+                            span.tab-close i {
+                                top: 4px;
+                                .hide-text();
 
-                                    &:before {
-                                        .icon(@circle);
-                                        font-size: 9px;
-                                    }
+                                &:before {
+                                    .icon(@circle);
+                                    font-size: 9px;
                                 }
                             }
+                        }
 
                         &:first-child {
                             margin-left: 0;
@@ -212,6 +212,98 @@
             &.primary-collapsed {
                 .tab-collapse-icon.primary {
                     .scaleAxes(1, 1);
+                }
+            }
+
+            &.content-tabs {
+                > div > ul.nav-tabs {
+                    background: @color-body-bg;
+
+                    > li {
+                        margin-left: -19px;
+
+                        &:first-child {
+                            margin-left: 0;
+                            padding-left: 8px;
+                        }
+
+                        a {
+                            padding: 8px 16px 0 16px;
+                            font-weight: 400;
+                            color: #2b3e50;
+                            .opacity(0.6);
+
+                            > span.title {
+                                position: relative;
+                                display: inline-block;
+                                padding: 4px 5px 9px 5px;
+                                font-size: 13px;
+                                z-index: 100;
+                                height: 25px!important;
+                                background-color: transparent;
+
+                                &:before, &:after {
+                                    content: ' ';
+                                    position: absolute;
+                                    background: transparent url(../images/secondary-tab-shape-content.svg) no-repeat left top;
+                                    width: 15px;
+                                    height: 25px;
+                                    top: 0;
+                                    z-index: 100;
+                                    display: none;
+                                }
+
+                                &:before {
+                                    left: -15px;
+                                }
+
+                                &:after {
+                                    right: -15px;
+                                    background-position: -60px 0;
+                                }
+
+                                span {
+                                    height: 18px;
+                                    font-size: 12px;
+                                }
+                            }
+                        }
+
+                        &.active a {
+                            .opacity(1);
+
+                            > span.title {
+                                background-color: white;
+                                &:before, &:after {
+                                    display: block;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .tab-collapse-icon.primary {
+                    color: #808c8d;
+                }
+
+                &.primary-collapsed {
+                    .tab-collapse-icon.primary {
+                        color: white;
+                    }
+
+                    > div > ul.nav-tabs {
+                        background: @color-fancy-form-tabless-fields-bg;
+    
+                        > li {
+                            a {
+                                color: white;
+                            }
+    
+                            &.active a {
+                                color: #2b3e50;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -437,8 +529,8 @@
     // Code editor
     //
 
-    .field-codeeditor { 
-        border: none!important;
+    .field-codeeditor {
+        border: none !important;
         .border-radius(0);
 
         .editor-code {
@@ -457,6 +549,13 @@
         &, .redactor_box, .redactor_toolbar {
             .border-radius(0);
             .border-top-radius(0);
+        }
+    }
+
+    .content-tabs .field-richeditor {
+        .redactor-box .redactor-toolbar {
+            margin: 20px 20px 0 20px!important;
+            .border-radius(3px)!important;
         }
     }
 }
