@@ -45,7 +45,11 @@ class MailTemplates extends Controller
 
     public function index()
     {
-        /* @todo Remove line if year >= 2015 */ if (!\System\Models\MailLayout::whereCode('default')->count()) { \Eloquent::unguard(); with(new \System\Database\Seeds\SeedSetupMailLayouts)->run(); }
+        /* @todo Remove lines if year >= 2015 */
+        if (!\System\Models\MailLayout::whereCode('default')->count()) {
+            \Eloquent::unguard();
+            with(new \System\Database\Seeds\SeedSetupMailLayouts)->run();
+        }
 
         MailTemplate::syncAll();
         $this->asExtension('ListController')->index();
@@ -67,7 +71,7 @@ class MailTemplates extends Controller
                 'email' => $user->email,
                 'name'  => $user->full_name,
             ];
-            Mail::send($model->code, [], function($message) use ($vars) {
+            Mail::send($model->code, [], function ($message) use ($vars) {
                 extract($vars);
                 $message->to($email, $name);
             });
@@ -78,5 +82,4 @@ class MailTemplates extends Controller
             Flash::error($ex->getMessage());
         }
     }
-
 }

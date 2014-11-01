@@ -33,11 +33,6 @@ class Updates extends Controller
 
     public $listConfig = ['list' => 'config_list.yaml', 'manage' => 'config_manage_list.yaml'];
 
-    /**
-     * @var boolean If set to true, core updates will not be downloaded or extracted.
-     */
-    protected $disableCoreUpdates = false;
-
     public function __construct()
     {
         parent::__construct();
@@ -46,8 +41,6 @@ class Updates extends Controller
 
         BackendMenu::setContext('October.System', 'system', 'updates');
         SettingsManager::setContext('October.System', 'updates');
-
-        $this->disableCoreUpdates = Config::get('cms.disableCoreUpdates', false);
     }
 
     /**
@@ -55,10 +48,10 @@ class Updates extends Controller
      */
     public function index()
     {
-        $this->vars['core_build'] = Parameters::get('system::core.build', '???');
-        $this->vars['project_id'] = Parameters::get('system::project.id');
-        $this->vars['project_name'] = Parameters::get('system::project.name');
-        $this->vars['project_owner'] = Parameters::get('system::project.owner');
+        $this->vars['coreBuild'] = Parameters::get('system::core.build');
+        $this->vars['projectId'] = Parameters::get('system::project.id');
+        $this->vars['projectName'] = Parameters::get('system::project.name');
+        $this->vars['projectOwner'] = Parameters::get('system::project.owner');
         return $this->asExtension('ListController')->index();
     }
 
@@ -77,17 +70,21 @@ class Updates extends Controller
      */
     public function listInjectRowClass($record, $definition = null)
     {
-        if ($record->disabledByConfig)
+        if ($record->disabledByConfig) {
             return 'hidden';
+        }
 
-        if ($record->orphaned || $record->is_disabled)
+        if ($record->orphaned || $record->is_disabled) {
             return 'safe disabled';
+        }
 
-        if ($definition != 'manage')
+        if ($definition != 'manage') {
             return;
+        }
 
-        if ($record->disabledBySystem)
+        if ($record->disabledBySystem) {
             return 'negative';
+        }
 
         return 'positive';
     }
@@ -100,20 +97,19 @@ class Updates extends Controller
         /*
          * Address timeout limits
          */
-        if (!ini_get('safe_mode'))
+        if (!ini_get('safe_mode')) {
             set_time_limit(3600);
+        }
 
         $manager = UpdateManager::instance();
         $stepCode = post('code');
 
         switch ($stepCode) {
             case 'downloadCore':
-                if ($this->disableCoreUpdates) return;
                 $manager->downloadCore(post('hash'));
                 break;
 
             case 'extractCore':
-                if ($this->disableCoreUpdates) return;
                 $manager->extractCore(post('hash'), post('build'));
                 break;
 
@@ -167,7 +163,7 @@ class Updates extends Controller
             $result = $manager->requestUpdateList();
 
             $this->vars['core'] = array_get($result, 'core', false);
-            $this->vars['hasUpdates'] = array_get($result, 'update', false);
+            $this->vars['hasUpdates'] = array_get($result, 'hasUpdates', false);
             $this->vars['pluginList'] = array_get($result, 'plugins', []);
             $this->vars['themeList'] = array_get($result, 'themes', []);
         }
@@ -236,10 +232,14 @@ class Updates extends Controller
             $core = [$coreHash, $coreBuild];
 
             $plugins = post('plugins', []);
-            if (!is_array($plugins)) $plugins = [];
+            if (!is_array($plugins)) {
+                $plugins = [];
+            }
 
             $themes = post('themes', []);
-            if (!is_array($themes)) $themes = [];
+            if (!is_array($themes)) {
+                $themes = [];
+            }
 
             /*
              * Update steps
@@ -265,14 +265,17 @@ class Updates extends Controller
 
     protected function buildUpdateSteps($core, $plugins, $themes)
     {
-        if (!is_array($core))
+        if (!is_array($core)) {
             $core = [null, null];
+        }
 
-        if (!is_array($plugins))
+        if (!is_array($plugins)) {
             $plugins = [];
+        }
 
-        if (!is_array($themes))
+        if (!is_array($themes)) {
             $themes = [];
+        }
 
         $updateSteps = [];
         list($coreHash, $coreBuild) = $core;
@@ -357,8 +360,9 @@ class Updates extends Controller
     public function onAttachProject()
     {
         try {
-            if (!$projectId = post('project_id'))
+            if (!$projectId = post('project_id')) {
                 throw new ApplicationException(Lang::get('system::lang.project.id.missing'));
+            }
 
             $manager = UpdateManager::instance();
             $result = $manager->requestProjectDetails($projectId);
@@ -399,14 +403,16 @@ class Updates extends Controller
     public function onInstallPlugin()
     {
         try {
-            if (!$code = post('code'))
+            if (!$code = post('code')) {
                 throw new ApplicationException(Lang::get('system::lang.install.missing_plugin_name'));
+            }
 
             $manager = UpdateManager::instance();
             $result = $manager->requestPluginDetails($code);
 
-            if (!isset($result['code']) || !isset($result['hash']))
+            if (!isset($result['code']) || !isset($result['hash'])) {
                 throw new ApplicationException(Lang::get('system::lang.server.response_invalid'));
+            }
 
             $name = $result['code'];
             $hash = $result['hash'];
@@ -444,8 +450,9 @@ class Updates extends Controller
         if (($checkedIds = post('checked')) && is_array($checkedIds) && count($checkedIds)) {
 
             foreach ($checkedIds as $objectId) {
-                if (!$object = PluginVersion::find($objectId))
+                if (!$object = PluginVersion::find($objectId)) {
                     continue;
+                }
 
                 /*
                  * Rollback plugin
@@ -478,8 +485,9 @@ class Updates extends Controller
             $manager = UpdateManager::instance();
 
             foreach ($checkedIds as $objectId) {
-                if (!$object = PluginVersion::find($objectId))
+                if (!$object = PluginVersion::find($objectId)) {
                     continue;
+                }
 
                 /*
                  * Refresh plugin
@@ -514,13 +522,16 @@ class Updates extends Controller
             $manager = PluginManager::instance();
 
             foreach ($checkedIds as $objectId) {
-                if (!$object = PluginVersion::find($objectId))
+                if (!$object = PluginVersion::find($objectId)) {
                     continue;
+                }
 
-                if ($disable)
+                if ($disable) {
                     $manager->disablePlugin($object->code, true);
-                else
+                }
+                else {
                     $manager->enablePlugin($object->code, true);
+                }
 
                 $object->is_disabled = $disable;
                 $object->save();
@@ -528,12 +539,13 @@ class Updates extends Controller
 
         }
 
-        if ($disable)
+        if ($disable) {
             Flash::success(Lang::get('system::lang.plugins.disable_success'));
-        else
+        }
+        else {
             Flash::success(Lang::get('system::lang.plugins.enable_success'));
+        }
 
         return Redirect::to(Backend::url('system/updates/manage'));
     }
-
 }

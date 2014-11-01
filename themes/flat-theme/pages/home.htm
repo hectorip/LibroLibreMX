@@ -1,50 +1,30 @@
 title = "Libro Libre MX"
 url = "/"
 layout = "default"
+hidden = "0"
+
+[account account2]
+paramCode = "code"
 ==
 <section class="home-title">
     <div class="container">
         <div class="row">
-            <div class="col-sm-4">
+            <div class="col-sm-8">
                 <h3>Libro Libre MX</h3>
                 <p>Regala los libros que ya no necesites a personas que sí, de manera dirigida.</p>
                 <div class="signup-form">
-                    <form>
-                        <div class="form-group">
-                            <input class="form-control" type="text" placeholder="Your E-mail">
-                        </div>
-                        <div class="form-group">
-                            <div>
-                                <input type="password" class="form-control" placeholder="Password">
-                            </div>
-                            <div>
-                                <input type="password" class="form-control" placeholder="Confirmation">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-block btn-info">Sign Up</button>
-                        </div>
-                    </form>
+                    {% component 'account2' %}
                 </div>
                 <div class="additional-links">
                     Al registrarte indicas que concuerdas con nuestros <a href="#">Términos y condiciones</a> y <a href="#">Política de Privacidad</a>
                 </div>
             </div>
-            <div class="col-sm-7 col-sm-offset-1 ">
-                <img src="{{ 'assets/images/librero.jpg' |theme}}" alt="Librero" style = "max-width: 100%;" />
-            </div>
+
         </div>
     </div>
 </section>
 
 <section class="logos">
-    <div class="container">
-        <div><img src="{{ 'assets/images/logos/mashable.png'|theme }}" alt=""></div>
-        <div><img src="{{ 'assets/images/logos/guardian.png'|theme }}" alt=""></div>
-        <div><img src="{{ 'assets/images/logos/forbes.png'|theme }}" alt=""></div>
-        <div><img src="{{ 'assets/images/logos/red-bull.png'|theme }}" alt=""></div>
-        <div><img src="{{ 'assets/images/logos/ny-times.png'|theme }}" alt=""></div>
-    </div>
 </section>
 
 <br />

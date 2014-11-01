@@ -12,6 +12,7 @@ use October\Rain\Database\Model;
 class DebugExtension extends Twig_Extension
 {
     const PAGE_CAPTION = 'Page variables';
+    const ARRAY_CAPTION = 'Array variables';
     const OBJECT_CAPTION = 'Object variables';
     const COMPONENT_CAPTION = 'Component variables';
 
@@ -35,7 +36,15 @@ class DebugExtension extends Twig_Extension
      */
     protected $commentMap = [];
 
-    protected $blockMethods = ['componentDetails', 'defineProperties', 'getPropertyOptions', 'offsetExists', 'offsetGet', 'offsetSet', 'offsetUnset'];
+    protected $blockMethods = [
+        'componentDetails',
+        'defineProperties',
+        'getPropertyOptions',
+        'offsetExists',
+        'offsetGet',
+        'offsetSet',
+        'offsetUnset'
+    ];
 
     /**
      * Creates the extension instance.
@@ -54,7 +63,11 @@ class DebugExtension extends Twig_Extension
     public function getFunctions()
     {
         return array(
-            new Twig_SimpleFunction('dump', [$this, 'runDump'], array('is_safe' => ['html'], 'needs_context' => true, 'needs_environment' => true)),
+            new Twig_SimpleFunction('dump', [$this, 'runDump'], array(
+                'is_safe' => ['html'],
+                'needs_context' => true,
+                'needs_environment' => true
+            )),
         );
     }
 
@@ -75,6 +88,7 @@ class DebugExtension extends Twig_Extension
 
         $count = func_num_args();
         if ($count == 2) {
+
             $this->variablePrefix = true;
             $vars = [];
             foreach ($context as $key => $value) {
@@ -84,17 +98,28 @@ class DebugExtension extends Twig_Extension
             }
 
             $result .= $this->dump($vars, static::PAGE_CAPTION);
+
         }
         else {
+
             $this->variablePrefix = false;
             for ($i = 2; $i < $count; $i++) {
+
                 $var = func_get_arg($i);
-                $caption = $var instanceof ComponentBase
-                    ? static::COMPONENT_CAPTION
-                    : static::OBJECT_CAPTION;
+
+                if ($var instanceof ComponentBase) {
+                    $caption = [static::COMPONENT_CAPTION, get_class($var)];
+                }
+                elseif (is_array($var)) {
+                    $caption = static::ARRAY_CAPTION;
+                }
+                else {
+                    $caption = [static::OBJECT_CAPTION, get_class($var)];
+                }
 
                 $result .= $this->dump($var, $caption);
             }
+
         }
 
         return $result;
@@ -114,7 +139,7 @@ class DebugExtension extends Twig_Extension
      * Dump information about a variable
      *
      * @param mixed $variable Variable to dump
-     * @param string $caption Caption of the dump
+     * @param mixed $caption Caption [and subcaption] of the dump
      * @return void
      */
     public function dump($variables = null, $caption = null)
@@ -124,19 +149,23 @@ class DebugExtension extends Twig_Extension
         $info = [];
 
         if (!is_array($variables)) {
-            if ($variables instanceof Paginator)
+            if ($variables instanceof Paginator) {
                 $variables = $this->paginatorToArray($variables);
-            elseif (is_object($variables))
+            }
+            elseif (is_object($variables)) {
                 $variables = $this->objectToArray($variables);
-            else
+            }
+            else {
                 $variables = [$variables];
+            }
         }
 
         $output = [];
         $output[] = '<table>';
 
-        if ($caption)
+        if ($caption) {
             $output[] = $this->makeTableHeader($caption);
+        }
 
         foreach ($variables as $key => $item) {
             $output[] = $this->makeTableRow($key, $item);
@@ -150,14 +179,25 @@ class DebugExtension extends Twig_Extension
 
     /**
      * Builds the HTML used for the table header.
-     * @param  string $caption
+     * @param mixed $caption Caption [and subcaption] of the dump
      * @return string
      */
     protected function makeTableHeader($caption)
     {
+        if (is_array($caption)) {
+            list($caption, $subcaption) = $caption;
+        }
+
         $output = [];
         $output[] = '<tr>';
-        $output[] = '<th colspan="100" style="'.$this->getHeaderCss().'">'.$caption.'</td>';
+        $output[] = '<th colspan="3" colspan="100" style="'.$this->getHeaderCss().'">';
+        $output[] = $caption;
+
+        if (isset($subcaption)) {
+            $output[] = '<div style="'.$this->getSubheaderCss().'">'.$subcaption.'</div>';
+        }
+
+        $output[] = '</td>';
         $output[] = '</tr>';
         return implode(PHP_EOL, $output);
     }
@@ -228,8 +268,9 @@ class DebugExtension extends Twig_Extension
     protected function getType($variable)
     {
         $type = gettype($variable);
-        if ($type == 'string' && substr($variable, 0, 12) == '___METHOD___')
+        if ($type == 'string' && substr($variable, 0, 12) == '___METHOD___') {
             return 'method';
+        }
 
         return $type;
     }
@@ -244,17 +285,18 @@ class DebugExtension extends Twig_Extension
         $class = get_class($variable);
         $label = class_basename($variable);
 
-        if ($variable instanceof ComponentBase)
+        if ($variable instanceof ComponentBase) {
             $label = '<strong>Component</strong>';
-
-        elseif ($variable instanceof Collection)
+        }
+        elseif ($variable instanceof Collection) {
             $label = 'Collection('.$variable->count().')';
-
-        elseif ($variable instanceof Paginator)
+        }
+        elseif ($variable instanceof Paginator) {
             $label = 'Paged Collection('.$variable->count().')';
-
-        elseif ($variable instanceof Model)
+        }
+        elseif ($variable instanceof Model) {
             $label = 'Model';
+        }
 
         return '<abbr title="'.e($class).'">'.$label.'</abbr>';
     }
@@ -268,17 +310,21 @@ class DebugExtension extends Twig_Extension
     {
         $type = $this->getType($variable);
 
-        if ($type == 'method')
+        if ($type == 'method') {
             return $this->evalMethodDesc($variable);
+        }
 
-        if (isset($this->commentMap[$key]))
+        if (isset($this->commentMap[$key])) {
             return $this->commentMap[$key];
+        }
 
-        if ($type == 'array')
+        if ($type == 'array') {
             return $this->evalArrDesc($variable);
+        }
 
-        if ($type == 'object')
+        if ($type == 'object') {
             return $this->evalObjDesc($variable);
+        }
 
         return '';
     }
@@ -291,8 +337,9 @@ class DebugExtension extends Twig_Extension
     protected function evalMethodDesc($variable)
     {
         $parts = explode('|', $variable);
-        if (count($parts) < 2)
+        if (count($parts) < 2) {
             return null;
+        }
 
         $method = $parts[1];
         return isset($this->commentMap[$method]) ?  $this->commentMap[$method] : null;
@@ -370,13 +417,25 @@ class DebugExtension extends Twig_Extension
 
         $methods = [];
         foreach ($info->getMethods() as $method) {
-            if (!$method->isPublic()) continue; // Only public
-            if ($method->class != $class) continue; // Only locals
+            if (!$method->isPublic()) {
+                continue; // Only public
+            }
+            if ($method->class != $class) {
+                continue; // Only locals
+            }
             $name = $method->getName();
-            if (in_array($name, $this->blockMethods)) continue; // Blocked methods
-            if (preg_match('/^on[A-Z]{1}[\w+]*$/', $name)) continue; // AJAX methods
-            if (preg_match('/^get[A-Z]{1}[\w+]*Options$/', $name)) continue; // getSomethingOptions
-            if (substr($name, 0, 1) == '_') continue; // Magic/hidden method
+            if (in_array($name, $this->blockMethods)) {
+                continue; // Blocked methods
+            }
+            if (preg_match('/^on[A-Z]{1}[\w+]*$/', $name)) {
+                continue; // AJAX methods
+            }
+            if (preg_match('/^get[A-Z]{1}[\w+]*Options$/', $name)) {
+                continue; // getSomethingOptions
+            }
+            if (substr($name, 0, 1) == '_') {
+                continue; // Magic/hidden method
+            }
             $name .= '()';
             $methods[$name] = '___METHOD___|'.$name;
             $this->commentMap[$name] = $this->evalDocBlock($method);
@@ -384,8 +443,12 @@ class DebugExtension extends Twig_Extension
 
         $vars = [];
         foreach ($info->getProperties() as $property) {
-            if (!$property->isPublic()) continue; // Only public
-            if ($property->class != $class) continue; // Only locals
+            if (!$property->isPublic()) {
+                continue; // Only public
+            }
+            if ($property->class != $class) {
+                continue; // Only locals
+            }
             $name = $property->getName();
             $vars[$name] = $object->{$name};
             $this->commentMap[$name] = $this->evalDocBlock($property);
@@ -426,8 +489,9 @@ class DebugExtension extends Twig_Extension
         ];
 
         $type = gettype($variable);
-        if ($type == 'NULL')
+        if ($type == 'NULL') {
             $css['color'] = '#999';
+        }
 
         return $this->arrayToCss($css);
     }
@@ -469,6 +533,24 @@ class DebugExtension extends Twig_Extension
     }
 
     /**
+     * Get the CSS string for the output subheader
+     *
+     * @return string
+     */
+    protected function getSubheaderCss()
+    {
+        return $this->arrayToCss([
+            'font-size'        => '12px',
+            'font-weight'      => 'normal',
+            'font-style'       => 'italic',
+            'margin'           => '0',
+            'padding'          => '0',
+            'background-color' => '#7B8892',
+            'color'            => '#FFF',
+        ]);
+    }
+
+    /**
      * Convert a key/value pair array into a CSS string
      *
      * @param array $rules List of rules to process
@@ -484,5 +566,4 @@ class DebugExtension extends Twig_Extension
 
         return join('; ', $strings);
     }
-
 }

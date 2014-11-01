@@ -30,11 +30,13 @@ class Components extends FormWidgetBase
     {
         $result = [];
 
-        if (!isset($this->model->settings['components']))
+        if (!isset($this->model->settings['components'])) {
             return $result;
+        }
 
         $manager = ComponentManager::instance();
         $manager->listComponents();
+
         foreach ($this->model->settings['components'] as $name => $properties) {
             list($name, $alias) = strpos($name, ' ') ? explode(' ', $name) : [$name, $name];
 
@@ -50,10 +52,10 @@ class Components extends FormWidgetBase
                 $plugin = $manager->findComponentPlugin($componentObj);
                 if ($plugin) {
                     $pluginDetails = $plugin->pluginDetails();
-                    if (isset($pluginDetails['icon']))
+                    if (isset($pluginDetails['icon'])) {
                         $componentObj->pluginIcon = $pluginDetails['icon'];
+                    }
                 }
-
             }
             catch (Exception $ex) {
                 $componentObj = new UnknownComponent(null, $properties, $ex->getMessage());

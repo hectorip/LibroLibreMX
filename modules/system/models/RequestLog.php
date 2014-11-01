@@ -54,5 +54,4 @@ class RequestLog extends Model
 
         return $record;
     }
-
 }

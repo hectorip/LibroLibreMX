@@ -56,7 +56,8 @@ class CacheClear extends ClearCommand
             $command->setLaravel(App::make('app'));
             $command->fire();
         }
-        catch (\Exception $ex) {}
+        catch (\Exception $ex) {
+            // Do nothing
+        }
     }
-
 }

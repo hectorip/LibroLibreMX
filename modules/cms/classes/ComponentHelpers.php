@@ -20,25 +20,29 @@ class ComponentHelpers
         $result = [];
 
         $property = [
-            'property'          => 'oc.alias',
-            'title'             => Lang::get('cms::lang.component.alias'),
-            'description'       => Lang::get('cms::lang.component.alias_description'),
-            'type'              => 'string',
-            'validationPattern' => '^[a-zA-Z]+[0-9a-z\_]*$',
-            'validationMessage' => Lang::get('cms::lang.component.validation_message')
+            'property'              => 'oc.alias',
+            'title'                 => Lang::get('cms::lang.component.alias'),
+            'description'           => Lang::get('cms::lang.component.alias_description'),
+            'type'                  => 'string',
+            'validationPattern'     => '^[a-zA-Z]+[0-9a-z\_]*$',
+            'validationMessage'     => Lang::get('cms::lang.component.validation_message'),
+            'showExternalParameter' => false
         ];
         $result[] = $property;
 
         $properties = $component->defineProperties();
         foreach ($properties as $name => $params) {
             $property = [
-                'property' => $name,
-                'title'    => isset($params['title']) ? $params['title'] : $name,
-                'type'     => isset($params['type']) ? $params['type'] : 'string'
+                'property'              => $name,
+                'title'                 => array_get($params, 'title', $name),
+                'type'                  => array_get($params, 'type', 'string'),
+                'showExternalParameter' => array_get($params, 'showExternalParameter', true)
             ];
 
             foreach ($params as $name => $value) {
-                if (isset($property[$name])) continue;
+                if (isset($property[$name])) {
+                    continue;
+                }
                 $property[$name] = $value;
             }
 
@@ -47,11 +51,14 @@ class ComponentHelpers
              */
             $translate = ['title', 'description', 'options'];
             foreach ($property as $name => $value) {
-                if (!in_array($name, $translate))
+                if (!in_array($name, $translate)) {
                     continue;
+                }
 
                 if (is_array($value)) {
-                    array_walk($property[$name], function(&$_value, $key) { $_value = Lang::get($_value); });
+                    array_walk($property[$name], function (&$_value, $key) {
+                        $_value = Lang::get($_value);
+                    });
                 }
                 else {
                     $property[$name] = Lang::get($value);
@@ -76,8 +83,9 @@ class ComponentHelpers
         $result['oc.alias'] = $component->alias;
 
         $properties = $component->defineProperties();
-        foreach ($properties as $name => $params)
+        foreach ($properties as $name => $params) {
             $result[$name] = $component->property($name);
+        }
 
         return json_encode($result);
     }

@@ -40,20 +40,24 @@ class ErrorHandler
     public function handleException(\Exception $proposedException, $httpCode = 500)
     {
         // Disable the error handler for test and CLI environment
-        if (App::runningUnitTests() || App::runningInConsole())
+        if (App::runningUnitTests() || App::runningInConsole()) {
             return;
+        }
 
         // Detect AJAX request and use error 500
-        if (Request::ajax())
-           return Response::make($proposedException->getMessage(), $httpCode);
+        if (Request::ajax()) {
+            return Response::make($proposedException->getMessage(), $httpCode);
+        }
 
         // Clear the output buffer
-        while (ob_get_level())
+        while (ob_get_level()) {
             ob_end_clean();
+        }
 
         // Friendly error pages are used
-        if (Config::get('cms.customErrorPage'))
+        if (Config::get('cms.customErrorPage')) {
             return $this->handleCustomError();
+        }
 
         // If the exception is already our brand, use it.
         if ($proposedException instanceof BaseException) {
@@ -83,8 +87,9 @@ class ErrorHandler
      */
     public static function applyMask(\Exception $exception)
     {
-        if (static::$activeMask !== null)
+        if (static::$activeMask !== null) {
             array_push(static::$maskLayers, static::$activeMask);
+        }
 
         static::$activeMask = $exception;
     }
@@ -95,10 +100,12 @@ class ErrorHandler
      */
     public static function removeMask()
     {
-        if (count(static::$maskLayers) > 0)
+        if (count(static::$maskLayers) > 0) {
             static::$activeMask = array_pop(static::$maskLayers);
-        else
+        }
+        else {
             static::$activeMask = null;
+        }
     }
 
     /**
@@ -112,12 +119,12 @@ class ErrorHandler
 
         // Use the default view if no "/error" URL is found.
         $router = new Router($theme);
-        if (!$router->findByUrl('/error'))
+        if (!$router->findByUrl('/error')) {
             return View::make('cms::error');
+        }
 
         // Route to the CMS error page.
         $controller = new Controller($theme);
         return $controller->run('/error');
     }
-
 }

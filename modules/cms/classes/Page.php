@@ -36,7 +36,9 @@ class Page extends CmsCompoundObject
         ];
     }
 
-    protected function parseSettings() {}
+    protected function parseSettings()
+    {
+    }
 
     /**
      * Returns the directory name corresponding to the object type.
@@ -64,8 +66,9 @@ class Page extends CmsCompoundObject
      */
     public function getLayoutOptions()
     {
-        if (!($theme = Theme::getEditTheme()))
+        if (!($theme = Theme::getEditTheme())) {
             throw new ApplicationException(Lang::get('cms::lang.theme.edit.not_found'));
+        }
 
         $layouts = Layout::listInTheme($theme, true);
         $result = [];
@@ -106,8 +109,9 @@ class Page extends CmsCompoundObject
          * request processing.
          */
         $controller = Controller::getController();
-        if (!$controller)
+        if (!$controller) {
             $controller = new Controller;
+        }
 
         return $controller->pageUrl($page, $params, true, $absolute);
     }
@@ -124,8 +128,8 @@ class Page extends CmsCompoundObject
      *   false if omitted.
      * - dynamicItems - Boolean value indicating whether the item type could generate new menu items.
      *   Optional, false if omitted.
-     * - cmsPages - a list of CMS pages (objects of the Cms\Classes\Page class), if the item type requires a CMS page reference to 
-     *   resolve the item URL.
+     * - cmsPages - a list of CMS pages (objects of the Cms\Classes\Page class), if the item type requires
+     *   a CMS page reference to resolve the item URL.
      * @param string $type Specifies the menu item type
      * @return array Returns an array
      */
@@ -137,12 +141,13 @@ class Page extends CmsCompoundObject
             $theme = Theme::getActiveTheme();
             $pages = self::listInTheme($theme, true);
 
-            foreach ($pages as $page)
+            foreach ($pages as $page) {
                 $references[$page->getBaseFileName()] = $page->title;
+            }
 
             $result = [
-                'references' => $references,
-                'nesting' => false,
+                'references'   => $references,
+                'nesting'      => false,
                 'dynamicItems' => false
             ];
         }
@@ -172,8 +177,9 @@ class Page extends CmsCompoundObject
         $result = null;
 
         if ($item->type == 'cms-page') {
-            if (!$item->reference)
+            if (!$item->reference) {
                 return;
+            }
 
             $pageUrl = self::url($item->reference);
 

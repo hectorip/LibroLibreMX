@@ -56,10 +56,12 @@ class PluginVersion extends Model
                 $this->{$attribute} = Lang::get($info);
             }
 
-            if ($this->is_disabled)
+            if ($this->is_disabled) {
                 $manager->disablePlugin($this->code, true);
-            else
+            }
+            else {
                 $manager->enablePlugin($this->code, true);
+            }
 
             $this->disabledBySystem = $pluginObj->disabled;
 
@@ -90,5 +92,4 @@ class PluginVersion extends Model
             ? self::$versionCache[$pluginCode]
             : null;
     }
-
 }

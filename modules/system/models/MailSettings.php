@@ -77,5 +77,6 @@ class MailSettings extends Model
                 $config->set('services.mailgun.secret', $settings->mailgun_secret);
                 break;
         }
+
     }
 }

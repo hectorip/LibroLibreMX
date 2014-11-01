@@ -12157,7 +12157,9 @@ body.page-ui-elements .demo-swatches-row .swatches-desc-col {
   }
 }
 .logos {
-  background: #f1f1f1;
+  background: url("../images/librero.jpg");
+  background-size: cover;
+  background-attachment: fixed;
   padding-top: 40px;
   padding-bottom: 40px;
 }
@@ -12733,7 +12735,7 @@ body {
 }
 header#layout-header .navbar-brand {
   padding-left: 60px;
-  /*background-image: url('../images/logo.png');*/
+  background-image: url('../images/logo_minimal.png');
   background-size: auto 75%;
   background-repeat: no-repeat;
   background-position: 10px 50%;

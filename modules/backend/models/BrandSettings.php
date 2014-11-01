@@ -3,6 +3,7 @@
 use File;
 use Lang;
 use Model;
+use Cache;
 use Less_Parser;
 
 /**
@@ -25,6 +26,8 @@ class BrandSettings extends Model
     public $attachOne = [
         'logo' => ['System\Models\File']
     ];
+
+    const CACHE_KEY = 'backend::brand.custom_css';
 
     // Pumpkin
     const PRIMARY_LIGHT = '#e67e22';
@@ -57,21 +60,33 @@ class BrandSettings extends Model
         $this->secondary_color_dark = self::SECONDARY_DARK;
     }
 
-    public function beforeValidate()
+    public function afterSave()
     {
-        $this->rendered_css = self::renderCss();
+        Cache::forget(self::CACHE_KEY);
     }
 
     public static function getLogo()
     {
         $settings = self::instance();
-        if (!$settings->logo)
+        if (!$settings->logo) {
             return null;
+        }
 
         return $settings->logo->getPath();
     }
 
     public static function renderCss()
+    {
+        if (Cache::has(self::CACHE_KEY)) {
+            return Cache::get(self::CACHE_KEY);
+        }
+
+        $customCss = self::compileCss();
+        Cache::forever(self::CACHE_KEY, $customCss);
+        return $customCss;
+    }
+
+    public static function compileCss()
     {
         $parser = new Less_Parser(['compress' => true]);
 
@@ -83,10 +98,13 @@ class BrandSettings extends Model
             'secondary-color-dark'  => self::get('secondary_color_dark', self::SECONDARY_DARK),
         ]);
 
-        $parser->parse(File::get(__DIR__.'/brandsettings/custom.less').self::get('custom_css'));
+        $parser->parse(
+            File::get(PATH_BASE.'/modules/backend/models/brandsettings/custom.less')
+            . self::get('custom_css')
+        );
+
         $css = $parser->getCss();
 
         return $css;
     }
-
 }

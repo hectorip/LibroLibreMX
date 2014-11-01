@@ -116,8 +116,9 @@ class CombineAssets
      */
     public static function combine($assets = [], $path = null)
     {
-        if (static::$instance === null)
+        if (static::$instance === null) {
             static::$instance = new self();
+        }
 
         return static::$instance->prepareRequest($assets, $path);
     }
@@ -129,8 +130,9 @@ class CombineAssets
     public function getContents($cacheId)
     {
         $cacheInfo = $this->getCache($cacheId);
-        if (!$cacheInfo)
+        if (!$cacheInfo) {
             throw new ApplicationException(Lang::get('cms::lang.combiner.not_found', ['name'=>$cacheId]));
+        }
 
         $this->path = $cacheInfo['path'];
         $this->storagePath = storage_path().'/combiner/cms';
@@ -158,8 +160,9 @@ class CombineAssets
     {
         $extension = strtolower($extension);
 
-        if (!isset($this->aliases[$extension]))
+        if (!isset($this->aliases[$extension])) {
             $this->aliases[$extension] = [];
+        }
 
         $this->aliases[$extension][$alias] = $file;
 
@@ -173,10 +176,12 @@ class CombineAssets
      */
     public function resetAliases($extension = null)
     {
-        if ($extension === null)
+        if ($extension === null) {
             $this->aliases = [];
-        else
+        }
+        else {
             $this->aliases[$extension] = [];
+        }
 
         return $this;
     }
@@ -188,12 +193,15 @@ class CombineAssets
      */
     public function getAliases($extension = null)
     {
-        if ($extension === null)
+        if ($extension === null) {
             return $this->aliases;
-        elseif (isset($this->aliases[$extension]))
+        }
+        elseif (isset($this->aliases[$extension])) {
             return $this->aliases[$extension];
-        else
+        }
+        else {
             return null;
+        }
     }
 
     /**
@@ -213,11 +221,13 @@ class CombineAssets
 
         $extension = strtolower($extension);
 
-        if (!isset($this->filters[$extension]))
+        if (!isset($this->filters[$extension])) {
             $this->filters[$extension] = [];
+        }
 
-        if ($filter !== null)
+        if ($filter !== null) {
             $this->filters[$extension][] = $filter;
+        }
 
         return $this;
     }
@@ -229,10 +239,12 @@ class CombineAssets
      */
     public function resetFilters($extension = null)
     {
-        if ($extension === null)
+        if ($extension === null) {
             $this->filters = [];
-        else
+        }
+        else {
             $this->filters[$extension] = [];
+        }
 
         return $this;
     }
@@ -244,12 +256,15 @@ class CombineAssets
      */
     public function getFilters($extension = null)
     {
-        if ($extension === null)
+        if ($extension === null) {
             return $this->filters;
-        elseif (isset($this->filters[$extension]))
+        }
+        elseif (isset($this->filters[$extension])) {
             return $this->filters[$extension];
-        else
+        }
+        else {
             return null;
+        }
     }
 
     /**
@@ -261,14 +276,16 @@ class CombineAssets
      */
     protected function prepareRequest(array $assets, $path = null)
     {
-        if (substr($path, -1) != '/')
+        if (substr($path, -1) != '/') {
             $path = $path.'/';
+        }
 
         $this->path = public_path().$path;
         $this->storagePath = storage_path().'/combiner/cms';
 
-        if (!is_array($assets))
+        if (!is_array($assets)) {
             $assets = [$assets];
+        }
 
         /*
          * Split assets in to groups.
@@ -316,12 +333,14 @@ class CombineAssets
          */
         if ($aliasMap = $this->getAliases($extension)) {
             foreach ($assets as $key => $asset) {
-                if (substr($asset, 0, 1) !== '@')
+                if (substr($asset, 0, 1) !== '@') {
                     continue;
+                }
                 $_asset = substr($asset, 1);
 
-                if (isset($aliasMap[$_asset]))
+                if (isset($aliasMap[$_asset])) {
                     $assets[$key] = $aliasMap[$_asset];
+                }
             }
         }
 
@@ -359,10 +378,12 @@ class CombineAssets
         $combineAction = 'System\Classes\Controller@combine';
         $actionExists = Route::getRoutes()->getByAction($combineAction) !== null;
 
-        if ($actionExists)
+        if ($actionExists) {
             return URL::action($combineAction, [$outputFilename], false);
-        else
+        }
+        else {
             return Request::getBasePath().'/combine/'.$outputFilename;
+        }
     }
 
     /**
@@ -409,8 +430,9 @@ class CombineAssets
             $path = $baseUri.'/combine';
         }
 
-        if (strpos($path, '/') === 0)
+        if (strpos($path, '/') === 0) {
             $path = substr($path, 1);
+        }
 
         $path = str_replace('.', '-', $path).'/';
         return $path;
@@ -427,8 +449,9 @@ class CombineAssets
     {
         $cacheId = 'combiner.'.$cacheId;
 
-        if (Cache::has($cacheId))
+        if (Cache::has($cacheId)) {
             return false;
+        }
 
         $this->putCacheIndex($cacheId);
         Cache::forever($cacheId, serialize($cacheInfo));
@@ -444,8 +467,9 @@ class CombineAssets
     {
         $cacheId = 'combiner.'.$cacheId;
 
-        if (!Cache::has($cacheId))
+        if (!Cache::has($cacheId)) {
             return false;
+        }
 
         return unserialize(Cache::get($cacheId));
     }
@@ -466,8 +490,9 @@ class CombineAssets
      */
     public static function resetCache()
     {
-        if (!Cache::has('combiner.index'))
+        if (!Cache::has('combiner.index')) {
             return;
+        }
 
         $index = unserialize(Cache::get('combiner.index'));
         foreach ($index as $cacheId) {
@@ -487,16 +512,17 @@ class CombineAssets
     {
         $index = [];
         
-        if (Cache::has('combiner.index'))
+        if (Cache::has('combiner.index')) {
             $index = unserialize(Cache::get('combiner.index'));
+        }
 
-        if (in_array($cacheId, $index))
+        if (in_array($cacheId, $index)) {
             return false;
+        }
 
         $index[] = $cacheId;
 
         Cache::forever('combiner.index', serialize($index));
         return true;
     }
-
 }
