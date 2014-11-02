@@ -4,9 +4,7 @@ Es la base para la comunidad para compartir libros libremente.
 
 TODO:
 -------
-- Registro
 - Registro y login Social. Fb y Tw
-- Publicación de Libros
-- Diseñar Landing Page
-- Hacer pedidos
-- Perfil
+- Publicación de Libros (Detallar)
+- Página de Libro publicado
+- Completar Perfil
