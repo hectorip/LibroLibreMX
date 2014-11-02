@@ -23,8 +23,9 @@ class Plugin extends PluginBase {
 	}
 	public function registerComponents() {
 		return [
-			'Hectorip\Books\Components\AvailableBooks'  => 'availableBooks',
-			'Hectorip\Books\Components\PublishBookForm' => 'publishBookForm'
+			'Hectorip\Books\Components\AvailableBooks'   => 'availableBooks',
+			'Hectorip\Books\Components\PublishBookForm'  => 'publishBookForm',
+			'Hectorip\Books\Components\MyPublishedBooks' => 'myPublishedBooks',
 		];
 	}
 }

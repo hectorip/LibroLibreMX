@@ -1,6 +1,6 @@
 
 <div class="LibroLibre_book_form" style="padding: 20px">
-    {{ form_ajax('onSaveBook') }}
+    <form data-request='onSaveBook' data-request-redirect = '/my-books' >
         <div class="form-group">
             <label for = "book_title">Título</label>
             <input class="form-control" type="text" name="book_title" id = "book_title" placeholder="Cien Años de Soldedad"/>
@@ -18,5 +18,5 @@
             <input class="form-control" type="file" name="book_image" id = "book_image" />
         </div>
         <input type="submit" class="btn btn-sm btn-primary" name="submit_book" value="Publicar Libro" />
-    {{ form_close() }}
+    </form>
 </div>

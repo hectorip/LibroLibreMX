@@ -1,6 +1,7 @@
 <?php namespace Hectorip\Books\Components;
 
 use Cms\Classes\ComponentBase;
+use Hectorip\Books\Models\Book;
 
 class PublishBookForm extends ComponentBase {
 
@@ -14,8 +15,14 @@ class PublishBookForm extends ComponentBase {
 	public function defineProperties() {
 		return [];
 	}
-	public function onPublishBook() {
+	public function onSaveBook() {
+		$newBook = new Book;
 
+		$newBook->title = post('book_title');
+
+		$newBook->save();
+
+		return ["status" => true];
 	}
 
 }
