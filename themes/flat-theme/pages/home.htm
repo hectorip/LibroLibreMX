@@ -3,8 +3,11 @@ url = "/"
 layout = "default"
 hidden = "0"
 
-[account account2]
-paramCode = "code"
+[account]
+redirect = "user_profile"
+paramCode = "home"
+
+[availableBooks]
 ==
 <section class="home-title">
     <div class="container">
@@ -13,7 +16,11 @@ paramCode = "code"
                 <h3>Libro Libre MX</h3>
                 <p>Regala los libros que ya no necesites a personas que sí, de manera dirigida.</p>
                 <div class="signup-form">
-                    {% component 'account2' %}
+                {% if user%}
+                    {% component 'availableBooks' %}
+                {% else%}
+                    {% component 'account' %}
+                {%endif%}
                 </div>
                 <div class="additional-links">
                     Al registrarte indicas que concuerdas con nuestros <a href="#">Términos y condiciones</a> y <a href="#">Política de Privacidad</a>

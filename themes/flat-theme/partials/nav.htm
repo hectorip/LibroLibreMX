@@ -51,11 +51,23 @@
         <div class="collapse navbar-collapse navbar-main-collapse">
             <ul class="nav navbar-nav navbar-right">
                 {{ nav.render_menu(links) }}
+                {% if user %}
+                <li class="">
+                    <a href="#" data-request="onLogout">Cerrar Sesión</a>
+                </li>
+                {% endif %}
                 <li>
                     <button
-                        onclick="window.location='{{ 'samples/signin'|page }}'"
+                    {% if user %}
+                        onclick="window.location='{{ 'user_profile'|page }}'"
+                        class="btn btn-sm navbar-btn btn-primary navbar-right hidden-sm hidden-xs">
+                        Mi Cuenta
+                    {% else %}
+                        onclick="window.location='{{ 'signin'|page }}'"
                         class="btn btn-sm navbar-btn btn-primary navbar-right hidden-sm hidden-xs">
                         Iniciar Sesión
+                    {% endif %}
+
                     </button>
                 </li>
             </ul>

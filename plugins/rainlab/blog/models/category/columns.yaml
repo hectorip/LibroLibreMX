@@ -1,0 +1,12 @@
+# ===================================
+#  Column Definitions
+# ===================================
+
+columns:
+
+    name:
+        label: Name
+        searchable: true
+
+    post_count:
+        label: Posts

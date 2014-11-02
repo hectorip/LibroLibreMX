@@ -1,0 +1,17 @@
+<?php namespace Hectorip\Books\Components;
+
+	public
+function componentDetails() {
+		return [
+			'name'        => 'AvailableBooks Component',
+			'description' => 'Show the books that area available to give.'
+		];
+	}
+
+	public function defineProperties() {
+		return [];
+	}
+	public function onRun() {
+
+	}
+}
