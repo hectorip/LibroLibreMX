@@ -1,6 +1,6 @@
 Libro Libre MX
 ==============
-Es la base para la comunidad para compartir libros libremente.
+Es la base para la comunidad para compartir libros libremente. Basada en OctoberCMS.
 
 TODO:
 -------
