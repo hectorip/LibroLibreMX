@@ -16,6 +16,7 @@ class CreateOrdersTable extends Migration
             $table->int('user_to');
             $table->text('comments');
             $table->bool('fulfilled');
+            $table->date('fulfilled');
             $table->timestamps();
         });
     }
