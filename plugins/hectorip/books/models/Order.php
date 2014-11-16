@@ -26,14 +26,7 @@ class Order extends Model
     /**
      * @var array Relations
      */
-    public $hasOne = [];
-    public $hasMany = [];
-    public $belongsTo = [];
-    public $belongsToMany = [];
-    public $morphTo = [];
-    public $morphOne = [];
-    public $morphMany = [];
-    public $attachOne = [];
-    public $attachMany = [];
+    public $hasOne = ['Hectorip\Books\Book'];
+    public $belongsTo = ['LibroLibre\Users\Models\User'];
 
 }

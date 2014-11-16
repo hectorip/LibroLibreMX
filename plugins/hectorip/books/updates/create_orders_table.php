@@ -12,13 +12,13 @@ class CreateOrdersTable extends Migration
         {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->int('book_id')->unsigned();
-            $table->int('user_id')->unsigned();
+            $table->integer('book_id')->unsigned();
+            $table->integer('user_id')->unsigned();
             $table->text('comments');
-            $table->bool('fulfilled');
+            $table->boolean('fulfilled');
             $table->date('fulfilled_date');
             $table->foreign('user_id')->references('id')->on('librolibre_users_users');
-            $table->foreign('book_id')->references('id')->on('hecotrip_book_book');
+            $table->foreign('book_id')->references('id')->on('hectorip_books_books');
             $table->timestamps();
         });
     }

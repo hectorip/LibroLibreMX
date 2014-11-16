@@ -2,3 +2,6 @@
 1.0.2:
   - Adding book migration
   - create_books_table.php
+1.0.3:
+  - Adding orders migration
+  - create_orders_table.php
