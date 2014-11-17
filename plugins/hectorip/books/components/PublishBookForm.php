@@ -10,7 +10,7 @@ class PublishBookForm extends ComponentBase {
 	public function componentDetails() {
 		return [
 			'name'        => 'PublishBookForm Component',
-			'description' => 'Provides a form to allow authenticathed users publish them books'
+			'description' => 'Provides a form to allow authenticated users publish them books'
 		];
 	}
 
