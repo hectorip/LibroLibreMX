@@ -18,6 +18,7 @@ use Cms\Twig\Loader as TwigLoader;
 use Cms\Twig\DebugExtension;
 use Cms\Twig\Extension as CmsTwigExtension;
 use Cms\Classes\FileHelper as CmsFileHelper;
+use Cms\Models\MaintenanceSettings;
 use System\Models\RequestLog;
 use System\Classes\ErrorHandler;
 use System\Classes\CombineAssets;
@@ -150,7 +151,7 @@ class Controller extends BaseController
         }
 
         /*
-         * Handle hidden pages
+         * Hidden page
          */
         $page = $this->router->findByUrl($url);
         if ($page && $page->hidden) {
@@ -160,14 +161,29 @@ class Controller extends BaseController
         }
 
         /*
-         * Extensibility
+         * Maintenance mode
          */
-        if ($event = $this->fireEvent('page.beforeDisplay', [$url, $page], true)) {
-            return $event;
+        if (
+            MaintenanceSettings::isConfigured() &&
+            MaintenanceSettings::get('is_enabled', false) &&
+            !BackendAuth::getUser()
+        ) {
+            $page = Page::loadCached($this->theme, MaintenanceSettings::get('cms_page'));
         }
 
-        if ($event = Event::fire('cms.page.beforeDisplay', [$this, $url, $page], true)) {
-            return $event;
+        /*
+         * Extensibility
+         */
+        if (
+            ($event = $this->fireEvent('page.beforeDisplay', [$url, $page], true)) ||
+            ($event = Event::fire('cms.page.beforeDisplay', [$this, $url, $page], true))
+        ) {
+            if ($event instanceof Page) {
+                $page = $event;
+            }
+            else {
+                return $event;
+            }
         }
 
         /*
@@ -236,11 +252,10 @@ class Controller extends BaseController
         /*
          * Extensibility
          */
-        if ($event = $this->fireEvent('page.init', [$url, $page], true)) {
-            return $event;
-        }
-
-        if ($event = Event::fire('cms.page.init', [$this, $url, $page], true)) {
+        if (
+            ($event = $this->fireEvent('page.init', [$url, $page], true)) ||
+            ($event = Event::fire('cms.page.init', [$this, $url, $page], true))
+        ) {
             return $event;
         }
 
@@ -298,11 +313,10 @@ class Controller extends BaseController
         /*
          * Extensibility
          */
-        if ($event = $this->fireEvent('page.display', [$url, $page], true)) {
-            return $event;
-        }
-
-        if ($event = Event::fire('cms.page.display', [$this, $url, $page], true)) {
+        if (
+            ($event = $this->fireEvent('page.display', [$url, $page], true)) ||
+            ($event = Event::fire('cms.page.display', [$this, $url, $page], true))
+        ) {
             return $event;
         }
 
@@ -399,8 +413,6 @@ class Controller extends BaseController
     {
         $manager = ComponentManager::instance();
 
-        $properties = $this->setComponentPropertiesFromParameters($properties, []);
-
         if ($addToLayout) {
             if (!$componentObj = $manager->makeComponent($name, $this->layoutObj, $properties)) {
                 throw new CmsException(Lang::get('cms::lang.component.not_found', ['name'=>$name]));
@@ -418,6 +430,7 @@ class Controller extends BaseController
             $this->vars[$alias] = $this->page->components[$alias] = $componentObj;
         }
 
+        $this->setComponentPropertiesFromParameters($componentObj);
         $componentObj->init();
         $componentObj->onInit(); // Deprecated: Remove ithis line if year >= 2015
         return $componentObj;
@@ -590,11 +603,10 @@ class Controller extends BaseController
         /*
          * Extensibility
          */
-        if ($event = $this->fireEvent('page.start', [], true)) {
-            return $event;
-        }
-
-        if ($event = Event::fire('cms.page.start', [$this], true)) {
+        if (
+            ($event = $this->fireEvent('page.start', [], true)) ||
+            ($event = Event::fire('cms.page.start', [$this], true))
+        ) {
             return $event;
         }
 
@@ -603,9 +615,9 @@ class Controller extends BaseController
          */
         if ($this->layoutObj) {
             CmsException::mask($this->layout, 300);
-            $response = (($result = $this->layoutObj->onStart())
-                || ($result = $this->layout->runComponents())
-                || ($result = $this->layoutObj->onBeforePageStart())) ? $result: null;
+            $response = (($result = $this->layoutObj->onStart()) ||
+                ($result = $this->layout->runComponents()) ||
+                ($result = $this->layoutObj->onBeforePageStart())) ? $result: null;
             CmsException::unmask();
 
             if ($response) {
@@ -617,9 +629,9 @@ class Controller extends BaseController
          * Run page functions
          */
         CmsException::mask($this->page, 300);
-        $response = (($result = $this->pageObj->onStart())
-            || ($result = $this->page->runComponents())
-            || ($result = $this->pageObj->onEnd())) ? $result : null;
+        $response = (($result = $this->pageObj->onStart()) || 
+            ($result = $this->page->runComponents()) || 
+            ($result = $this->pageObj->onEnd())) ? $result : null;
         CmsException::unmask();
 
         if ($response) {
@@ -638,11 +650,10 @@ class Controller extends BaseController
         /*
          * Extensibility
          */
-        if ($event = $this->fireEvent('page.end', [], true)) {
-            return $event;
-        }
-
-        if ($event = Event::fire('cms.page.end', [$this], true)) {
+        if (
+            ($event = $this->fireEvent('page.end', [], true)) ||
+            ($event = Event::fire('cms.page.end', [$this], true))
+        ) {
             return $event;
         }
 
@@ -660,11 +671,10 @@ class Controller extends BaseController
         /*
          * Extensibility
          */
-        if ($event = $this->fireEvent('page.render', [$contents], true)) {
-            return $event;
-        }
-
-        if ($event = Event::fire('cms.page.render', [$this, $contents], true)) {
+        if (
+            ($event = $this->fireEvent('page.render', [$contents], true)) ||
+            ($event = Event::fire('cms.page.render', [$this, $contents], true))
+        ) {
             return $event;
         }
 
@@ -786,8 +796,6 @@ class Controller extends BaseController
                     ? explode(' ', $component)
                     : [$component, $component];
 
-                $properties = $this->setComponentPropertiesFromParameters($properties, $parameters, []);
-
                 if (!$componentObj = $manager->makeComponent($name, $this->pageObj, $properties)) {
                     throw new CmsException(Lang::get('cms::lang.component.not_found', ['name'=>$name]));
                 }
@@ -800,6 +808,7 @@ class Controller extends BaseController
                     'obj' => $componentObj
                 ]);
 
+                $this->setComponentPropertiesFromParameters($componentObj, $parameters);
                 $componentObj->init();
                 $componentObj->onInit(); // Deprecated: Remove ithis line if year >= 2015
             }
@@ -845,10 +854,10 @@ class Controller extends BaseController
         /*
          * Extensibility
          */
-        if ($event = $this->fireEvent('page.beforeRenderContent', [$name], true)) {
-            $content = $event;
-        }
-        elseif ($event = Event::fire('cms.page.beforeRenderContent', [$this, $name], true)) {
+        if (
+            ($event = $this->fireEvent('page.beforeRenderContent', [$name], true)) ||
+            ($event = Event::fire('cms.page.beforeRenderContent', [$this, $name], true))
+        ) {
             $content = $event;
         }
         /*
@@ -863,11 +872,10 @@ class Controller extends BaseController
         /*
          * Extensibility
          */
-        if ($event = $this->fireEvent('page.renderContent', [$name, $fileContent], true)) {
-            return $event;
-        }
-
-        if ($event = Event::fire('cms.page.renderContent', [$this, $name, $fileContent], true)) {
+        if (
+            ($event = $this->fireEvent('page.renderContent', [$name, $fileContent], true)) ||
+            ($event = Event::fire('cms.page.renderContent', [$this, $name, $fileContent], true))
+        ) {
             return $event;
         }
 
@@ -1103,16 +1111,15 @@ class Controller extends BaseController
     }
 
     /**
-     * Sets component property values from partial parameters. 
+     * Sets component property values from partial parameters.
      * The property values should be defined as {{ param }}.
-     * @param array &$properties Specifies the component properties loaded from the partial.
+     * @param ComponentBase $component The component object.
      * @param array $parameters Specifies the partial parameters.
      * @return Returns updated properties.
      */
-    protected function setComponentPropertiesFromParameters(&$properties, $parameters)
+    protected function setComponentPropertiesFromParameters($component, $parameters = [])
     {
-        $result = [];
-
+        $properties = $component->getProperties();
         $routerParameters = $this->router->getParameters();
 
         foreach ($properties as $propertyName => $propertyValue) {
@@ -1122,21 +1129,19 @@ class Controller extends BaseController
 
                 if (substr($paramName, 0, 1) == ':') {
                     $paramName = substr($paramName, 1);
-                    $result[$propertyName] = array_key_exists($paramName, $routerParameters)
+                    $newPropertyValue = array_key_exists($paramName, $routerParameters)
                         ? $routerParameters[$paramName]
                         : null;
+
                 }
                 else {
-                    $result[$propertyName] = array_key_exists($paramName, $parameters)
+                    $newPropertyValue = array_key_exists($paramName, $parameters)
                         ? $parameters[$paramName]
                         : null;
                 }
-            }
-            else {
-                $result[$propertyName] = $propertyValue;
+
+                $component->setProperty($propertyName, $newPropertyValue);
             }
         }
-
-        return $result;
     }
 }

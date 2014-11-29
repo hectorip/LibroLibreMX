@@ -8978,7 +8978,9 @@ label {
   margin-top: -5px;
 }
 .form-group.no-padding.span-left,
-.form-group.no-padding.span-right {
+.form-group.field-slim.span-left,
+.form-group.no-padding.span-right,
+.form-group.field-slim.span-right {
   width: 50%;
 }
 .form-group.input-sidebar-control {
@@ -10013,10 +10015,10 @@ table.table.data tr.list-tree-level-25 td.list-cell-index-1 {
 .report-widget .table-container table.table.data tbody tr:nth-child(even) th {
   background-color: transparent;
 }
-#layout-flash-messages + .list-header {
+.list-header:first-of-type {
   margin-top: -20px;
 }
-#layout-flash-messages + .list-header > .control-toolbar {
+.list-header:first-of-type > .control-toolbar {
   padding-top: 20px;
 }
 @media only screen and (max-width: 960px) {
@@ -11780,6 +11782,12 @@ body.dropdown-open .dropdown-overlay {
 .control-tabs > div.tab-content > div.tab-pane.active.layout-cell {
   display: table-cell;
 }
+.control-tabs > div.tab-content > div.tab-pane.pane-compact {
+  padding: 0;
+}
+.control-tabs > div.tab-content > div.tab-pane.pane-padded {
+  padding: 20px 20px 0 20px;
+}
 .control-tabs[data-closable] > ul.nav-tabs > li,
 .control-tabs[data-closable] > div > ul.nav-tabs > li,
 .control-tabs[data-closable] > div > div > ul.nav-tabs > li {
@@ -11788,8 +11796,8 @@ body.dropdown-open .dropdown-overlay {
 .control-tabs[data-closable] > ul.nav-tabs > li a,
 .control-tabs[data-closable] > div > ul.nav-tabs > li a,
 .control-tabs[data-closable] > div > div > ul.nav-tabs > li a {
-  padding-left: 20px!important;
-  padding-right: 0!important;
+  padding-left: 20px !important;
+  padding-right: 0 !important;
 }
 .control-tabs[data-closable] > ul.nav-tabs > li span.tab-close,
 .control-tabs[data-closable] > div > ul.nav-tabs > li span.tab-close,
@@ -11979,6 +11987,12 @@ body.dropdown-open .dropdown-overlay {
 .control-tabs.primary > div > div > ul.nav-tabs > li.active a > span.title:after {
   background-position: -61px 0;
   z-index: 107;
+}
+.control-tabs.primary.tabs-offset > ul.nav-tabs,
+.control-tabs.primary.tabs-offset > div > ul.nav-tabs,
+.control-tabs.primary.tabs-offset > div > div > ul.nav-tabs {
+  margin-left: 0;
+  margin-right: 0;
 }
 .control-tabs.secondary > ul.nav-tabs > li,
 .control-tabs.secondary > div > ul.nav-tabs > li,
@@ -12623,7 +12637,8 @@ ul.status-list li span.status.info {
 .control-breadcrumb + .padded-container {
   margin-top: -20px;
 }
-.control-breadcrumb.no-bottom-margin {
+.control-breadcrumb.no-bottom-margin,
+.control-breadcrumb.breadcrumb-flush {
   margin-bottom: 0;
 }
 body.slim-container .control-breadcrumb {
@@ -12641,6 +12656,27 @@ div.control-popover {
   left: 0;
   top: 0;
   z-index: 170;
+  visibility: hidden;
+}
+div.control-popover.in,
+div.control-popover.fade {
+  visibility: visible;
+}
+div.control-popover.fade > div {
+  opacity: 0;
+  filter: alpha(opacity=0);
+  -webkit-transition: all 0.3s, width 0s;
+  transition: all 0.3s, width 0s;
+  -webkit-transform: scale(0.7);
+  -ms-transform: scale(0.7);
+  transform: scale(0.7);
+}
+div.control-popover.fade.in > div {
+  opacity: 1;
+  filter: alpha(opacity=100);
+  -webkit-transform: scale(1);
+  -ms-transform: scale(1);
+  transform: scale(1);
 }
 div.control-popover > div {
   position: relative;
@@ -12833,12 +12869,12 @@ div.control-popover.placement-right .popover-head:before {
 }
 .popover-highlight {
   position: relative;
-  z-index: 162!important;
+  z-index: 162 !important;
 }
 .popover-highlight:hover,
 .popover-highlight:active,
 .popover-highlight:focus {
-  z-index: 162!important;
+  z-index: 162 !important;
 }
 div.popover-overlay {
   position: fixed;
@@ -12859,12 +12895,12 @@ div.popover-overlay {
     position: fixed;
     margin: 0;
     padding: 10px;
-    width: 100%!important;
+    width: 100% !important;
     z-index: 209;
-    top: 0!important;
-    right: 0!important;
-    bottom: 0!important;
-    left: 0!important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
   }
   body.popover-open .control-popover > div {
     padding: 0;
@@ -13323,8 +13359,8 @@ div.popover-overlay {
 .fancy-layout.control-tabs.primary > .tab-content > .tab-pane {
   padding: 15px 15px 0 15px;
 }
-.fancy-layout .control-tabs.primary > .tab-content > .tab-pane.full-size,
-.fancy-layout.control-tabs.primary > .tab-content > .tab-pane.full-size {
+.fancy-layout .control-tabs.primary > .tab-content > .tab-pane.pane-compact,
+.fancy-layout.control-tabs.primary > .tab-content > .tab-pane.pane-compact {
   padding: 0;
 }
 .fancy-layout .control-tabs.primary > .tab-content > .tab-pane .form-control,

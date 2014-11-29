@@ -26,7 +26,7 @@ class MailSettings extends Model
         $config = App::make('config');
         $this->send_mode = $config->get('mail.driver', static::MODE_MAIL);
         $this->sender_name = $config->get('mail.from.name', 'Your Site');
-        $this->sender_email = $config->get('mail.from.address', 'admin@admin.admin');
+        $this->sender_email = $config->get('mail.from.address', 'admin@domain.tld');
         $this->sendmail_path = $config->get('mail.sendmail', '/usr/sbin/sendmail');
         $this->smtp_address = $config->get('mail.host');
         $this->smtp_port = $config->get('mail.port', 587);
@@ -38,10 +38,10 @@ class MailSettings extends Model
     public function getSendModeOptions()
     {
         return [
-            static::MODE_MAIL     => 'PHP mail',
-            static::MODE_SENDMAIL => 'Sendmail',
-            static::MODE_SMTP     => 'SMTP',
-            static::MODE_MAILGUN  => 'Mailgun',
+            static::MODE_MAIL     => 'system::lang.mail.php_mail',
+            static::MODE_SENDMAIL => 'system::lang.mail.sendmail',
+            static::MODE_SMTP     => 'system::lang.mail.smtp',
+            static::MODE_MAILGUN  => 'system::lang.mail.mailgun',
         ];
     }
 

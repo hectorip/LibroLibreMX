@@ -193,13 +193,15 @@ class FormField
         if ($value === null) {
             if (is_array($this->options)) {
                 return $this->options;
-            } elseif (is_callable($this->options)) {
+            }
+            elseif (is_callable($this->options)) {
                 $callable = $this->options;
                 return $callable();
             }
 
             return [];
-        } else {
+        }
+        else {
             $this->options = $value;
         }
 
@@ -273,7 +275,6 @@ class FormField
         if (isset($config['path'])) {
             $this->path = $config['path'];
         }
-
         if (array_key_exists('required', $config)) {
             $this->required = $config['required'];
         }
@@ -289,7 +290,8 @@ class FormField
 
         if (isset($config['valueFrom'])) {
             $this->valueFrom = $config['valueFrom'];
-        } else {
+        }
+        else {
             $this->valueFrom = $this->fieldName;
         }
 
@@ -360,7 +362,8 @@ class FormField
 
         if ($arrayName) {
             return $arrayName.'['.implode('][', Str::evalHtmlArray($this->fieldName)).']';
-        } else {
+        }
+        else {
             return $this->fieldName;
         }
     }
