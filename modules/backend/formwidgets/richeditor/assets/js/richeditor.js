@@ -57,16 +57,20 @@
             imageEditable: false,
             imageResizable: false,
             buttonSource: true,
+            removeDataAttr: false,
+            syncBeforeCallback: function(html) { return self.syncBefore(html) },
             focusCallback: function() { self.$el.addClass('editor-focus') },
             blurCallback: function() { self.$el.removeClass('editor-focus') },
-            initCallback: function() { self.build() },
+            keydownCallback: function(e) { return self.keydown(e, this.$editor) },
+            enterCallback: function(e) { return self.enter(e, this.$editor) },
+            initCallback: function() { self.build(this) },
             changeCallback: function() {
                 self.sanityCheckContent(this.$editor)
                 this.$editor.trigger('mutate')
                 self.$form.trigger('change')
 
                 if (self.$dataLocker)
-                    self.$dataLocker.val(this.$editor.html())
+                    self.$dataLocker.val(self.syncBefore(this.$editor.html()))
             }
         }
 
@@ -83,11 +87,20 @@
         this.$textarea.redactor(redactorOptions)
     }
 
-    RichEditor.prototype.build = function() {
+    RichEditor.prototype.build = function(redactor) {
         this.updateLayout()
 
         $(window).resize($.proxy(this.updateLayout, this))
         $(window).on('oc.updateUi', $.proxy(this.updateLayout, this))
+
+        this.$textarea.trigger('init.oc.richeditor', [this.$el])
+
+        var self = this
+        redactor.default = {
+            onShow: function($figure, $toolbar) {
+                self.onShowFigureToolbar($figure, $toolbar)
+            }
+        }
     }
 
     RichEditor.prototype.updateLayout = function() {
@@ -106,8 +119,8 @@
     }
 
     RichEditor.prototype.sanityCheckContent = function($editor) {
-        // First and last elements should always be paragraphs
-        var safeElements = 'p, h1, h2, h3, h4, h5';
+        // First and last elements should always be paragraphs or pre
+        var safeElements = 'p, h1, h2, h3, h4, h5, pre, figure';
 
         if (!$editor.children(':last-child').is(safeElements)) {
             $editor.append('<p><br></p>')
@@ -116,6 +129,59 @@
         if (!$editor.children(':first-child').is(safeElements)) {
             $editor.prepend('<p><br></p>')
         }
+
+        this.$textarea.trigger('sanitize.oc.richeditor', [$editor])
+    }
+
+    RichEditor.prototype.syncBefore = function(html) {
+        var container = {
+            html: html
+        }
+
+        this.$textarea.trigger('syncBefore.oc.richeditor', [container])
+
+        var $domTree = $('<div>'+container.html+'</div>')
+
+        // This code removes Redactor-specific attributes and tags from the code.
+        // It seems to be a known problem with Redactor, try googling for 
+        // "data-redactor-tag" or "redactor-invisible-space" (with quotes)
+        $('*', $domTree).removeAttr('data-redactor-tag')
+
+        $domTree.find('span[data-redactor-class="redactor-invisible-space"]').each(function(){
+            $(this).children().insertBefore(this)
+            $(this).remove()
+        })
+
+        $domTree.find('span.redactor-invisible-space').each(function(){
+            $(this).children().insertBefore(this)
+            $(this).remove()
+        })
+
+        $domTree.find('div.oc-figure-controls').remove()
+
+        return $domTree.html()
+    }
+
+    RichEditor.prototype.keydown = function(e, $editor) {
+        this.$textarea.trigger('keydown.oc.richeditor', [e, $editor, this.$textarea])
+
+        if (e.isDefaultPrevented())
+            return false
+    }
+
+    RichEditor.prototype.enter = function(e, $editor) {
+        this.$textarea.trigger('enter.oc.richeditor', [e, $editor, this.$textarea])
+
+        if (e.isDefaultPrevented())
+            return false
+    }
+
+    RichEditor.prototype.onShowFigureToolbar = function($figure, $toolbar) {
+        // Deal with the case when the toolbar top has negative 
+        // value
+        var toolbarTop = $figure.position().top - $toolbar.height() - 10
+
+        $toolbar.toggleClass('bottom', toolbarTop < 0)
     }
 
     // RICHEDITOR PLUGIN DEFINITION

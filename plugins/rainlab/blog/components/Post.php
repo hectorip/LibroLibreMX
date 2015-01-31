@@ -1,5 +1,6 @@
 <?php namespace RainLab\Blog\Components;
 
+use Cms\Classes\Page;
 use Cms\Classes\ComponentBase;
 use RainLab\Blog\Models\Post as BlogPost;
 
@@ -18,28 +19,32 @@ class Post extends ComponentBase
     public function componentDetails()
     {
         return [
-            'name'        => 'Blog Post',
-            'description' => 'Displays a blog post on the page.'
+            'name'        => 'rainlab.blog::lang.settings.post_title',
+            'description' => 'rainlab.blog::lang.settings.post_description'
         ];
     }
 
     public function defineProperties()
     {
         return [
-            'idParam' => [
-                'title'       => 'Slug param name',
-                'description' => 'The URL route parameter used for looking up the post by its slug.',
-                'default'     => ':slug',
+            'slug' => [
+                'title'       => 'rainlab.blog::lang.settings.post_slug',
+                'description' => 'rainlab.blog::lang.settings.post_slug_description',
+                'default'     => '{{ :slug }}',
                 'type'        => 'string'
             ],
             'categoryPage' => [
-                'title'       => 'Category page',
-                'description' => 'Name of the category page file for the category links. This property is used by the default component partial.',
+                'title'       => 'rainlab.blog::lang.settings.post_category',
+                'description' => 'rainlab.blog::lang.settings.post_category_description',
                 'type'        => 'dropdown',
                 'default'     => 'blog/category',
-                'group'       => 'Links',
             ],
         ];
+    }
+
+    public function getCategoryPageOptions()
+    {
+        return Page::sortBy('baseFileName')->lists('baseFileName', 'baseFileName');
     }
 
     public function onRun()
@@ -50,7 +55,10 @@ class Post extends ComponentBase
 
     protected function loadPost()
     {
-        $slug = $this->propertyOrParam('idParam');
+        // @deprecated remove if year >= 2015
+        $deprecatedSlug = $this->propertyOrParam('idParam');
+
+        $slug = $this->property('slug', $deprecatedSlug);
         $post = BlogPost::isPublished()->where('slug', '=', $slug)->first();
 
         /*

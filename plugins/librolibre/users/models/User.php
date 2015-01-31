@@ -26,6 +26,21 @@ class User extends Model {
 	/**
 	 * @var array Relations
 	 */
-	public $belongsTo = ['RainLasb\Users\Models\User'];
+	public $belongsTo = ['user' => ['RainLab\User\Models\User']];
 	public $hasMany   = ['Hectorip\Books\Models\Book'];
+
+    public static function getFromUser($user)
+    {
+        \Log::error("Getting user details");
+        if ($user->user_details) {
+            return $user->user_details;
+        }
+        $user_details       = new static;
+        $user_details->user = $user;
+        $user_details->save();
+
+        $user->user_details = $user_details;
+        return $user_details;
+    }
+
 }

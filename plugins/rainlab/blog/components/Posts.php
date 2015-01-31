@@ -50,60 +50,60 @@ class Posts extends ComponentBase
      * If the post list should be ordered by another attribute.
      * @var string
      */
-    public $postOrderAttr;
+    public $sortOrder;
 
     public function componentDetails()
     {
         return [
-            'name'        => 'Blog Post List',
-            'description' => 'Displays a list of latest blog posts on the page.'
+            'name'        => 'rainlab.blog::lang.settings.posts_title',
+            'description' => 'rainlab.blog::lang.settings.posts_description'
         ];
     }
 
     public function defineProperties()
     {
         return [
-            'pageParam' => [
-                'title'       => 'Pagination parameter name',
-                'description' => 'The expected parameter name used by the pagination pages.',
+            'pageNumber' => [
+                'title'       => 'rainlab.blog::lang.settings.posts_pagination',
+                'description' => 'rainlab.blog::lang.settings.posts_pagination_description',
                 'type'        => 'string',
-                'default'     => ':page',
+                'default'     => '{{ :page }}',
             ],
             'categoryFilter' => [
-                'title'       => 'Category filter',
-                'description' => 'Enter a category slug or URL parameter to filter the posts by. Leave empty to show all posts.',
+                'title'       => 'rainlab.blog::lang.settings.posts_filter',
+                'description' => 'rainlab.blog::lang.settings.posts_filter_description',
                 'type'        => 'string',
                 'default'     => ''
             ],
             'postsPerPage' => [
-                'title'             => 'Posts per page',
+                'title'             => 'rainlab.blog::lang.settings.posts_per_page',
                 'type'              => 'string',
                 'validationPattern' => '^[0-9]+$',
-                'validationMessage' => 'Invalid format of the posts per page value',
+                'validationMessage' => 'rainlab.blog::lang.settings.posts_per_page_validation',
                 'default'           => '10',
             ],
             'noPostsMessage' => [
-                'title'        => 'No posts message',
-                'description'  => 'Message to display in the blog post list in case if there are no posts. This property is used by the default component partial.',
+                'title'        => 'rainlab.blog::lang.settings.posts_no_posts',
+                'description'  => 'rainlab.blog::lang.settings.posts_no_posts_description',
                 'type'         => 'string',
                 'default'      => 'No posts found'
             ],
-            'postOrderAttr' => [
-                'title'       => 'Post order',
-                'description' => 'Attribute on which the posts should be ordered',
+            'sortOrder' => [
+                'title'       => 'rainlab.blog::lang.settings.posts_order',
+                'description' => 'rainlab.blog::lang.settings.posts_order_description',
                 'type'        => 'dropdown',
                 'default'     => 'published_at desc'
             ],
             'categoryPage' => [
-                'title'       => 'Category page',
-                'description' => 'Name of the category page file for the "Posted into" category links. This property is used by the default component partial.',
+                'title'       => 'rainlab.blog::lang.settings.posts_category',
+                'description' => 'rainlab.blog::lang.settings.posts_category_description',
                 'type'        => 'dropdown',
                 'default'     => 'blog/category',
                 'group'       => 'Links',
             ],
             'postPage' => [
-                'title'       => 'Post page',
-                'description' => 'Name of the blog post page file for the "Learn more" links. This property is used by the default component partial.',
+                'title'       => 'rainlab.blog::lang.settings.posts_post',
+                'description' => 'rainlab.blog::lang.settings.posts_post_description',
                 'type'        => 'dropdown',
                 'default'     => 'blog/post',
                 'group'       => 'Links',
@@ -133,14 +133,27 @@ class Posts extends ComponentBase
         $this->category = $this->page['category'] = $this->loadCategory();
         $this->posts = $this->page['posts'] = $this->listPosts();
 
-        $currentPage = $this->propertyOrParam('pageParam');
-        if ($currentPage > ($lastPage = $this->posts->getLastPage()) && $currentPage > 1)
-            return Redirect::to($this->controller->currentPageUrl([$this->property('pageParam') => $lastPage]));
+        /*
+         * If the page number is not valid, redirect
+         */
+        if ($pageNumberParam = $this->paramName('pageNumber')) {
+
+            // @deprecated remove if year >= 2015
+            $deprecatedPageNumber = $this->propertyOrParam('pageParam');
+
+            $currentPage = $this->property('pageNumber', $deprecatedPageNumber);
+
+            if ($currentPage > ($lastPage = $this->posts->getLastPage()) && $currentPage > 1)
+                return Redirect::to($this->currentPageUrl([$pageNumberParam => $lastPage]));
+        }
     }
 
     protected function prepareVars()
     {
-        $this->pageParam = $this->page['pageParam'] = $this->property('pageParam', 'page');
+        // @deprecated remove if year >= 2015 (note default value 'page')
+        $deprecatedPageParam = $this->property('pageParam', 'page');
+
+        $this->pageParam = $this->page['pageParam'] = $this->paramName('pageNumber', $deprecatedPageParam);
         $this->noPostsMessage = $this->page['noPostsMessage'] = $this->property('noPostsMessage');
 
         /*
@@ -154,12 +167,16 @@ class Posts extends ComponentBase
     {
         $categories = $this->category ? $this->category->id : null;
 
+        // @deprecated remove if year >= 2015
+        $deprecatedPage = $this->propertyOrParam('pageParam');
+        $deprecatedSortOrder = $this->property('postOrderAttr');
+
         /*
          * List all the posts, eager load their categories
          */
         $posts = BlogPost::with('categories')->listFrontEnd([
-            'page'       => $this->propertyOrParam('pageParam'),
-            'sort'       => $this->property('postOrderAttr'),
+            'page'       => $this->property('pageNumber', $deprecatedPage),
+            'sort'       => $this->property('sortOrder', $deprecatedSortOrder),
             'perPage'    => $this->property('postsPerPage'),
             'categories' => $categories
         ]);
@@ -180,7 +197,7 @@ class Posts extends ComponentBase
 
     protected function loadCategory()
     {
-        if (!$categoryId = $this->propertyOrParam('categoryFilter'))
+        if (!$categoryId = $this->property('categoryFilter'))
             return null;
 
         if (!$category = BlogCategory::whereSlug($categoryId)->first())

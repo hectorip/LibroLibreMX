@@ -2,6 +2,7 @@
 
 use Str;
 use HTML;
+use Model;
 
 /**
  * Form Field definition
@@ -12,6 +13,11 @@ use HTML;
  */
 class FormField
 {
+    /**
+     * @var int Value returned when the form field should not contribute any save data.
+     */
+    const NO_SAVE_DATA = -1;
+
     /**
      * @var string Form field name.
      */
@@ -97,7 +103,7 @@ class FormField
      * @var string Specifies a comment to accompany the field
      */
     public $comment;
-    
+
     /**
      * @var string Specifies the comment position.
      */
@@ -141,7 +147,7 @@ class FormField
     /**
      * @var array Other field names this field depends on, when the other fields are modified, this field will update.
      */
-    public $depends;
+    public $dependsOn;
 
     /**
      * Constructor.
@@ -269,8 +275,12 @@ class FormField
         if (isset($config['containerAttributes'])) {
             $this->attributes($config['containerAttributes'], 'container');
         }
-        if (isset($config['depends'])) {
-            $this->depends = $config['depends'];
+        if (isset($config['dependsOn'])) {
+            $this->dependsOn = $config['dependsOn'];
+        }
+        /* @deprecated remove if year >= 2016 */
+        elseif (isset($config['depends'])) {
+            $this->dependsOn = $config['depends'];
         }
         if (isset($config['path'])) {
             $this->path = $config['path'];
@@ -389,5 +399,55 @@ class FormField
         }
 
         return Str::evalHtmlId($id);
+    }
+
+    /**
+     * Returns this fields value from a supplied data set, which can be
+     * an array or a model or another generic collection.
+     * @param mixed $data
+     * @return mixed
+     */
+    public function getValueFromData($data, $default = null)
+    {
+        $fieldName = $this->fieldName;
+
+        /*
+         * Array field name, eg: field[key][key2][key3]
+         */
+        $keyParts = Str::evalHtmlArray($fieldName);
+        $lastField = end($keyParts);
+        $result = $data;
+
+        /*
+         * Loop the field key parts and build a value.
+         * To support relations only the last field should return the
+         * relation value, all others will look up the relation object as normal.
+         */
+        foreach ($keyParts as $key) {
+
+            if ($result instanceof Model && $result->hasRelation($key)) {
+                if ($key == $lastField) {
+                    $result = $result->getRelationValue($key) ?: $default;
+                }
+                else {
+                    $result = $result->{$key};
+                }
+            }
+            elseif (is_array($result)) {
+                if (!array_key_exists($key, $result)) {
+                    return $default;
+                }
+                $result = $result[$key];
+            }
+            else {
+                if (!isset($result->{$key})) {
+                    return $default;
+                }
+                $result = $result->{$key};
+            }
+
+        }
+
+        return $result;
     }
 }

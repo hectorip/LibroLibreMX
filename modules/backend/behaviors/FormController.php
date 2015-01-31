@@ -7,6 +7,7 @@ use Event;
 use Input;
 use Redirect;
 use Backend;
+use Backend\Classes\FormField;
 use Backend\Classes\ControllerBehavior;
 use October\Rain\Support\Util;
 use October\Rain\Router\Helper as RouterHelper;
@@ -22,6 +23,21 @@ use Exception;
  */
 class FormController extends ControllerBehavior
 {
+    /**
+     * @var string Default context for "create" pages.
+     */
+    const CONTEXT_CREATE = 'create';
+
+    /**
+     * @var string Default context for "update" pages.
+     */
+    const CONTEXT_UPDATE = 'update';
+
+    /**
+     * @var string Default context for "preview" pages.
+     */
+    const CONTEXT_PREVIEW = 'preview';
+
     /**
      * @var Backend\Classes\WidgetBase Reference to the widget object.
      */
@@ -79,7 +95,22 @@ class FormController extends ControllerBehavior
     {
         $context = $this->formGetContext();
 
-        $config = $this->makeConfig($this->config->form);
+        /*
+         * Each page can supply a unique form definition, if desired
+         */
+        $formFields = $this->config->form;
+
+        if ($context == self::CONTEXT_CREATE) {
+            $formFields = $this->getConfig('create[form]', $formFields);
+        }
+        elseif ($context == self::CONTEXT_UPDATE) {
+            $formFields = $this->getConfig('update[form]', $formFields);
+        }
+        elseif ($context == self::CONTEXT_PREVIEW) {
+            $formFields = $this->getConfig('preview[form]', $formFields);
+        }
+
+        $config = $this->makeConfig($formFields);
         $config->model = $model;
         $config->arrayName = class_basename($model);
         $config->context = $context;
@@ -93,12 +124,16 @@ class FormController extends ControllerBehavior
             $this->controller->formExtendFieldsBefore($this->formWidget);
         });
 
-        $this->formWidget->bindEvent('form.extendFields', function () {
-            $this->controller->formExtendFields($this->formWidget);
+        $this->formWidget->bindEvent('form.extendFields', function ($fields) {
+            $this->controller->formExtendFields($this->formWidget, $fields);
         });
 
         $this->formWidget->bindEvent('form.beforeRefresh', function ($saveData) {
             return $this->controller->formExtendRefreshData($this->formWidget, $saveData);
+        });
+
+        $this->formWidget->bindEvent('form.refreshFields', function ($fields) {
+            return $this->controller->formExtendRefreshFields($this->formWidget, $fields);
         });
 
         $this->formWidget->bindEvent('form.refresh', function ($result) {
@@ -139,7 +174,7 @@ class FormController extends ControllerBehavior
     public function create($context = null)
     {
         try {
-            $this->context = strlen($context) ? $context : $this->getConfig('create[context]', 'create');
+            $this->context = strlen($context) ? $context : $this->getConfig('create[context]', self::CONTEXT_CREATE);
             $this->controller->pageTitle = $this->controller->pageTitle ?: $this->getLang(
                 'create[title]',
                 'backend::lang.form.create_title'
@@ -159,7 +194,7 @@ class FormController extends ControllerBehavior
      */
     public function create_onSave($context = null)
     {
-        $this->context = strlen($context) ? $context : $this->getConfig('create[context]', 'create');
+        $this->context = strlen($context) ? $context : $this->getConfig('create[context]', self::CONTEXT_CREATE);
         $model = $this->controller->formCreateModelObject();
         $this->initForm($model);
 
@@ -194,7 +229,7 @@ class FormController extends ControllerBehavior
     public function update($recordId = null, $context = null)
     {
         try {
-            $this->context = strlen($context) ? $context : $this->getConfig('update[context]', 'update');
+            $this->context = strlen($context) ? $context : $this->getConfig('update[context]', self::CONTEXT_UPDATE);
             $this->controller->pageTitle = $this->controller->pageTitle ?: $this->getLang(
                 'update[title]',
                 'backend::lang.form.update_title'
@@ -215,14 +250,14 @@ class FormController extends ControllerBehavior
      */
     public function update_onSave($recordId = null, $context = null)
     {
-        $this->context = strlen($context) ? $context : $this->getConfig('update[context]', 'update');
+        $this->context = strlen($context) ? $context : $this->getConfig('update[context]', self::CONTEXT_UPDATE);
         $model = $this->controller->formFindModelObject($recordId);
         $this->initForm($model);
 
         $this->controller->formBeforeSave($model);
         $this->controller->formBeforeUpdate($model);
 
-        $modelsToSave =$this->prepareModelsToSave($model, $this->formWidget->getSaveData());
+        $modelsToSave = $this->prepareModelsToSave($model, $this->formWidget->getSaveData());
         foreach ($modelsToSave as $modelToSave) {
             $modelToSave->save(null, $this->formWidget->getSessionKey());
         }
@@ -244,7 +279,7 @@ class FormController extends ControllerBehavior
      */
     public function update_onDelete($recordId = null)
     {
-        $this->context = $this->getConfig('update[context]', 'update');
+        $this->context = $this->getConfig('update[context]', self::CONTEXT_UPDATE);
         $model = $this->controller->formFindModelObject($recordId);
         $this->initForm($model);
 
@@ -272,7 +307,7 @@ class FormController extends ControllerBehavior
     public function preview($recordId = null, $context = null)
     {
         try {
-            $this->context = strlen($context) ? $context : $this->getConfig('preview[context]', 'preview');
+            $this->context = strlen($context) ? $context : $this->getConfig('preview[context]', self::CONTEXT_PREVIEW);
             $this->controller->pageTitle = $this->controller->pageTitle ?: $this->getLang(
                 'preview[title]',
                 'backend::lang.form.preview_title'
@@ -592,7 +627,7 @@ class FormController extends ControllerBehavior
      * @param Backend\Widgets\Form $host The hosting form widget
      * @return void
      */
-    public function formExtendFields($host)
+    public function formExtendFields($host, $fields)
     {
     }
 
@@ -603,6 +638,16 @@ class FormController extends ControllerBehavior
      * @return array
      */
     public function formExtendRefreshData($host, $saveData)
+    {
+    }
+
+    /**
+     * Called when the form is refreshed, giving the opportunity to modify the form fields.
+     * @param Backend\Widgets\Form $host The hosting form widget
+     * @param array $fields Current form fields
+     * @return array
+     */
+    public function formExtendRefreshFields($host, $fields)
     {
     }
 
@@ -687,7 +732,7 @@ class FormController extends ControllerBehavior
             ) {
                 $this->setModelAttributes($model->{$attribute}, $value);
             }
-            else {
+            elseif ($value !== FormField::NO_SAVE_DATA) {
                 $model->{$attribute} = $value;
             }
         }

@@ -349,6 +349,8 @@ class Index extends Controller
             throw new ApplicationException(trans('cms::lang.template.not_found'));
         }
 
+        Event::fire('cms.template.processSettingsAfterLoad', [$this, $template]);
+
         return $template;
     }
 
@@ -440,7 +442,16 @@ class Index extends Controller
             $settings[$section] = $properties;
         }
 
-        return $settings;
+        if (array_key_exists('viewBag', $_POST))
+            $settings['viewBag'] = $_POST['viewBag'];
+
+        $dataHolder = (object)[
+            'settings' => $settings
+        ];
+
+        Event::fire('cms.template.processSettingsBeforeSave', [$this, $dataHolder]);
+
+        return $dataHolder->settings;
     }
 
     /**

@@ -5,6 +5,7 @@ use Input;
 use Validator;
 use System\Models\File;
 use System\Classes\SystemException;
+use Backend\Classes\FormField;
 use Backend\Classes\FormWidgetBase;
 use October\Rain\Support\ValidationException;
 use Exception;
@@ -108,7 +109,7 @@ class FileUpload extends FormWidgetBase
      */
     protected function getRelationObject()
     {
-        list($model, $attribute) = $this->getModelArrayAttribute($this->valueFrom);
+        list($model, $attribute) = $this->resolveModelAttribute($this->valueFrom);
         return $model->{$attribute}();
     }
 
@@ -119,7 +120,7 @@ class FileUpload extends FormWidgetBase
      */
     protected function getRelationType()
     {
-        list($model, $attribute) = $this->getModelArrayAttribute($this->valueFrom);
+        list($model, $attribute) = $this->resolveModelAttribute($this->valueFrom);
         return $model->getRelationType($attribute);
     }
 
@@ -194,9 +195,9 @@ class FileUpload extends FormWidgetBase
     /**
      * {@inheritDoc}
      */
-    public function getSaveData($value)
+    public function getSaveValue($value)
     {
-        return FormWidgetBase::NO_SAVE_DATA;
+        return FormField::NO_SAVE_DATA;
     }
 
     /**
@@ -216,7 +217,7 @@ class FileUpload extends FormWidgetBase
 
             $validationRules = ['max:'.File::getMaxFilesize()];
             if ($isImage) {
-                $validationRules[] = 'mimes:jpg,jpeg,bmp,png,gif';
+                $validationRules[] = 'mimes:jpg,jpeg,bmp,png,gif,svg';
             }
 
             $validation = Validator::make(

@@ -73,7 +73,7 @@ class Relation extends FormWidgetBase
         if (!$this->model->hasRelation($this->relationName)) {
             throw new SystemException(Lang::get(
                 'backend::lang.model.missing_relation',
-                ['class'=>get_class($this->controller), 'relation'=>$this->relationName]
+                ['class'=>get_class($this->model), 'relation'=>$this->relationName]
             ));
         }
     }
@@ -104,7 +104,7 @@ class Relation extends FormWidgetBase
 
             $field = clone $this->formField;
 
-            list($model, $attribute) = $this->getModelArrayAttribute($this->relationName);
+            list($model, $attribute) = $this->resolveModelAttribute($this->relationName);
             $relatedObj = $model->makeRelation($attribute);
             $query = $model->{$attribute}()->newQuery();
 
@@ -113,8 +113,9 @@ class Relation extends FormWidgetBase
             }
             elseif (in_array($this->relationType, ['belongsTo', 'hasOne'])) {
                 $field->type = 'dropdown';
-                $field->placeholder = $this->emptyOption;
             }
+
+            $field->placeholder = $this->emptyOption;
 
             // It is safe to assume that if the model and related model are of
             // the exact same class, then it cannot be related to itself
@@ -141,7 +142,7 @@ class Relation extends FormWidgetBase
     /**
      * {@inheritDoc}
      */
-    public function getSaveData($value)
+    public function getSaveValue($value)
     {
         if (is_string($value) && !strlen($value)) {
             return null;

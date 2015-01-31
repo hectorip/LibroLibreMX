@@ -24,6 +24,7 @@ class Plugin extends PluginBase {
 	}
 	public function boot() {
 		User::extend(function ($model) {
+                \Log::error("Setting Relationship");
 				$model->hasOne['user_details'] = ['LibroLibre\Users\Models\User'];
 			}
 		);

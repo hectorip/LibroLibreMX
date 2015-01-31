@@ -190,7 +190,7 @@ class Lists extends WidgetBase
     public function prepareVars()
     {
         $this->vars['cssClasses'] = implode(' ', $this->cssClasses);
-        $this->vars['columns'] = $this->getVisibleListColumns();
+        $this->vars['columns'] = $this->getVisibleColumns();
         $this->vars['columnTotal'] = $this->getTotalColumns();
         $this->vars['records'] = $this->getRecords();
         $this->vars['noRecordsMessage'] = trans($this->noRecordsMessage);
@@ -273,7 +273,7 @@ class Lists extends WidgetBase
     /**
      * Applies any filters to the model.
      */
-    protected function prepareModel()
+    public function prepareModel()
     {
         $query = $this->model->newQuery();
         $primaryTable = $this->model->getTable();
@@ -323,7 +323,7 @@ class Lists extends WidgetBase
         /*
          * Prepare related eager loads (withs) and custom selects (joins)
          */
-        foreach ($this->getVisibleListColumns() as $column) {
+        foreach ($this->getVisibleColumns() as $column) {
 
             if (!$this->isColumnRelated($column) || (!isset($column->sqlSelect) && !isset($column->valueFrom))) {
                 continue;
@@ -365,7 +365,7 @@ class Lists extends WidgetBase
         /*
          * Custom select queries
          */
-        foreach ($this->getVisibleListColumns() as $column) {
+        foreach ($this->getVisibleColumns() as $column) {
             if (!isset($column->sqlSelect)) {
                 continue;
             }
@@ -416,8 +416,8 @@ class Lists extends WidgetBase
          * Apply sorting
          */
         if ($sortColumn = $this->getSortColumn()) {
-            if (($column = array_get($this->columns, $sortColumn)) && $column->sqlSelect) {
-                $sortColumn = $column->sqlSelect;
+            if (($column = array_get($this->columns, $sortColumn)) && $column->valueFrom) {
+                $sortColumn = $column->valueFrom;
             }
 
             $query->orderBy($sortColumn, $this->sortDirection);
@@ -522,7 +522,7 @@ class Lists extends WidgetBase
     /**
      * Returns the list columns that are visible by list settings or default
      */
-    protected function getVisibleListColumns()
+    public function getVisibleColumns()
     {
         $definitions = $this->defineListColumns();
         $columns = [];
@@ -544,7 +544,8 @@ class Lists extends WidgetBase
                 ));
             }
 
-            foreach ($this->columnOverride as $columnName) {
+            $availableColumns = array_intersect($this->columnOverride, array_keys($definitions));
+            foreach ($availableColumns as $columnName) {
                 $definitions[$columnName]->invisible = false;
                 $columns[$columnName] = $definitions[$columnName];
             }
@@ -644,7 +645,7 @@ class Lists extends WidgetBase
      */
     protected function getTotalColumns()
     {
-        $columns = $this->visibleColumns ?: $this->getVisibleListColumns();
+        $columns = $this->visibleColumns ?: $this->getVisibleColumns();
         $total = count($columns);
         if ($this->showCheckboxes) {
             $total++;
@@ -681,13 +682,14 @@ class Lists extends WidgetBase
      */
     public function getColumnValue($record, $column)
     {
-
         $columnName = $column->columnName;
 
         /*
-         * Handle taking name from model attribute.
+         * Handle taking value from model relation.
          */
-        if ($column->valueFrom) {
+        if ($column->valueFrom && $column->relation) {
+            $columnName = $column->relation;
+
             if (!array_key_exists($columnName, $record->getRelations())) {
                 $value = null;
             }
@@ -698,14 +700,20 @@ class Lists extends WidgetBase
                 $value = $record->{$columnName}->{$column->valueFrom};
             }
             else {
-                $value = $record->{$column->valueFrom};
+                $value = null;
             }
+        }
+        /*
+         * Handle taking value from model attribute.
+         */
+        elseif ($column->valueFrom) {
+            $value = $record->{$column->valueFrom};
+        }
         /*
          * Otherwise, if the column is a relation, it will be a custom select,
          * so prevent the Model from attempting to load the relation
          * if the value is NULL.
          */
-        }
         else {
             if ($record->hasRelation($columnName) && array_key_exists($columnName, $record->attributes)) {
                 $value = $record->attributes[$columnName];
@@ -997,7 +1005,8 @@ class Lists extends WidgetBase
          * First available column
          */
         if ($this->sortColumn === null || !$this->isSortable($this->sortColumn)) {
-            $columns = $this->visibleColumns ?: $this->getVisibleListColumns();
+            $columns = $this->visibleColumns ?: $this->getVisibleColumns();
+            $columns = array_filter($columns, function($column){ return $column->sortable; });
             $this->sortColumn = key($columns);
             $this->sortDirection = 'desc';
         }
@@ -1028,15 +1037,9 @@ class Lists extends WidgetBase
         }
 
         $columns = $this->getColumns();
-        $sortable = [];
-
-        foreach ($columns as $column) {
-            if (!$column->sortable) {
-                continue;
-            }
-
-            $sortable[$column->columnName] = $column;
-        }
+        $sortable = array_filter($columns, function($column){
+            return $column->sortable;
+        });
 
         return $this->sortableColumns = $sortable;
     }
@@ -1098,7 +1101,7 @@ class Lists extends WidgetBase
             $column->invisible = true;
         }
 
-        return array_merge($columns, $this->getVisibleListColumns());
+        return array_merge($columns, $this->getVisibleColumns());
     }
 
     //

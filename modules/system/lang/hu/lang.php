@@ -23,10 +23,10 @@ return [
         'tr' => 'Török',
     ],
     'directory' => [
-        'create_fail' => "Nem hozható létre a könyvtár: :name",
+        'create_fail' => 'Nem hozható létre a könyvtár: :name',
     ],
     'file' => [
-        'create_fail' => "Nem hozható létre a fájl: :name",
+        'create_fail' => 'Nem hozható létre a fájl: :name',
     ],
     'combiner' => [
         'not_found' => "A(z) ':name' egyesítőfájl nem található.",
@@ -53,7 +53,7 @@ return [
         'unnamed' => 'Névtelen bővítmény',
         'name' => [
             'label' => 'Bővítmény neve',
-            'help' => 'Nevezze meg a bővítményt egyedi kódja alapján. Például: RainLab.Blog',
+            'help' => 'Nevezze meg egyedi kódja alapján a bővítményt. Például: RainLab.Blog',
         ],
     ],
     'plugins' => [
@@ -66,13 +66,13 @@ return [
         'disabled_help' => 'A letiltott bővítményeket az alkalmazás figelmen kívül hagyja.',
         'selected_amount' => 'Kijelölt bővítmények: :amount',
         'remove_confirm' => 'Biztos benne?',
-        'remove_success' => "Ezek a bővítmények sikeresen eltávolításra kerültek a rendszerből.",
+        'remove_success' => 'Ezek a bővítmények sikeresen eltávolításra kerültek a rendszerből.',
         'refresh_confirm' => 'Biztos benne?',
-        'refresh_success' => "Ezek a bővítmények sikeresen frissítésre kerültek a rendszerben.",
+        'refresh_success' => 'Ezek a bővítmények sikeresen frissítésre kerültek a rendszerben.',
         'disable_confirm' => 'Biztos benne?',
-        'disable_success' => "Ezek a bővítmények sikeresen letiltásra kerültek.",
-        'enable_success' => "Ezek a bővítmények sikeresen engedélyezésre kerültek.",
-        'unknown_plugin' => "A bővítmények eltávolítása megtörtént a fájlrendszerből.",
+        'disable_success' => 'Ezek a bővítmények sikeresen letiltásra kerültek.',
+        'enable_success' => 'Ezek a bővítmények sikeresen engedélyezésre kerültek.',
+        'unknown_plugin' => 'A bővítmények eltávolítása megtörtént a fájlrendszerből.',
     ],
     'project' => [
         'name' => 'Projekt',
@@ -97,6 +97,7 @@ return [
         'search' => 'Keresés'
     ],
     'mail' => [
+        'log_file' => 'Naplófájl',
         'menu_label' => 'Levelezés konfigurálása',
         'menu_description' => 'Az e-mail küldés konfigurációjának kezelése.',
         'general' => 'Általános',
@@ -120,7 +121,7 @@ return [
         'mailgun_domain' => 'Mailgun tartomány',
         'mailgun_domain_comment' => 'Adja meg a Mailgun tartománynevét.',
         'mailgun_secret' => 'Mailgun Secret',
-        'mailgun_domain_secret' => 'Adja meg Mailgun API-kulcsát.',
+        'mailgun_secret_comment' => 'Adja meg Mailgun API-kulcsát.',
     ],
     'mail_templates' => [
         'menu_label' => 'Levélsablonok',
@@ -166,10 +167,11 @@ return [
         'plugin_author' => 'Szerző',
         'core_build' => 'Jelenlegi build',
         'core_build_old' => 'Jelenlegi :build build',
-        'core_build_new' => ':build build',
+        'core_build_new' => 'Build :build',
         'core_build_new_help' => 'Elérhető a legújabb build.',
         'core_downloading' => 'Alkalmazásfájlok letöltése...',
         'core_extracting' => 'Alkalmazásfájlok kicsomagolása...',
+        'plugins' => 'Bővítmények',
         'plugin_downloading' => 'Bővítmény letöltése: :name',
         'plugin_extracting' => 'Bővítmény kicsomagolása: :name',
         'plugin_version_none' => 'Új bővítmény',
@@ -191,7 +193,7 @@ return [
         ],
         'none' => [
             'label' => 'Nincsenek frissítések',
-            'help' => 'Nem találhatók új frissítések.',
+            'help' => 'Nem található új frissítés.',
         ],
     ],
     'server' => [
@@ -242,9 +244,11 @@ return [
         'status_code' => 'Állapot',
     ],
     'permissions' => [
+        'name' => 'Rendszer',
         'manage_system_settings' => 'Rendszerbeállítások kezelése',
         'manage_software_updates' => 'Szoftverfrissítések kezelése',
         'manage_mail_templates' => 'Levélsablonok kezelése',
+        'manage_mail_settings' => 'Levelezési beállítások kezelése',
         'manage_other_administrators' => 'Másik adminisztrátorok kezelése',
         'view_the_dashboard' => 'Az irányítópult megtekintése'
     ]

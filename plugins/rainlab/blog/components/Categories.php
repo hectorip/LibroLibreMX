@@ -27,29 +27,29 @@ class Categories extends ComponentBase
     public function componentDetails()
     {
         return [
-            'name'        => 'Blog Category List',
-            'description' => 'Displays a list of blog categories on the page.'
+            'name'        => 'rainlab.blog::lang.settings.category_title',
+            'description' => 'rainlab.blog::lang.settings.category_description'
         ];
     }
 
     public function defineProperties()
     {
         return [
-            'idParam' => [
-                'title'       => 'Slug param name',
-                'description' => 'The URL route parameter used for looking up the current category by its slug. This property is used by the default component partial for marking the currently active category.',
-                'default'     => ':slug',
+            'slug' => [
+                'title'       => 'rainlab.blog::lang.settings.category_slug',
+                'description' => 'rainlab.blog::lang.settings.category_slug_description',
+                'default'     => '{{ :slug }}',
                 'type'        => 'string'
             ],
             'displayEmpty' => [
-                'title'       => 'Display empty categories',
-                'description' => 'Show categories that do not have any posts.',
+                'title'       => 'rainlab.blog::lang.settings.category_display_empty',
+                'description' => 'rainlab.blog::lang.settings.category_display_empty_description',
                 'type'        => 'checkbox',
                 'default'     => 0
             ],
             'categoryPage' => [
-                'title'       => 'Category page',
-                'description' => 'Name of the category page file for the category links. This property is used by the default component partial.',
+                'title'       => 'rainlab.blog::lang.settings.category_page',
+                'description' => 'rainlab.blog::lang.settings.category_page_description',
                 'type'        => 'dropdown',
                 'default'     => 'blog/category',
                 'group'       => 'Links',
@@ -64,8 +64,11 @@ class Categories extends ComponentBase
 
     public function onRun()
     {
+        // @deprecated remove if year >= 2015
+        $deprecatedSlug = $this->propertyOrParam('idParam');
+
+        $this->currentCategorySlug = $this->page['currentCategorySlug'] = $this->property('slug', $deprecatedSlug);
         $this->categoryPage = $this->page['categoryPage'] = $this->property('categoryPage');
-        $this->currentCategorySlug = $this->page['currentCategorySlug'] = $this->propertyOrParam('idParam');
         $this->categories = $this->page['categories'] = $this->loadCategories();
     }
 

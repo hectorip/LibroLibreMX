@@ -5,6 +5,7 @@ use Lang;
 use File;
 use Event;
 use Backend;
+use Cms\Classes\Page;
 use Cms\Classes\Content;
 use System\Classes\PluginBase;
 use RainLab\Translate\Models\Message;
@@ -35,12 +36,38 @@ class Plugin extends PluginBase
     {
         /*
          * Set the page context for translation caching.
+         * Adds language suffixes to page files.
          */
         Event::listen('cms.page.beforeDisplay', function($controller, $url, $page) {
-            if (!$page) return;
-            $translate = Translator::instance();
-            $translate->loadLocaleFromSession();
-            Message::setContext($translate->getLocale(), $page->url);
+            if (!$page) {
+                return;
+            }
+
+            $translator = Translator::instance();
+            $translator->loadLocaleFromSession();
+            Message::setContext($translator->getLocale(), $page->url);
+
+            $defaultLocale = $translator->getDefaultLocale();
+            $locale = $translator->getLocale();
+
+            $fileName = $page->getFileName();
+            $fileName = str_replace(strstr($fileName, "."), '', $fileName);
+
+            if (!strlen(File::extension($fileName))) {
+                $fileName .= '.htm';
+            }
+
+            /*
+             * Splice the active locale in to the filename
+             * - page.htm -> page.en.htm
+             */
+            if ($locale != $defaultLocale) {
+                $fileName = substr_replace($fileName, '.' . $locale, strrpos($fileName, '.'), 0);
+                $page->setFileName($fileName);
+            }
+
+            $page = Page::loadCached($controller->getTheme(), $fileName);
+            return $page;
         });
 
         /*
@@ -48,8 +75,9 @@ class Plugin extends PluginBase
          */
         Event::listen('cms.page.beforeRenderContent', function($controller, $fileName) {
 
-            if (!strlen(File::extension($fileName)))
+            if (!strlen(File::extension($fileName))) {
                 $fileName .= '.htm';
+            }
 
             /*
              * Splice the active locale in to the filename
@@ -57,8 +85,9 @@ class Plugin extends PluginBase
              */
             $locale = Translator::instance()->getLocale();
             $fileName = substr_replace($fileName, '.'.$locale, strrpos($fileName, '.'), 0);
-            if (($content = Content::loadCached($controller->getTheme(), $fileName)) !== null)
+            if (($content = Content::loadCached($controller->getTheme(), $fileName)) !== null) {
                 return $content;
+            }
         });
 
         /*
@@ -98,22 +127,23 @@ class Plugin extends PluginBase
 
     public function registerSettings()
     {
+
         return [
             'locales' => [
-                'label'       => 'Languages',
-                'description' => 'Set up languages that can be used on the front-end.',
+                'label'       => 'rainlab.translate::lang.locale.title',
+                'description' => 'rainlab.translate::lang.plugin.description',
                 'icon'        => 'icon-language',
                 'url'         => Backend::url('rainlab/translate/locales'),
                 'order'       => 550,
-                'category'    => 'Translation',
+                'category'    => 'rainlab.translate::lang.plugin.name',
             ],
             'messages' => [
-                'label'       => 'Messages',
-                'description' => 'Translate strings used throughout the front-end.',
+                'label'       => 'rainlab.translate::lang.messages.title',
+                'description' => 'rainlab.translate::lang.messages.description',
                 'icon'        => 'icon-list-alt',
                 'url'         => Backend::url('rainlab/translate/messages'),
                 'order'       => 551,
-                'category'    => 'Translation',
+                'category'    => 'rainlab.translate::lang.plugin.name',
             ],
         ];
     }
@@ -142,6 +172,10 @@ class Plugin extends PluginBase
             'RainLab\Translate\FormWidgets\MLTextarea' => [
                 'label' => 'Textarea (ML)',
                 'code'  => 'mltextarea'
+            ],
+            'RainLab\Translate\FormWidgets\MLRichEditor' => [
+                'label' => 'Rich Editor (ML)',
+                'alias' => 'mlricheditor'
             ],
         ];
     }
@@ -173,6 +207,8 @@ class Plugin extends PluginBase
                 $fields[$name]['type'] = 'mltext';
             elseif ($type == 'textarea')
                 $fields[$name]['type'] = 'mltextarea';
+            elseif ($type == 'richeditor')
+                $fields[$name]['type'] = 'mlricheditor';
         }
 
         return $fields;

@@ -2,6 +2,7 @@
 
 use Str;
 use Lang;
+use Event;
 use Config;
 use Cms\Classes\CodeBase;
 use Cms\Classes\CmsException;
@@ -73,9 +74,9 @@ abstract class ComponentBase extends Extendable
     protected $page;
 
     /**
-     * @var array Cache of linked Component objects, used for page links.
+     * @var array A collection of external property names used by this component.
      */
-    // protected $pageLinkCache = [];
+    protected $externalPropertyNames = [];
 
     /**
      * Component constructor. Takes in the page or layout code section object
@@ -165,6 +166,121 @@ abstract class ComponentBase extends Extendable
     public function __toString()
     {
         return $this->alias;
+    }
+
+    /**
+     * Renders a requested partial in context of this component,
+     * see Cms\Classes\Controller@renderPartial for usage.
+     */
+    public function renderPartial()
+    {
+        $this->controller->setComponentContext($this);
+        return call_user_func_array([$this->controller, 'renderPartial'], func_get_args());
+    }
+
+    /**
+     * Executes the event cycle when running an AJAX handler.
+     * @return boolean Returns true if the handler was found. Returns false otherwise.
+     */
+    public function runAjaxHandler($handler)
+    {
+        /*
+         * Extensibility
+         */
+        if (
+            ($event = $this->fireEvent('component.beforeRunAjaxHandler', [$handler], true)) ||
+            ($event = Event::fire('cms.component.beforeRunAjaxHandler', [$this, $handler], true))
+        ) {
+            return $event;
+        }
+
+        $result = $this->$handler();
+
+        /*
+         * Extensibility
+         */
+        if (
+            ($event = $this->fireEvent('component.runAjaxHandler', [$handler, $result], true)) ||
+            ($event = Event::fire('cms.component.runAjaxHandler', [$this, $handler, $result], true))
+        ) {
+            return $event;
+        }
+
+        return $result;
+    }
+
+    //
+    // External properties
+    //
+
+    /*
+     * Description on how to access external property names.
+     *
+     * # When
+     * pageNumber = "7"
+     * $this->propertyName('pageNumber'); // Returns NULL
+     * $this->paramName('pageNumber');    // Returns NULL
+     *
+     * # When
+     * pageNumber = "{{ :page }}"
+     *
+     * $this->propertyName('pageNumber'); // Returns ":page"
+     * $this->paramName('pageNumber');    // Returns "page"
+     *
+     * # When
+     * pageNumber = "{{ page }}"
+     *
+     * $this->propertyName('pageNumber'); // Returns "page"
+     * $this->paramName('pageNumber');    // Returns NULL
+     */
+
+    /**
+     * Sets names used by external properties.
+     * @param array $names The key should be the property name,
+     *                     the value should be the external property name.
+     * @return void
+     */
+    public function setExternalPropertyNames(array $names)
+    {
+        $this->externalPropertyNames = $names;
+    }
+
+    /**
+     * Sets an external property name.
+     * @param string $name Property name
+     * @param string $extName External property name
+     */
+    public function setExternalPropertyName($name, $extName)
+    {
+        return $this->externalPropertyNames[$name] = $extName;
+    }
+
+    /**
+     * Returns the external property name when the property value is an external property reference.
+     * Otherwise the default value specified is returned.
+     * @param string $name The property name
+     * @param mixed $default
+     * @return string
+     */
+    public function propertyName($name, $default = null)
+    {
+        return array_get($this->externalPropertyNames, $name, $default);
+    }
+
+    /**
+     * Returns the external property name when the property value is a routing parameter reference.
+     * Otherwise the default value specified is returned.
+     * @param string $name The property name
+     * @param mixed $default
+     * @return string
+     */
+    public function paramName($name, $default = null)
+    {
+        if (($extName = $this->propertyName($name)) && substr($extName, 0, 1) == ':') {
+            return substr($extName, 1);
+        }
+
+        return $default;
     }
 
     /**

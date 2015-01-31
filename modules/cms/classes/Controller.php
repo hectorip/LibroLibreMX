@@ -8,6 +8,7 @@ use View;
 use Lang;
 use Event;
 use Config;
+use Session;
 use Request;
 use Response;
 use Exception;
@@ -85,11 +86,6 @@ class Controller extends BaseController
     protected $pageContents;
 
     /**
-     * @var string Alias name of an executing component.
-     */
-    protected $componentContext;
-
-    /**
      * @var array A list of variables to pass to the page.
      */
     public $vars = [];
@@ -99,8 +95,19 @@ class Controller extends BaseController
      */
     protected $statusCode = 200;
 
+    /**
+     * @var self Cache of self
+     */
     protected static $instance = null;
 
+    /**
+     * @var Cms\Classes\ComponentBase Object of the active component, used internally.
+     */
+    protected $componentContext;
+
+    /**
+     * @var array Component partial stack, used internally.
+     */
     protected $partialComponentStack = [];
 
     /**
@@ -221,12 +228,21 @@ class Controller extends BaseController
          * The 'this' variable is reserved for default variables.
          */
         $this->vars['this'] = [
-            'controller'  => $this,
-            'layout'      => $this->layout,
             'page'        => $this->page,
+            'layout'      => $this->layout,
+            'theme'       => $this->theme,
             'param'       => $this->router->getParameters(),
+            'controller'  => $this,
             'environment' => App::environment(),
+            'session'     => App::make('session'),
         ];
+
+        /*
+         * Check for the presence of validation errors in the session.
+         */
+        $this->vars['errors'] = (Config::get('session.driver') && Session::has('errors'))
+            ? Session::get('errors')
+            : new \Illuminate\Support\ViewErrorBag;
 
         /*
          * Handle AJAX requests and execute the life cycle functions
@@ -285,20 +301,23 @@ class Controller extends BaseController
         }
 
         /*
-         * Render the page
+         * Extensibility
          */
-        Event::fire('cms.page.beforeTwigRender', [$page, $this->loader, $this->twig], true);
-
-        $apiResult = Event::fire('cms.page.getRenderedContents', [$this->page], true);
-        if (!strlen($apiResult)) {
+        if (
+            ($event = $this->fireEvent('page.beforeRenderPage', [$page], true)) ||
+            ($event = Event::fire('cms.page.beforeRenderPage', [$this, $page], true))
+        ) {
+            $this->pageContents = $event;
+        }
+        else {
+            /*
+             * Render the page
+             */
             CmsException::mask($this->page, 400);
             $this->loader->setObject($this->page);
             $template = $this->twig->loadTemplate($this->page->getFullPath());
             $this->pageContents = $template->render($this->vars);
             CmsException::unmask();
-        }
-        else {
-            $this->pageContents = $apiResult;
         }
 
         /*
@@ -314,8 +333,8 @@ class Controller extends BaseController
          * Extensibility
          */
         if (
-            ($event = $this->fireEvent('page.display', [$url, $page], true)) ||
-            ($event = Event::fire('cms.page.display', [$this, $url, $page], true))
+            ($event = $this->fireEvent('page.display', [$url, $page, $result], true)) ||
+            ($event = Event::fire('cms.page.display', [$this, $url, $page, $result], true))
         ) {
             return $event;
         }
@@ -399,6 +418,12 @@ class Controller extends BaseController
 
             $this->addComponent($name, $alias, $properties);
         }
+
+        /*
+         * Extensibility
+         */
+        $this->fireEvent('page.initComponents', [$this->page, $this->layout]);
+        Event::fire('cms.page.initComponents', [$this, $this->page, $this->layout]);
     }
 
     /**
@@ -430,7 +455,7 @@ class Controller extends BaseController
             $this->vars[$alias] = $this->page->components[$alias] = $componentObj;
         }
 
-        $this->setComponentPropertiesFromParameters($componentObj);
+        $this->setComponentPropertiesFromParams($componentObj);
         $componentObj->init();
         $componentObj->onInit(); // Deprecated: Remove ithis line if year >= 2015
         return $componentObj;
@@ -502,7 +527,7 @@ class Controller extends BaseController
                     $responseContents['X_OCTOBER_REDIRECT'] = $result->getTargetUrl();
                 }
 
-                return Response::make()->setContent($responseContents);
+                return Response::make($responseContents, $this->statusCode);
             }
             catch (ValidationException $ex) {
                 /*
@@ -512,24 +537,8 @@ class Controller extends BaseController
                 $responseContents['X_OCTOBER_ERROR_MESSAGE'] = $ex->getMessage();
                 return Response::make($responseContents, 406);
             }
-            catch (ApplicationException $ex) {
-                return Response::make($ex->getMessage(), 500);
-            }
             catch (Exception $ex) {
-                /*
-                 * Display a "dumbed down" error if custom page is activated
-                 * otherwise display a more detailed error.
-                 */
-                if (Config::get('cms.customErrorPage', false)) {
-                    return Response::make($ex->getMessage(), 500);
-                }
-
-                return Response::make(sprintf(
-                    '"%s" on line %s of %s',
-                    $ex->getMessage(),
-                    $ex->getLine(),
-                    $ex->getFile()
-                ), 500);
+                return Response::make(ApplicationException::getDetailedMessage($ex), 500);
             }
         }
 
@@ -553,7 +562,7 @@ class Controller extends BaseController
 
             if ($componentObj && method_exists($componentObj, $handlerName)) {
                 $this->componentContext = $componentObj;
-                $result = $componentObj->$handlerName();
+                $result = $componentObj->runAjaxHandler($handlerName);
                 return ($result) ?: true;
             }
         }
@@ -576,7 +585,7 @@ class Controller extends BaseController
              */
             if (($componentObj = $this->findComponentByHandler($handler)) !== null) {
                 $this->componentContext = $componentObj;
-                $result = $componentObj->$handler();
+                $result = $componentObj->runAjaxHandler($handler);
                 return ($result) ?: true;
             }
         }
@@ -716,7 +725,7 @@ class Controller extends BaseController
                 }
                 elseif (($componentObj = $this->findComponentByPartial($partialName)) === null) {
                     if ($throwException) {
-                        throw new CmsException(Lang::get('cms::lang.partial.not_found', ['name'=>$name]));
+                        throw new CmsException(Lang::get('cms::lang.partial.not_found', ['name'=>$partialName]));
                     }
                     else {
                         return false;
@@ -755,7 +764,6 @@ class Controller extends BaseController
                 $partial = ComponentPartial::loadCached($componentObj, $partialName);
             }
 
-
             if ($partial === null) {
                 if ($throwException) {
                     throw new CmsException(Lang::get('cms::lang.partial.not_found', ['name'=>$name]));
@@ -792,6 +800,13 @@ class Controller extends BaseController
             $manager = ComponentManager::instance();
 
             foreach ($partial->settings['components'] as $component => $properties) {
+                // Do not inject the viewBag component to the environment.
+                // Not sure if they're needed there by the requirements,
+                // but there were problems with array-typed properties used by Static Pages 
+                // snippets and setComponentPropertiesFromParams(). --ab
+                if ($component == 'viewBag')
+                    continue;
+
                 list($name, $alias) = strpos($component, ' ')
                     ? explode(' ', $component)
                     : [$component, $component];
@@ -808,7 +823,7 @@ class Controller extends BaseController
                     'obj' => $componentObj
                 ]);
 
-                $this->setComponentPropertiesFromParameters($componentObj, $parameters);
+                $this->setComponentPropertiesFromParams($componentObj, $parameters);
                 $componentObj->init();
                 $componentObj->onInit(); // Deprecated: Remove ithis line if year >= 2015
             }
@@ -928,6 +943,15 @@ class Controller extends BaseController
     }
 
     /**
+     * Returns the Twig loader.
+     * @return Cms\Twig\Loader
+     */
+    public function getLoader()
+    {
+        return $this->loader;
+    }
+
+    /**
      * Returns the routing object.
      * @return \Cms\Classes\Router
      */
@@ -943,6 +967,17 @@ class Controller extends BaseController
     public function getPageObject()
     {
         return $this->pageObj;
+    }
+
+    /**
+     * Returns the CMS page object being processed by the controller.
+     * The object is not available on the early stages of the controller
+     * initialization.
+     * @return \Cms\Classes\Page Returns the Page object or null.
+     */
+    public function getPage()
+    {
+        return $this->page;
     }
 
     /**
@@ -1040,7 +1075,7 @@ class Controller extends BaseController
      * Searches the layout and page components by an alias
      * @return ComponentBase The component object, if found
      */
-    protected function findComponentByName($name)
+    public function findComponentByName($name)
     {
         if (isset($this->page->components[$name])) {
             return $this->page->components[$name];
@@ -1062,7 +1097,7 @@ class Controller extends BaseController
      * Searches the layout and page components by an AJAX handler
      * @return ComponentBase The component object, if found
      */
-    protected function findComponentByHandler($handler)
+    public function findComponentByHandler($handler)
     {
         foreach ($this->page->components as $component) {
             if (method_exists($component, $handler)) {
@@ -1083,7 +1118,7 @@ class Controller extends BaseController
      * Searches the layout and page components by a partial file
      * @return ComponentBase The component object, if found
      */
-    protected function findComponentByPartial($partial)
+    public function findComponentByPartial($partial)
     {
         foreach ($this->page->components as $component) {
             $fileName = ComponentPartial::getFilePath($component, $partial);
@@ -1111,13 +1146,23 @@ class Controller extends BaseController
     }
 
     /**
+     * Set the component context manually, used by Components when calling renderPartial.
+     * @param ComponentBase $component
+     * @return void
+     */
+    public function setComponentContext(ComponentBase $component)
+    {
+        $this->componentContext = $component;
+    }
+
+    /**
      * Sets component property values from partial parameters.
      * The property values should be defined as {{ param }}.
      * @param ComponentBase $component The component object.
      * @param array $parameters Specifies the partial parameters.
      * @return Returns updated properties.
      */
-    protected function setComponentPropertiesFromParameters($component, $parameters = [])
+    protected function setComponentPropertiesFromParams($component, $parameters = [])
     {
         $properties = $component->getProperties();
         $routerParameters = $this->router->getParameters();
@@ -1141,6 +1186,7 @@ class Controller extends BaseController
                 }
 
                 $component->setProperty($propertyName, $newPropertyValue);
+                $component->setExternalPropertyName($propertyName, $paramName);
             }
         }
     }

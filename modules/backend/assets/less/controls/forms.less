@@ -36,7 +36,13 @@ label {
     >.form-group:last-child {
         padding-bottom: 0;
     }
+
+    // Form to sit flush to the element above
+    &.form-flush {
+        border-top: none;
+    }
 }
+
 
 //
 // Nice forms
@@ -88,6 +94,10 @@ label {
 
 .form-group {
     position: relative;
+
+    &:empty {
+        display: none;
+    }
 
     &, &.layout-item {
         padding-bottom: 20px;
@@ -181,8 +191,10 @@ label {
 
 .help-block {
     font-size: 12px;
+    margin-bottom: 0;
     &.before-field {
         margin-top: 0;
+        margin-bottom: 10px;
     }
 }
 
@@ -518,7 +530,7 @@ label {
 
         &.in-progress {
             .select2-choice .select2-arrow {
-                display: none!important;
+                display: none !important;
             }
         }
     }

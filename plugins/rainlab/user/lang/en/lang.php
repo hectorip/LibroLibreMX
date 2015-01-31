@@ -1,27 +1,32 @@
 <?php
 
 return [
+    'plugin' => [
+        'name' => 'User',
+        'description' => 'Front-end user management.'
+    ],
     'location' => [
+        'label' => 'Location',
         'new' => 'New Location',
         'create_title' => 'Create Location',
         'update_title' => 'Edit Location',
-        'preview_title' => 'Preview Location',
+        'preview_title' => 'Preview Location'
     ],
     'locations' => [
         'menu_label' => 'Locations',
         'menu_description' => 'Manage available user countries and states.',
-        'enabled_label' => "Enabled",
-        'enabled_help' => "Disabled locations are not visible on the front-end.",
+        'hide_disabled' => 'Hide disabled',
+        'enabled_label' => 'Enabled',
+        'enabled_help' => 'Disabled locations are not visible on the front-end.',
         'enable_or_disable_title' => "Enable or Disable Locations",
         'enable_or_disable' => 'Enable or disable',
         'selected_amount' => 'Locations selected: :amount',
-        'enable_success' => "Successfully enabled those locations.",
-        'disable_success' => "Successfully disabled those locations.",
+        'enable_success' => 'Successfully enabled those locations.',
+        'disable_success' => 'Successfully disabled those locations.',
         'disable_confirm' => 'Are you sure?',
         'list_title' => 'Manage Locations',
-        'state' => 'State',
         'delete_confirm' => 'Do you really want to delete this location?',
-        'return_to_list' => 'Return to locations list',
+        'return_to_list' => 'Return to locations list'
     ],
     'users' => [
         'menu_label' => 'Users',
@@ -35,9 +40,10 @@ return [
         'active_manually' => 'Activate this user manually',
         'delete_confirm' => 'Do you really want to delete this user?',
         'activated_success' => 'User has been activated successfully!',
-        'return_to_list' => 'Return to users list',
+        'return_to_list' => 'Return to users list'
     ],
     'settings' => [
+        'users' => 'Users',
         'menu_label' => 'User settings',
         'menu_description' => 'Manage user based settings.',
         'activation_tab' => 'Activation',
@@ -59,26 +65,29 @@ return [
         'default_country_comment' => 'When a user does not specify their location, select a default country to use.',
         'default_state' => 'Default State',
         'default_state_comment' => 'When a user does not specify their location, select a default state to use.',
-        'use_throttle' => 'Throttle attemps',
+        'use_throttle' => 'Throttle attempts',
         'use_throttle_comment' => 'Repeat failed sign in attempts will temporarily suspend the user.',
         'login_attribute' => 'Login attribute',
         'login_attribute_comment' => 'Select what user detail should be used for signing in.',
         'no_mail_template' => 'Do not send a notification',
-        'hint_templates' => 'You can customize mail templates by selecting Mail > Mail Templates from the settings menu.',
+        'hint_templates' => 'You can customize mail templates by selecting Mail > Mail Templates from the settings menu.'
     ],
     'state' => [
+        'label' => 'State',
         'name' => 'Name',
         'name_comment' => 'Enter the display name for this state.',
         'code' => 'Code',
-        'code_comment' => 'Enter a unique code to identify this state.',
+        'code_comment' => 'Enter a unique code to identify this state.'
     ],
     'country' => [
+        'label' => 'Country',
         'name' => 'Name',
         'code' => 'Code',
         'code_comment' => 'Enter a unique code to identify this country.',
-        'enabled' => 'Enabled',
+        'enabled' => 'Enabled'
     ],
     'user' => [
+        'label' => 'User',
         'id' => 'ID',
         'username' => 'Username',
         'name' => 'Name',
@@ -90,18 +99,20 @@ return [
         'zip' => 'Zip',
         'street_addr' => 'Street Address',
         'country' => 'Country',
+        'select_country' => '-- select country --',
         'state' => 'State',
+        'select_state' => '-- select state --',
         'reset_password' => 'Reset Password',
         'reset_password_comment' => 'To reset this users password, enter a new password here.',
         'confirm_password' => 'Password Confirmation',
         'confirm_password_comment' => 'Enter the password again to confirm it.',
         'avatar' => 'Avatar',
         'details' => 'Details',
-        'account' => 'Account',
+        'account' => 'Account'
     ],
     'login' => [
         'attribute_email' => 'Email',
-        'attribute_username' => 'Username',
+        'attribute_username' => 'Username'
     ],
     'account' => [
         'account' => 'Account',
@@ -130,13 +141,13 @@ return [
         'city_suburb' => 'City / Suburb',
         'postal_code' => 'Postal code',
         'new_password' => 'New Password',
-        'new_password_confirm' => 'Confirm New Password',
+        'new_password_confirm' => 'Confirm New Password'
     ],
     'reset_password' => [
         'reset_password' => 'Reset Password',
         'reset_password_desc' => 'Forgotten password form.',
         'code_param' => 'Reset Code Param',
-        'code_param_desc' => 'The page URL parameter used for the reset code',
+        'code_param_desc' => 'The page URL parameter used for the reset code'
     ],
     'session' => [
         'session' => 'Session',
@@ -147,6 +158,6 @@ return [
         'users' => 'Users',
         'guests' => 'Guests',
         'redirect_title' => 'Redirect to',
-        'redirect_desc' => 'Page name to redirect if access is denied.',
-    ],
+        'redirect_desc' => 'Page name to redirect if access is denied.'
+    ]
 ];

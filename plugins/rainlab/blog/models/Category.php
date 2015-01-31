@@ -158,8 +158,9 @@ class Category extends Model
             $result = [];
             $result['url'] = $pageUrl;
             $result['isActive'] = $pageUrl == $url;
+            $result['mtime'] = $category->updated_at;
         }
-        else if ($item->type == 'all-blog-categories') {
+        elseif ($item->type == 'all-blog-categories') {
             $result = [
                 'items' => []
             ];
@@ -168,7 +169,8 @@ class Category extends Model
             foreach ($categories as $category) {
                 $categoryItem = [
                     'title' => $category->name,
-                    'url'   => URL::to(self::getCategoryPageUrl($item->cmsPage, $category, $theme))
+                    'url'   => URL::to(self::getCategoryPageUrl($item->cmsPage, $category, $theme)),
+                    'mtime' => $category->updated_at,
                 ];
 
                 $categoryItem['isActive'] = $categoryItem['url'] == $url;

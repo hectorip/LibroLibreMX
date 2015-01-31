@@ -3,7 +3,7 @@
 return [
     'app' => [
         'name' => 'October CMS',
-        'tagline' => 'Getting back to basics',
+        'tagline' => 'Getting back to basics'
     ],
     'locale' => [
         'en' => 'English',
@@ -21,15 +21,16 @@ return [
         'ru' => 'Russian',
         'se' => 'Swedish',
         'tr' => 'Turkish',
+        'pl' => 'Polish',
     ],
     'directory' => [
-        'create_fail' => "Cannot create directory: :name",
+        'create_fail' => 'Cannot create directory: :name'
     ],
     'file' => [
-        'create_fail' => "Cannot create file: :name",
+        'create_fail' => 'Cannot create file: :name'
     ],
     'combiner' => [
-        'not_found' => "The combiner file ':name' is not found.",
+        'not_found' => "The combiner file ':name' is not found."
     ],
     'system' => [
         'name' => 'System',
@@ -46,15 +47,15 @@ return [
             'social' => 'Social',
             'events' => 'Events',
             'customers' => 'Customers',
-            'my_settings' => 'My Settings',
-        ],
+            'my_settings' => 'My Settings'
+        ]
     ],
     'plugin' => [
         'unnamed' => 'Unnamed plugin',
         'name' => [
             'label' => 'Plugin Name',
-            'help' => 'Name the plugin by its unique code. For example, RainLab.Blog',
-        ],
+            'help' => 'Name the plugin by its unique code. For example, RainLab.Blog'
+        ]
     ],
     'plugins' => [
         'manage' => 'Manage plugins',
@@ -66,13 +67,13 @@ return [
         'disabled_help' => 'Plugins that are disabled are ignored by the application.',
         'selected_amount' => 'Plugins selected: :amount',
         'remove_confirm' => 'Are you sure?',
-        'remove_success' => "Successfully removed those plugins from the system.",
+        'remove_success' => 'Successfully removed those plugins from the system.',
         'refresh_confirm' => 'Are you sure?',
-        'refresh_success' => "Successfully refreshed those plugins in the system.",
+        'refresh_success' => 'Successfully refreshed those plugins in the system.',
         'disable_confirm' => 'Are you sure?',
-        'disable_success' => "Successfully disabled those plugins.",
-        'enable_success' => "Successfully enabled those plugins.",
-        'unknown_plugin' => "Plugin has been removed from the file system.",
+        'disable_success' => 'Successfully disabled those plugins.',
+        'enable_success' => 'Successfully enabled those plugins.',
+        'unknown_plugin' => 'Plugin has been removed from the file system.'
     ],
     'project' => [
         'name' => 'Project',
@@ -83,10 +84,10 @@ return [
         'id' => [
             'label' => 'Project ID',
             'help' => 'How to find your Project ID',
-            'missing' => 'Please specify a Project ID to use.',
+            'missing' => 'Please specify a Project ID to use.'
         ],
         'detach_confirm' => 'Are you sure you want to detach this project?',
-        'unbind_success' => 'Project has been detached successfully.',
+        'unbind_success' => 'Project has been detached successfully.'
     ],
     'settings' => [
         'menu_label' => 'Settings',
@@ -97,6 +98,7 @@ return [
         'search' => 'Search'
     ],
     'mail' => [
+        'log_file' => 'Log file',
         'menu_label' => 'Mail configuration',
         'menu_description' => 'Manage email configuration.',
         'general' => 'General',
@@ -120,7 +122,10 @@ return [
         'mailgun_domain' => 'Mailgun Domain',
         'mailgun_domain_comment' => 'Please specify the Mailgun domain name.',
         'mailgun_secret' => 'Mailgun Secret',
-        'mailgun_domain_secret' => 'Enter your Mailgun API key.',
+        'mailgun_secret_comment' => 'Enter your Mailgun API key.',
+        'mandrill' => 'Mandrill',
+        'mandrill_secret' => 'Mandrill Secret',
+        'mandrill_secret_comment' => 'Enter your Mandrill API key.'
     ],
     'mail_templates' => [
         'menu_label' => 'Mail templates',
@@ -151,7 +156,7 @@ return [
         'plugin_label' => 'Install Plugin',
         'missing_plugin_name' => 'Please specify a Plugin name to install.',
         'install_completing' => 'Finishing installation process',
-        'install_success' => 'The plugin has been installed successfully.',
+        'install_success' => 'The plugin has been installed successfully.'
     ],
     'updates' => [
         'title' => 'Manage Updates',
@@ -170,6 +175,7 @@ return [
         'core_build_new_help' => 'Latest build is available.',
         'core_downloading' => 'Downloading application files',
         'core_extracting' => 'Unpacking application files',
+        'plugins' => 'Plugins',
         'plugin_downloading' => 'Downloading plugin: :name',
         'plugin_extracting' => 'Unpacking plugin: :name',
         'plugin_version_none' => 'New plugin',
@@ -187,12 +193,12 @@ return [
         'force_label' => 'Force update',
         'found' => [
             'label' => 'Found new updates!',
-            'help' => 'Click Update software to begin the update process.',
+            'help' => 'Click Update software to begin the update process.'
         ],
         'none' => [
             'label' => 'No updates',
-            'help' => 'No new updates were found.',
-        ],
+            'help' => 'No new updates were found.'
+        ]
     ],
     'server' => [
         'connect_error' => 'Error connecting to the server.',
@@ -200,17 +206,17 @@ return [
         'response_invalid' => 'Invalid response from the server.',
         'response_empty' => 'Empty response from the server.',
         'file_error' => 'Server failed to deliver the package.',
-        'file_corrupt' => 'File from server is corrupt.',
+        'file_corrupt' => 'File from server is corrupt.'
     ],
     'behavior' => [
-        'missing_property' => 'Class :class must define property $:property used by :behavior behavior.',
+        'missing_property' => 'Class :class must define property $:property used by :behavior behavior.'
     ],
     'config' => [
         'not_found' => 'Unable to find configuration file :file defined for :location.',
-        'required' => "Configuration used in :location must supply a value ':property'.",
+        'required' => "Configuration used in :location must supply a value ':property'."
     ],
     'zip' => [
-        'extract_failed' => "Unable to extract core file ':file'.",
+        'extract_failed' => "Unable to extract core file ':file'."
     ],
     'event_log' => [
         'hint' => 'This log displays a list of potential errors that occur in the application, such as exceptions and debugging information.',
@@ -224,7 +230,7 @@ return [
         'id_label' => 'Event ID',
         'created_at' => 'Date & Time',
         'message' => 'Message',
-        'level' => 'Level',
+        'level' => 'Level'
     ],
     'request_log' => [
         'hint' => 'This log displays a list of browser requests that may require attention. For example, if a visitor opens a CMS page that cannot be found, a record is created with the status code 404.',
@@ -239,12 +245,14 @@ return [
         'count' => 'Counter',
         'referer' => 'Referers',
         'url' => 'URL',
-        'status_code' => 'Status',
+        'status_code' => 'Status'
     ],
     'permissions' => [
+        'name' => 'System',
         'manage_system_settings' => 'Manage system settings',
         'manage_software_updates' => 'Manage software updates',
         'manage_mail_templates' => 'Manage mail templates',
+        'manage_mail_settings' => 'Manage mail settings',
         'manage_other_administrators' => 'Manage other administrators',
         'view_the_dashboard' => 'View the dashboard'
     ]

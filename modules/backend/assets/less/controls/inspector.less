@@ -274,9 +274,10 @@
                 line-height: 29px;
                 padding-left: 12px;
                 padding-right: 3px;
+                .border-radius(0)!important;
 
                 &.select2-default {
-                    font-weight: normal!Important;
+                    font-weight: normal!important;
                 }
             }
 
@@ -287,6 +288,8 @@
             }
 
             &.select2-dropdown-open {
+                .border-radius(0)!important;
+
                 .select2-choice {
                     background: white;
                 }
@@ -318,6 +321,25 @@ div.control-popover {
 
             &:before, &:after {
                 display: none;
+            }
+        }
+    }
+
+    &.hero {
+        .inspector-fields {
+            th, td {
+                padding: 9px 12px;
+                font-weight: 600!important;
+                font-size: 13px;
+            }
+
+            td {
+                font-weight: 400!important;
+            }
+
+            div.custom-select.select2-container .select2-choice {
+                height: 36px;
+                line-height: 36px;
             }
         }
     }

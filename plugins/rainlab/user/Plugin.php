@@ -13,8 +13,8 @@ class Plugin extends PluginBase
     public function pluginDetails()
     {
         return [
-            'name'        => 'User',
-            'description' => 'Front-end user management.',
+            'name'        => 'rainlab.user::lang.plugin.name',
+            'description' => 'rainlab.user::lang.plugin.description',
             'author'      => 'Alexey Bobkov, Samuel Georges',
             'icon'        => 'icon-user'
         ];
@@ -46,6 +46,13 @@ class Plugin extends PluginBase
         ];
     }
 
+    public function registerPermissions()
+    {
+        return [
+            'rainlab.users.access_users'  => ['label' => 'Manage Users'],
+        ];
+    }
+
     public function registerNavigation()
     {
         return [
@@ -53,7 +60,7 @@ class Plugin extends PluginBase
                 'label'       => 'rainlab.user::lang.users.menu_label',
                 'url'         => Backend::url('rainlab/user/users'),
                 'icon'        => 'icon-user',
-                'permissions' => ['users.*'],
+                'permissions' => ['rainlab.users.*'],
                 'order'       => 500,
 
                 'sideMenu' => [
@@ -61,7 +68,7 @@ class Plugin extends PluginBase
                         'label'       => 'rainlab.user::lang.users.all_users',
                         'icon'        => 'icon-user',
                         'url'         => Backend::url('rainlab/user/users'),
-                        'permissions' => ['users.access_users'],
+                        'permissions' => ['rainlab.users.access_users'],
                     ],
                 ]
 
@@ -75,7 +82,7 @@ class Plugin extends PluginBase
             'settings' => [
                 'label'       => 'rainlab.user::lang.settings.menu_label',
                 'description' => 'rainlab.user::lang.settings.menu_description',
-                'category'    => 'Users',
+                'category'    => 'rainlab.user::lang.settings.users',
                 'icon'        => 'icon-cog',
                 'class'       => 'RainLab\User\Models\Settings',
                 'order'       => 500,
@@ -83,7 +90,7 @@ class Plugin extends PluginBase
             'location' => [
                 'label'       => 'rainlab.user::lang.locations.menu_label',
                 'description' => 'rainlab.user::lang.locations.menu_description',
-                'category'    => 'Users',
+                'category'    => 'rainlab.user::lang.settings.users',
                 'icon'        => 'icon-globe',
                 'url'         => Backend::url('rainlab/user/locations'),
                 'order'       => 500,

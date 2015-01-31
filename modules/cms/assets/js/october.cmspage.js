@@ -80,13 +80,20 @@
         })
 
         /*
-         * Listen for the closed event
+         * Listen for the closing events
          */
         $('#cms-master-tabs').on('closed.oc.tab', function(event){
             updateModifiedCounter()
 
             if ($('> div.tab-content > div.tab-pane', '#cms-master-tabs').length == 0)
                 setPageTitle('')
+        })
+
+        $('#cms-master-tabs').on('beforeClose.oc.tab', function(event){
+            // Dispose data table widgets
+
+            if ($.fn.table !== undefined)
+                $('[data-control=table]', event.relatedTarget).table('dispose')
         })
 
         /*

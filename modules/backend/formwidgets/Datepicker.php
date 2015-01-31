@@ -62,7 +62,7 @@ class DatePicker extends FormWidgetBase
         $this->vars['timeName'] = self::TIME_PREFIX.$this->formField->getName(false);
         $this->vars['timeValue'] = null;
 
-        if ($value = $this->getLoadData()) {
+        if ($value = $this->getLoadValue()) {
 
             /*
              * Date / Time
@@ -120,14 +120,15 @@ class DatePicker extends FormWidgetBase
     /**
      * {@inheritDoc}
      */
-    public function getSaveData($value)
+    public function getSaveValue($value)
     {
         if (!strlen($value)) {
             return null;
         }
 
-        if ($this->mode == 'datetime') {
-            $value .= ' ' . post(self::TIME_PREFIX.$this->formField->getName(false)) . ':00';
+        $timeValue = post(self::TIME_PREFIX . $this->formField->getName(false));
+        if ($this->mode == 'datetime' && $timeValue) {
+            $value .= ' ' . $timeValue . ':00';
         }
         elseif ($this->mode == 'time') {
             $value .= ':00';

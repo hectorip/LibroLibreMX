@@ -1,6 +1,7 @@
 <?php namespace System\Behaviors;
 
 use Cache;
+use DbDongle;
 use System\Classes\ModelBehavior;
 use System\Classes\ApplicationException;
 
@@ -84,11 +85,23 @@ class SettingsModel extends ModelBehavior
     }
 
     /**
+     * Reset the settings to their defaults, this will delete the record model
+     */
+    public function resetDefault()
+    {
+        if ($record = $this->getSettingsRecord()) {
+            $record->delete();
+            unset(self::$instances[$this->recordCode]);
+            Cache::forget($this->getCacheKey());
+        }
+    }
+
+    /**
      * Checks if the model has been set up previously, intended as a static method
      */
     public function isConfigured()
     {
-        return $this->getSettingsRecord() !== null;
+        return DbDongle::hasDatabase() && $this->getSettingsRecord() !== null;
     }
 
     /**

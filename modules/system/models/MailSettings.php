@@ -16,10 +16,12 @@ class MailSettings extends Model
     public $settingsCode = 'system_mail_settings';
     public $settingsFields = 'fields.yaml';
 
+    const MODE_LOG      = 'log';
     const MODE_MAIL     = 'mail';
     const MODE_SENDMAIL = 'sendmail';
     const MODE_SMTP     = 'smtp';
     const MODE_MAILGUN  = 'mailgun';
+    const MODE_MANDRILL = 'mandrill';
 
     public function initSettingsData()
     {
@@ -38,10 +40,12 @@ class MailSettings extends Model
     public function getSendModeOptions()
     {
         return [
+            static::MODE_LOG      => 'system::lang.mail.log_file',
             static::MODE_MAIL     => 'system::lang.mail.php_mail',
             static::MODE_SENDMAIL => 'system::lang.mail.sendmail',
             static::MODE_SMTP     => 'system::lang.mail.smtp',
             static::MODE_MAILGUN  => 'system::lang.mail.mailgun',
+            static::MODE_MANDRILL => 'system::lang.mail.mandrill',
         ];
     }
 
@@ -75,6 +79,10 @@ class MailSettings extends Model
             case self::MODE_MAILGUN:
                 $config->set('services.mailgun.domain', $settings->mailgun_domain);
                 $config->set('services.mailgun.secret', $settings->mailgun_secret);
+                break;
+
+            case self::MODE_MANDRILL:
+                $config->set('services.mandrill.secret', $settings->mandrill_secret);
                 break;
         }
 

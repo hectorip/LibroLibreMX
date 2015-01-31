@@ -15,7 +15,7 @@ class CreateBooksTable extends Migration {
 				$table->string('publisher')->nullable();
 				$table->text('description');
 				$table->integer('user_id')->unsigned();
-				$table->foreign('user_id')->references('id')->on('librolibre_users_users');
+				$table->foreign('user_id')->references('id')->on('users');
 				$table->timestamps();
 			});
 	}

@@ -1,7 +1,7 @@
-1.0.1: First version of Books
-1.0.2:
+1.0.3: First version of Books
+1.0.4:
   - Adding book migration
   - create_books_table.php
-1.0.3:
+1.0.5:
   - Adding orders migration
   - create_orders_table.php

@@ -2,10 +2,12 @@
 
 use App;
 use Str;
+use Lang;
 use Model;
 use October\Rain\Support\Markdown;
 use October\Rain\Support\ValidationException;
 use RainLab\Blog\Classes\TagProcessor;
+use Backend\Models\User;
 
 class Post extends Model
 {
@@ -34,14 +36,14 @@ class Post extends Model
      * @var array
      */
     public static $allowedSortingOptions = array(
-        'title asc' => 'Title asc',
-        'title desc' => 'Title desc',
-        'created_at asc' => 'Created asc',
-        'created_at desc' => 'Created desc',
-        'updated_at asc' => 'Updated asc',
-        'updated_at desc' => 'Updated desc',
-        'published_at asc' => 'Published asc',
-        'published_at desc' => 'Published desc',
+        'title asc' => 'Title (ascending)',
+        'title desc' => 'Title (descending)',
+        'created_at asc' => 'Created (ascending)',
+        'created_at desc' => 'Created (descending)',
+        'updated_at asc' => 'Updated (ascending)',
+        'updated_at desc' => 'Updated (descending)',
+        'published_at asc' => 'Published (ascending)',
+        'published_at desc' => 'Published (descending)',
     );
 
     /*
@@ -156,10 +158,11 @@ class Post extends Model
 
     public function afterValidate()
     {
-        if ($this->published && !$this->published_at)
+        if ($this->published && !$this->published_at) {
             throw new ValidationException([
-               'published_at' => 'Please specify the published date'
+               'published_at' => Lang::get('rainlab.blog::lang.post.published_validation')
             ]);
+        }
     }
 
     public function scopeIsPublished($query)
@@ -212,5 +215,16 @@ class Post extends Model
         }
 
         return $this->url = $controller->pageUrl($pageName, $params);
+    }
+
+    /**
+     * Used to test if a certain user has permission to edit post,
+     * returns TRUE if the user is the owner or has other posts access.
+     * @param User $user
+     * @return bool
+     */
+    public function canEdit(User $user)
+    {
+        return ($this->user_id == $user->id) || $user->hasAnyAccess(['rainlab.blog.access_other_posts']);
     }
 }

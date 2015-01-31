@@ -16,7 +16,7 @@ The number in the first part is the placeholder index. If you use multiple image
     ![1](image)
 
     ![2](image)
-    
+
 You can also add classes or ids to images by using the [markdown extra](http://michelf.ca/projects/php-markdown/extra/) syntax:
 
     ![1](image){#id .class}
@@ -29,11 +29,13 @@ The plugin provides several components for building the post list page (archive)
 
 Use the `blogPosts` component to display a list of latest blog posts on a page. The component has the following properties:
 
-* **categoryFilter** - a category slug or URL parameter (:slug) to filter the posts by. If left blank, all posts are displayed.
+* **pageNumber** - this value is used to determine what page the user is on, it should be a routing parameter for the default markup. The default value is **{{ :page }}** to obtain the value from the route parameter `:page`.
+* **categoryFilter** - a category slug to filter the posts by. If left blank, all posts are displayed.
 * **postsPerPage** - how many posts to display on a single page (the pagination is supported automatically). The default value is 10.
+* **noPostsMessage** - message to display in the empty post list.
+* **sortOrder** - the column name and direction used for the sort order of the posts. The default value is **published_at desc**.
 * **categoryPage** - path to the category page. The default value is **blog/category** - it matches the pages/blog/category.htm file in the theme directory. This property is used in the default component partial for creating links to the blog categories.
 * **postPage** - path to the post details page. The default value is **blog/post** - it matches the pages/blog/post.htm file in the theme directory. This property is used in the default component partial for creating links to the blog posts.
-* **noPostsMessage** - message to display in the empty post list.
 
 The blogPosts component injects the following variables to the page where it's used:
 
@@ -64,8 +66,8 @@ The next example shows the basic component usage with the category filter:
     function onEnd()
     {
         // Optional - set the page title to the category name
-        if ($this['category'])
-            $this->page->title = $this['category']->name;
+        if ($this->category)
+            $this->page->title = $this->category->name;
     }
     ==
     {% if not category %}
@@ -82,34 +84,35 @@ The post list and the pagination are coded in the default component partial `plu
 
 Use the `blogPost` component to display a blog post on a page. The component has the following properties:
 
-* **idParam** - the URL route parameter used for looking up the post by its slug. The default value is **:slug**.
+* **slug** - the value used for looking up the post by its slug. The default value is **{{ :slug }}** to obtain the value from the route parameter `:slug`.
+* **categoryPage** - path to the category page. The default value is **blog/category** - it matches the pages/blog/category.htm file in the theme directory. This property is used in the default component partial for creating links to the blog categories.
 
 The component injects the following variables to the page where it's used:
 
-* **blogPost** - the blog post object loaded from the database. If the post is not found, the variable value is **null**.
+* **post** - the blog post object loaded from the database. If the post is not found, the variable value is **null**.
 
 The next example shows the basic component usage on the blog page:
 
     title = "Blog Post"
     url = "/blog/post/:slug"
 
-    [blogPost post]
+    [blogPost]
     ==
     <?php
     function onEnd()
     {
         // Optional - set the page title to the post title
-        if (isset($this['post']))
-            $this->page->title = $this['post']->title;
+        if (isset($this->post))
+            $this->page->title = $this->post->title;
     }
     ?>
     ==
-    {% if not post %}
-        <h2>Post not found</h2>
-    {% else %}
+    {% if post %}
         <h2>{{ post.title }}</h2>
 
-        {% component 'post' %}
+        {% component 'blogPost' %}
+    {% else %}
+        <h2>Post not found</h2>
     {% endif %}
 
 The post details is coded in the default component partial `plugins/rainlab/blog/components/post/default.htm`.
@@ -118,9 +121,9 @@ The post details is coded in the default component partial `plugins/rainlab/blog
 
 Use the `blogCategories` component to display a list of blog post categories with links. The component has the following properties:
 
-* **categoryPage** - path to the category page. The default value is **blog/category** - it matches the pages/blog/category.htm file in the theme directory. This property is used in the default component partial for creating links to the blog categories.
-* **idParam** - the URL route parameter used for looking up the current category by its slug. The default  value is **:slug**
+* **slug** - the value used for looking up the current category by its slug. The default value is **{{ :slug }}** to obtain the value from the route parameter `:slug`.
 * **displayEmpty** - determines if empty categories should be displayed. The default value is false.
+* **categoryPage** - path to the category page. The default value is **blog/category** - it matches the pages/blog/category.htm file in the theme directory. This property is used in the default component partial for creating links to the blog categories.
 
 The component injects the following variables to the page where it's used:
 

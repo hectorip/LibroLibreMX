@@ -6,9 +6,10 @@ use Backend;
 use BackendMenu;
 use BackendAuth;
 use Backend\Classes\WidgetManager;
-use October\Rain\Support\ModuleServiceProvider;
 use System\Models\MailTemplate;
+use System\Classes\CombineAssets;
 use System\Classes\SettingsManager;
+use October\Rain\Support\ModuleServiceProvider;
 
 class ServiceProvider extends ModuleServiceProvider
 {
@@ -56,6 +57,10 @@ class ServiceProvider extends ModuleServiceProvider
             $manager->registerFormWidget('Backend\FormWidgets\DataGrid', [
                 'label' => 'Data Grid',
                 'code'  => 'datagrid'
+            ]); // @deprecated if year >= 2015
+            $manager->registerFormWidget('Backend\FormWidgets\DataTable', [
+                'label' => 'Data Table',
+                'code'  => 'datatable'
             ]);
             $manager->registerFormWidget('Backend\FormWidgets\RecordFinder', [
                 'label' => 'Record Finder',
@@ -89,7 +94,7 @@ class ServiceProvider extends ModuleServiceProvider
                     'category'    => SettingsManager::CATEGORY_SYSTEM,
                     'icon'        => 'icon-paint-brush',
                     'class'       => 'Backend\Models\BrandSettings',
-                    'order'       => 500,
+                    'order'       => 500
                 ],
                 'editor' => [
                     'label'       => 'backend::lang.editor.menu_label',
@@ -117,7 +122,7 @@ class ServiceProvider extends ModuleServiceProvider
                     'url'         => Backend::URL('backend/users/myaccount'),
                     'order'       => 400,
                     'context'     => 'mysettings',
-                    'keywords'    => 'backend::lang.myaccount.menu_keywords',
+                    'keywords'    => 'backend::lang.myaccount.menu_keywords'
                 ],
                 'access_logs' => [
                     'label'       => 'backend::lang.access_log.menu_label',
@@ -127,7 +132,7 @@ class ServiceProvider extends ModuleServiceProvider
                     'url'         => Backend::url('backend/accesslogs'),
                     'permissions' => ['backend.access_admin_logs'],
                     'order'       => 800
-                ],
+                ]
             ]);
         });
 
@@ -138,12 +143,12 @@ class ServiceProvider extends ModuleServiceProvider
             $manager->registerPermissions('October.Backend', [
                 'backend.access_dashboard' => [
                     'label' => 'system::lang.permissions.view_the_dashboard',
-                    'tab' => 'System'
+                    'tab'   => 'system::lang.permissions.name'
                 ],
-                'backend.manage_users'     => [
+                'backend.manage_users' => [
                     'label' => 'system::lang.permissions.manage_other_administrators',
-                    'tab' => 'System'
-                ],
+                    'tab'   => 'system::lang.permissions.name'
+                ]
             ]);
         });
 
@@ -155,6 +160,16 @@ class ServiceProvider extends ModuleServiceProvider
                 'backend::mail.invite'  => 'Invitation for newly created administrators.',
                 'backend::mail.restore' => 'Password reset instructions for backend-end administrators.',
             ]);
+        });
+
+        /*
+         * Register asset bundles
+         */
+        CombineAssets::registerCallback(function($combiner) {
+            $combiner->registerBundle('~/modules/backend/assets/less/october.less');
+            $combiner->registerBundle('~/modules/backend/assets/js/october.js');
+            $combiner->registerBundle('~/modules/backend/assets/js/vendor/vendor.js');
+            $combiner->registerBundle('~/modules/backend/widgets/table/assets/js/build.js');
         });
     }
 

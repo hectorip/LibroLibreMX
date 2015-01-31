@@ -5,6 +5,7 @@ use Log;
 use Lang;
 use View;
 use Flash;
+use Event;
 use Request;
 use Backend;
 use Session;
@@ -158,6 +159,16 @@ class Controller extends Extendable
         $this->params = $params;
 
         /*
+         * Extensibility
+         */
+        if (
+            ($event = $this->fireEvent('page.beforeDisplay', [$action, $params], true)) ||
+            ($event = Event::fire('backend.page.beforeDisplay', [$this, $action, $params], true))
+        ) {
+            return $event;
+        }
+
+        /*
          * Determine if this request is a public action.
          */
         $isPublicAction = in_array($action, $this->publicActions);
@@ -170,14 +181,18 @@ class Controller extends Extendable
          */
         if (!$isPublicAction) {
 
-            // Not logged in, redirect to login screen or show ajax error
+            /*
+             * Not logged in, redirect to login screen or show ajax error.
+             */
             if (!BackendAuth::check()) {
                 return Request::ajax()
                     ? Response::make(Lang::get('backend::lang.page.access_denied.label'), 403)
                     : Redirect::guest(Backend::url('backend/auth'));
             }
 
-            // Check his access groups against the page definition
+            /*
+             * Check access groups against the page definition
+             */
             if ($this->requiredPermissions && !$this->user->hasAnyAccess($this->requiredPermissions)) {
                 return Response::make(View::make('backend::access_denied'), 403);
             }
@@ -418,14 +433,8 @@ class Controller extends Extendable
                     500
                 );
             }
-            catch (ApplicationException $ex) {
-                return Response::make($ex->getMessage(), 500);
-            }
             catch (Exception $ex) {
-                return Response::make(
-                    sprintf('"%s" on line %s of %s', $ex->getMessage(), $ex->getLine(), $ex->getFile()),
-                    500
-                );
+                return Response::make(ApplicationException::getDetailedMessage($ex), 500);
             }
         }
 
@@ -527,8 +536,9 @@ class Controller extends Extendable
      */
     public function handleError($exception)
     {
-        $this->fatalError = $exception->getMessage();
-        $this->vars['fatalError'] = $exception->getMessage();
+        $errorMessage = ApplicationException::getDetailedMessage($exception);
+        $this->fatalError = $errorMessage;
+        $this->vars['fatalError'] = $errorMessage;
     }
 
     //

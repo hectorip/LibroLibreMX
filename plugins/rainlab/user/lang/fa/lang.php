@@ -1,7 +1,12 @@
 <?php
 
 return [
+    'plugin' => [
+        'name' => 'User',
+        'description' => 'Front-end user management.'
+    ],
     'location' => [
+        'location' => 'location',
         'new' => 'موقعیت جدید',
         'create_title' => 'افزودن موقعیت',
         'update_title' => 'ویرایش موقعیت',
@@ -10,6 +15,7 @@ return [
     'locations' => [
         'menu_label' => 'موقعیت ها',
         'menu_description' => 'مدیریت کشور ها و استانهای موجود برای کاربران.',
+        'hide_disabled' => 'Hide disabled',
         'enabled_label' => "فعال",
         'enabled_help' => "موقعیت های غیر فعال شده در محیط کاربری نماسش داده نمی شوند.",
         'enable_or_disable_title' => "فعال و یا غیر فعال سازی موقعیت ها",
@@ -19,7 +25,6 @@ return [
         'disable_success' => "موقعیت ها با موفقیت غیر فعال شدن.",
         'disable_confirm' => 'آیا اطمینان دارید؟',
         'list_title' => 'مدیریت موقعیت ها',
-        'state' => 'استان',
         'delete_confirm' => 'آیا از حذف این موقعیت اطمینان دارید؟',
         'return_to_list' => 'بازگشت به لیست موقعیت ها',
     ],
@@ -39,7 +44,7 @@ return [
     ],
     'settings' => [
         'menu_label' => 'تنظیمات کاربر',
-        'menu_description' => 'مدیریت تنظیمات مربوط به کاربر.',    
+        'menu_description' => 'مدیریت تنظیمات مربوط به کاربر.',
         'activation_tab' => 'فعال سازی',
         'location_tab' => 'موقعیت',
         'signin_tab' => 'ورود',
@@ -67,6 +72,7 @@ return [
         'hint_templates' => 'شما میتوانید قالب پست الکترونیکی را با انتخاب "پست الکترونیکی" > "قالب های نامه الکترونیکی" از قسمت "سیستم" تغییر دهید.',
     ],
     'state' => [
+        'label' => 'استان',
         'name' => 'نام',
         'name_comment' => 'نام استان را جهت نمایش وارد نمایید.',
         'code' => 'کد',
@@ -79,6 +85,7 @@ return [
         'enabled' => 'فعال',
     ],
     'user' => [
+        'user' => 'user',
         'id' => 'مشخصه',
         'username' => 'نام کاربری',
         'name' => 'نام',
@@ -148,5 +155,5 @@ return [
         'guests' => 'میهمان ها',
         'redirect_title' => 'انتقال به',
         'redirect_desc' => 'نام صفحه ای که در صورت عدم اجازه دسترسی کاربر به آن انتقال پیدا میکند.',
-    ],    
+    ],
 ];

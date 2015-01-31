@@ -208,12 +208,16 @@ class Filter extends WidgetBase
     protected function getOptionsFromModel($scope, $searchQuery = null)
     {
         $model = $this->scopeModels[$scope->scopeName];
+        $query = $model->newQuery();
+
+        $this->fireEvent('filter.extendQuery', [$query, $scope]);
+        
         if (!$searchQuery) {
-            return $model->all();
+            return $query->get();
         }
 
         $searchFields = [$model->getKeyName(), $this->getScopeNameColumn($scope)];
-        return $model->searchWhere($searchQuery, $searchFields)->get();
+        return $query->searchWhere($searchQuery, $searchFields)->get();
     }
 
     /**
@@ -311,6 +315,8 @@ class Filter extends WidgetBase
      */
     public function applyAllScopesToQuery($query)
     {
+        $this->defineFilterScopes();
+
         foreach ($this->allScopes as $scope) {
             $this->applyScopeToQuery($scope, $query);
         }

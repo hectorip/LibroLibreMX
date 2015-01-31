@@ -202,18 +202,18 @@ class ServiceProvider extends ModuleServiceProvider
          */
         BackendAuth::registerCallback(function ($manager) {
             $manager->registerPermissions('October.System', [
-                'system.manage_settings' => [
-                    'label' => 'system::lang.permissions.manage_system_settings',
-                    'tab' => 'System'
-                ],
                 'system.manage_updates' => [
                     'label' => 'system::lang.permissions.manage_software_updates',
-                    'tab' => 'System'
+                    'tab' => 'system::lang.permissions.name'
+                ],
+                'system.manage_mail_settings' => [
+                    'label' => 'system::lang.permissions.manage_mail_settings',
+                    'tab' => 'system::lang.permissions.name'
                 ],
                 'system.manage_mail_templates' => [
                     'label' => 'system::lang.permissions.manage_mail_templates',
-                    'tab' => 'System'
-                ],
+                    'tab' => 'system::lang.permissions.name'
+                ]
             ]);
         });
 
@@ -242,7 +242,7 @@ class ServiceProvider extends ModuleServiceProvider
                 'url_*'          => ['URL', '*'],
                 'html_*'         => ['HTML', '*'],
                 'form_*'         => ['Form', '*'],
-                'form_macro'     => ['Form', '__call'],
+                'form_macro'     => ['Form', '__call']
             ]);
 
             $manager->registerFilters([
@@ -256,7 +256,7 @@ class ServiceProvider extends ModuleServiceProvider
                 'studly'         => ['Str', 'studly'],
                 'trans'          => ['Lang', 'get'],
                 'transchoice'    => ['Lang', 'choice'],
-                'md'             => ['October\Rain\Support\Markdown', 'parse'],
+                'md'             => ['October\Rain\Support\Markdown', 'parse']
             ]);
         });
 
@@ -307,7 +307,8 @@ class ServiceProvider extends ModuleServiceProvider
                     'category'    => SettingsManager::CATEGORY_MAIL,
                     'icon'        => 'icon-envelope',
                     'class'       => 'System\Models\MailSettings',
-                    'order'       => 400,
+                    'permissions' => ['system.manage_mail_settings'],
+                    'order'       => 400
                 ],
                 'mail_templates' => [
                     'label'       => 'system::lang.mail_templates.menu_label',
@@ -315,8 +316,9 @@ class ServiceProvider extends ModuleServiceProvider
                     'category'    => SettingsManager::CATEGORY_MAIL,
                     'icon'        => 'icon-envelope-square',
                     'url'         => Backend::url('system/mailtemplates'),
-                    'order'       => 500,
-                ],
+                    'permissions' => ['system.manage_mail_templates'],
+                    'order'       => 500
+                ]
             ]);
         });
 

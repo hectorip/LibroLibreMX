@@ -24,7 +24,7 @@ class Settings extends Controller
      */
     protected $formWidget;
 
-    public $requiredPermissions = ['system.manage_settings'];
+    public $requiredPermissions = [];
 
     public function __construct()
     {
@@ -109,6 +109,16 @@ class Settings extends Controller
 
             return Redirect::to($redirectUrl);
         }
+    }
+
+    public function update_onResetDefault($author, $plugin, $code = null)
+    {
+        $item = $this->findSettingItem($author, $plugin, $code);
+        $model = $this->createModel($item);
+        $model->resetDefault();
+
+        $redirectUrl = Backend::url('system/settings/update/'.$author.'/'.$plugin.'/'.$code);
+        return Redirect::to($redirectUrl);
     }
 
     /**
