@@ -27,7 +27,6 @@ class User extends Model {
 	 * @var array Relations
 	 */
 	public $belongsTo = ['user' => ['RainLab\User\Models\User']];
-	public $hasMany   = ['Hectorip\Books\Models\Book'];
 
     public static function getFromUser($user)
     {

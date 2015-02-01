@@ -16,26 +16,28 @@ class PublishBookForm extends ComponentBase {
 	}
 
 	public function defineProperties() {
-		return [];
-	}
-	public function onSaveBook() {
-		$newBook = new Book();
+		return [
 
+        ];
+	}
+	public function onBookSave() {
+        $newBook = new Book();
 		$newBook->title = post('book_title');
         $newBook->author = post('book_author');
         $newBook->description = post('book_description');
-
-        \Log::error(\Input::all());
         $newBook->cover_url = \Input::file('book_image');
+        $newBook->active = true;
+        $newBook->has_a_problem = false;
+        $newBook->delivery = post('book_deliver_conditions');
+        $newBook->delivery = post('requests_pickup');
         $auth           = RainAuthManager::instance();
-//		 var_dump(\Session::all());
-        #var_dump($auth->getUser());
         LibroLibreUser::getFromUser($auth->getUser());
 		$newBook->user_id = $auth->getUser()->user_details->id;
 
 		$result = $newBook->save();
 
-		return ["status" => $result];
-	}
+        $this->page['ReceivedBook'] = post('book_title');
+        return \Redirect::to('/book-detail/' .  $newBook->id);
+    }
 
 }

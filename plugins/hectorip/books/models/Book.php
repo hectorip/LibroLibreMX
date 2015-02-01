@@ -28,7 +28,7 @@ class Book extends Model {
 	 */
 	public $hasOne        = [];
 	public $hasMany       = [];
-	public $belongsTo     = ['LibroLibre\Users\Models\User'];
+	public $belongsTo     = ['liberator' => ['RainLab\User\Models\User']];
 	public $belongsToMany = [];
 	public $morphTo       = [];
 	public $morphOne      = [];

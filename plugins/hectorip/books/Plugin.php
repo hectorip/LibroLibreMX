@@ -1,5 +1,6 @@
 <?php namespace Hectorip\Books;
 
+use RainLab\User\Models\User as User;
 use System\Classes\PluginBase;
 
 /**
@@ -26,6 +27,16 @@ class Plugin extends PluginBase {
 			'Hectorip\Books\Components\AvailableBooks'   => 'availableBooks',
 			'Hectorip\Books\Components\PublishBookForm'  => 'publishBookForm',
 			'Hectorip\Books\Components\MyPublishedBooks' => 'myPublishedBooks',
+			'Hectorip\Books\Components\BookDetail'       => 'bookDetail',
 		];
 	}
+
+    public function boot() {
+        User::extend(function ($model) {
+                \Log::error("Setting Books Relationship");
+                $model->hasMany['books'] = ['Hectorip\Books\Models\Book'];
+            }
+        );
+
+    }
 }

@@ -14,9 +14,12 @@ class CreateBooksTable extends Migration {
 				$table->string('isbn')->nullable();
 				$table->string('publisher')->nullable();
 				$table->text('description');
+				$table->text('delivery')->nullable();
 				$table->integer('user_id')->unsigned();
-				$table->string('cover_url')->nullabale();
+				$table->string('attachments')->nullabale();
 				$table->boolean('requested_pickup')->nullabale();
+                $table->boolean('active');
+                $table->boolean('has_a_problem');
 //				$table->foreign('user_id')->('id')->on('users');
 				$table->timestamps();
 			});
