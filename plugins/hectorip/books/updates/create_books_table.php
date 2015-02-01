@@ -15,7 +15,9 @@ class CreateBooksTable extends Migration {
 				$table->string('publisher')->nullable();
 				$table->text('description');
 				$table->integer('user_id')->unsigned();
-				$table->foreign('user_id')->references('id')->on('users');
+				$table->string('cover_url')->nullabale();
+				$table->boolean('requested_pickup')->nullabale();
+//				$table->foreign('user_id')->('id')->on('users');
 				$table->timestamps();
 			});
 	}

@@ -33,7 +33,7 @@ class Book extends Model {
 	public $morphTo       = [];
 	public $morphOne      = [];
 	public $morphMany     = [];
-	public $attachOne     = [];
+	public $attachOne     = ['cover_url' => ['System\Models\File']];
 	public $attachMany    = [];
 
 }
