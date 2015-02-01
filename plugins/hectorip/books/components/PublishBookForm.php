@@ -25,14 +25,16 @@ class PublishBookForm extends ComponentBase {
 		$newBook->title = post('book_title');
         $newBook->author = post('book_author');
         $newBook->description = post('book_description');
-        $newBook->cover_url = \Input::file('book_image');
+        if(\Input::hasFile('book_image')) {
+            $newBook->cover_url = \Input::file('book_image');
+        }
         $newBook->active = true;
         $newBook->has_a_problem = false;
         $newBook->delivery = post('book_deliver_conditions');
         $newBook->delivery = post('requests_pickup');
         $auth           = RainAuthManager::instance();
         LibroLibreUser::getFromUser($auth->getUser());
-		$newBook->user_id = $auth->getUser()->user_details->id;
+		$newBook->liberator = $auth->getUser();
 
 		$result = $newBook->save();
 

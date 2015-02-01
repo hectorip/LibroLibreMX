@@ -15,7 +15,7 @@ class CreateBooksTable extends Migration {
 				$table->string('publisher')->nullable();
 				$table->text('description');
 				$table->text('delivery')->nullable();
-				$table->integer('user_id')->unsigned();
+				$table->integer('liberator_id')->unsigned();
 				$table->string('attachments')->nullabale();
 				$table->boolean('requested_pickup')->nullabale();
                 $table->boolean('active');

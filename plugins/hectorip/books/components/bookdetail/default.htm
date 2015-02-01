@@ -3,4 +3,5 @@ Esto es un Libro
 <h3>
 {{ book.title }}
 </h2>
-    Liberado por {{ book.cover_url.path }}
+    Liberado por {{ book.liberator.name }}
+    <img src="{{  book.cover_url.path|default('/themes/flat-theme/assets/images/book_placeholder.jpg') }}" alt="Imagen para {{ book.title }}" />
