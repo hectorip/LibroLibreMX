@@ -1,0 +1,21 @@
+
+.book-info-wrapper{
+    margin: 1em;
+    position: relative;
+    overflow: hidden;
+}
+.left-side-book-info{
+    width: 50%;
+}
+.right-side-book-info {
+    width: 30%;
+}
+.right-side-book-info img {
+    max-width: 100%;
+}
+
+.book-info-part {
+    float: left;
+    position: relative;
+    margin: 5px;
+}

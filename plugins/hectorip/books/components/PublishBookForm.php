@@ -31,7 +31,7 @@ class PublishBookForm extends ComponentBase {
         $newBook->active = true;
         $newBook->has_a_problem = false;
         $newBook->delivery = post('book_deliver_conditions');
-        $newBook->delivery = post('requests_pickup');
+        $newBook->requested_pickup = bool(post('requests_pickup'));
         $auth           = RainAuthManager::instance();
         LibroLibreUser::getFromUser($auth->getUser());
 		$newBook->liberator = $auth->getUser();
