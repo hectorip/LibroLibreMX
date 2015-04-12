@@ -225,6 +225,27 @@ table.table.data {
                 color: #98a7a8;
             }
         }
+
+        td.column-break-word {
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+
+        // Requires "max-width" with px value
+        td.column-single-line {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        td.column-slim {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        td.column-compact {
+            padding: 0;
+        }
     }
 
     tfoot {
@@ -233,6 +254,11 @@ table.table.data {
             border-color: @color-list-border;
             padding: 10px 15px;
         }
+    }
+
+    th.list-cell-type-switch,
+    td.list-cell-type-switch {
+        text-align: center;
     }
 
     .list-checkbox {
@@ -366,11 +392,6 @@ table.table.data {
 .list-header {
     background-color: @color-list-header-bg;
     padding: 0 20px 1px 20px;
-
-    // Remove if year >= 2015
-    //&.control-breadcrumb {
-    //     padding-bottom: 20px !important;
-    //}
 
     h3 {
         font-size: 14px;

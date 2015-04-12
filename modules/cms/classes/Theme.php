@@ -2,14 +2,15 @@
 
 use URL;
 use File;
+use Yaml;
 use Lang;
 use Cache;
 use Event;
 use Config;
 use DbDongle;
-use October\Rain\Support\Yaml;
+use SystemException;
+use ApplicationException;
 use System\Models\Parameters;
-use System\Classes\SystemException;
 use Cms\Models\ThemeData;
 use DirectoryIterator;
 
@@ -68,7 +69,7 @@ class Theme
             $dirName = $this->getDirName();
         }
 
-        return base_path().Config::get('cms.themesDir').'/'.$dirName;
+        return themes_path().'/'.$dirName;
     }
 
     /**
@@ -87,6 +88,16 @@ class Theme
     public function getDirName()
     {
         return $this->dirName;
+    }
+
+    /**
+     * Helper for {{ theme.id }} twig vars
+     * Returns a unique string for this theme.
+     * @return string
+     */
+    public function getId()
+    {
+        return snake_case(str_replace('/', '-', $this->getDirName()));
     }
 
     /**
@@ -114,6 +125,15 @@ class Theme
     }
 
     /**
+     * Returns true if this theme is the chosen active theme.
+     */
+    public function isActiveTheme()
+    {
+        $activeTheme = self::getActiveTheme();
+        return $activeTheme && $activeTheme->getDirName() == $this->getDirName();
+    }
+
+    /**
      * Returns the active theme.
      * By default the active theme is loaded from the cms.activeTheme parameter,
      * but this behavior can be overridden by the cms.activeTheme event listeners.
@@ -129,10 +149,9 @@ class Theme
         $activeTheme = Config::get('cms.activeTheme');
 
         if (DbDongle::hasDatabase()) {
-            $dbResult = Parameters::findRecord(self::ACTIVE_KEY)
-                ->remember(1440, self::ACTIVE_KEY)
-                ->pluck('value')
-            ;
+            $dbResult = Cache::remember(self::ACTIVE_KEY, 1440, function() {
+                return Parameters::findRecord(self::ACTIVE_KEY)->pluck('value');
+            });
 
             if ($dbResult !== null && static::exists($dbResult)) {
                 $activeTheme = $dbResult;
@@ -212,9 +231,7 @@ class Theme
      */
     public static function all()
     {
-        $path = base_path().Config::get('cms.themesDir');
-
-        $it = new DirectoryIterator($path);
+        $it = new DirectoryIterator(themes_path());
         $it->rewind();
 
         $result = [];
@@ -259,6 +276,28 @@ class Theme
     public function getConfigValue($name, $default = null)
     {
         return array_get($this->getConfig(), $name, $default);
+    }
+
+    /**
+     * Writes to the theme.yaml file with the supplied array values.
+     * @param array $values Data to write
+     * @param array $overwrite If true, undefined values are removed.
+     * @return void
+     */
+    public function writeConfig($values = [], $overwrite = false)
+    {
+        if (!$overwrite) {
+            $values = $values + (array) $this->getConfig();
+        }
+
+        $path = $this->getPath().'/theme.yaml';
+        if (!File::exists($path)) {
+            throw new ApplicationException('Path does not exist: '.$path);
+        }
+
+        $contents = Yaml::render($values);
+        File::put($path, $contents);
+        $this->configCache = $values;
     }
 
     /**

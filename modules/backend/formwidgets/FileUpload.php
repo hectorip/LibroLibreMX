@@ -4,11 +4,12 @@ use Str;
 use Input;
 use Validator;
 use System\Models\File;
-use System\Classes\SystemException;
+use ApplicationException;
 use Backend\Classes\FormField;
 use Backend\Classes\FormWidgetBase;
-use October\Rain\Support\ValidationException;
+use ValidationException;
 use Exception;
+use Lang;
 
 /**
  * File upload field
@@ -24,26 +25,59 @@ use Exception;
  */
 class FileUpload extends FormWidgetBase
 {
+    //
+    // Configurable properties
+    //
+
+    /**
+     * @var int Preview image width
+     */
+    public $imageWidth = 100;
+
+    /**
+     * @var int Preview image height
+     */
+    public $imageHeight = 100;
+
+    /**
+     * @var string Text to display when no file is associated
+     */
+    public $previewNoFilesMessage = 'backend::lang.form.preview_no_files_message';
+
+    /**
+     * @var mixed Collection of acceptable file types.
+     */
+    public $fileTypes = false;
+
+    /**
+     * @var array Options used for generating thumbnails.
+     */
+    public $thumbOptions = [
+        'mode'      => 'crop',
+        'extension' => 'auto'
+    ];
+
+    //
+    // Object properties
+    //
+
     /**
      * {@inheritDoc}
      */
-    public $defaultAlias = 'fileupload';
-
-    public $imageWidth;
-    public $imageHeight;
-    public $previewNoFilesMessage;
+    protected $defaultAlias = 'fileupload';
 
     /**
      * {@inheritDoc}
      */
     public function init()
     {
-        $this->imageHeight = $this->getConfig('imageHeight', 100);
-        $this->imageWidth = $this->getConfig('imageWidth', 100);
-        $this->previewNoFilesMessage = $this->getConfig(
+        $this->fillFromConfig([
+            'imageWidth',
+            'imageHeight',
             'previewNoFilesMessage',
-            'backend::lang.form.preview_no_files_message'
-        );
+            'fileTypes',
+            'thumbOptions'
+        ]);
 
         $this->checkUploadPostback();
     }
@@ -68,6 +102,7 @@ class FileUpload extends FormWidgetBase
         $this->vars['emptyIcon'] = $this->getConfig('emptyIcon', 'icon-plus');
         $this->vars['imageHeight'] = $this->imageHeight;
         $this->vars['imageWidth'] = $this->imageWidth;
+        $this->vars['acceptedFileTypes'] = $this->getAcceptedFileTypes(true);
     }
 
     protected function getFileList()
@@ -78,7 +113,7 @@ class FileUpload extends FormWidgetBase
          * Set the thumb for each file
          */
         foreach ($list as $file) {
-            $file->thumb = $file->getThumb($this->imageWidth, $this->imageHeight, ['mode' => 'crop']);
+            $file->thumb = $file->getThumb($this->imageWidth, $this->imageHeight, $this->thumbOptions);
         }
 
         return $list;
@@ -103,6 +138,44 @@ class FileUpload extends FormWidgetBase
     }
 
     /**
+     * Returns the specified accepted file types, or the default
+     * based on the mode. Image mode will return:
+     * - jpg,jpeg,bmp,png,gif,svg
+     * @return string
+     */
+    public function getAcceptedFileTypes($includeDot = false)
+    {
+        $types = $this->fileTypes;
+        if ($types === false && starts_with($this->getDisplayMode(), 'image')) {
+            $types = 'jpg,jpeg,bmp,png,gif,svg';
+        }
+
+        if (!$types) {
+            return null;
+        }
+
+        if (!is_array($types)) {
+            $types = explode(',', $types);
+        }
+
+        $types = array_map(function($value) use ($includeDot) {
+            $value = trim($value);
+
+            if (substr($value, 0, 1) == '.') {
+                $value = substr($value, 1);
+            }
+
+            if ($includeDot) {
+                $value = '.'.$value;
+            }
+
+            return $value;
+        }, $types);
+
+        return implode(',', $types);
+    }
+
+    /**
      * Returns the value as a relation object from the model,
      * supports nesting via HTML array.
      * @return Relation
@@ -110,6 +183,14 @@ class FileUpload extends FormWidgetBase
     protected function getRelationObject()
     {
         list($model, $attribute) = $this->resolveModelAttribute($this->valueFrom);
+
+        if (!$model->hasRelation($attribute)) {
+            throw new ApplicationException(Lang::get('backend::lang.model.missing_relation', [
+                'class' => get_class($model),
+                'relation' => $attribute
+            ]));
+        }
+
         return $model->{$attribute}();
     }
 
@@ -158,7 +239,7 @@ class FileUpload extends FormWidgetBase
             return $this->makePartial('config_form');
         }
 
-        throw new SystemException('Unable to find file, it may no longer exist');
+        throw new ApplicationException('Unable to find file, it may no longer exist');
     }
 
     /**
@@ -172,11 +253,11 @@ class FileUpload extends FormWidgetBase
                 $file->description = post('description');
                 $file->save();
 
-                $file->thumb = $file->getThumb($this->imageWidth, $this->imageHeight, ['mode' => 'crop']);
+                $file->thumb = $file->getThumb($this->imageWidth, $this->imageHeight, $this->thumbOptions);
                 return ['item' => $file->toArray()];
             }
 
-            throw new SystemException('Unable to find file, it may no longer exist');
+            throw new ApplicationException('Unable to find file, it may no longer exist');
         }
         catch (Exception $ex) {
             return json_encode(['error' => $ex->getMessage()]);
@@ -213,11 +294,9 @@ class FileUpload extends FormWidgetBase
         try {
             $uploadedFile = Input::file('file_data');
 
-            $isImage = starts_with($this->getDisplayMode(), 'image');
-
             $validationRules = ['max:'.File::getMaxFilesize()];
-            if ($isImage) {
-                $validationRules[] = 'mimes:jpg,jpeg,bmp,png,gif,svg';
+            if ($fileTypes = $this->getAcceptedFileTypes()) {
+                $validationRules[] = 'mimes:'.$fileTypes;
             }
 
             $validation = Validator::make(
@@ -230,7 +309,7 @@ class FileUpload extends FormWidgetBase
             }
 
             if (!$uploadedFile->isValid()) {
-                throw new SystemException('File is not valid');
+                throw new ApplicationException('File is not valid');
             }
 
             $fileRelation = $this->getRelationObject();
@@ -242,7 +321,7 @@ class FileUpload extends FormWidgetBase
 
             $fileRelation->add($file, $this->sessionKey);
 
-            $file->thumb = $file->getThumb($this->imageWidth, $this->imageHeight, ['mode' => 'crop']);
+            $file->thumb = $file->getThumb($this->imageWidth, $this->imageHeight, $this->thumbOptions);
             $result = $file;
 
         }

@@ -1,10 +1,10 @@
 <?php namespace Backend\Classes;
 
-use Str;
 use Lang;
-use System\Classes\ApplicationException;
+use ApplicationException;
 use October\Rain\Extension\ExtensionBase;
 use System\Traits\ViewMaker;
+use October\Rain\Html\Helper as HtmlHelper;
 
 /**
  * Controller Behavior base class
@@ -42,16 +42,6 @@ class ControllerBehavior extends ExtensionBase
     public function __construct($controller)
     {
         $this->controller = $controller;
-
-        // Option A: (@todo Determine which is faster by benchmark)
-        // $relativePath = strtolower(str_replace('\\', '/', get_called_class()));
-        // $this->viewPath = $this->configPath = [
-        //     'modules/' . $relativePath . '/partials',
-        //     'plugins/' . $relativePath . '/partials'
-        // ];
-        // $this->assetPath = ['modules/' . $relativePath . '/assets', 'plugins/' . $relativePath . '/assets'];
-
-        // Option B:
         $this->viewPath = $this->configPath = $this->guessViewPath('/partials');
         $this->assetPath = $this->guessViewPath('/assets', true);
 
@@ -74,7 +64,7 @@ class ControllerBehavior extends ExtensionBase
      * @param mixed $config   Config object or array
      * @param array $required Required config items
      */
-    public function setConfig($config, $required = null)
+    public function setConfig($config, $required = [])
     {
         $this->config = $this->makeConfig($config, $required);
     }
@@ -85,12 +75,19 @@ class ControllerBehavior extends ExtensionBase
      * @param $default Default value if nothing is found
      * @return string
      */
-    public function getConfig($name, $default = null)
+    public function getConfig($name = null, $default = null)
     {
+        /*
+         * Return all config
+         */
+        if (is_null($name)) {
+            return $this->config;
+        }
+
         /*
          * Array field name, eg: field[key][key2][key3]
          */
-        $keyParts = Str::evalHtmlArray($name);
+        $keyParts = HtmlHelper::nameToArray($name);
 
         /*
          * First part will be the field name, pop it off

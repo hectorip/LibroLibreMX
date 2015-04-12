@@ -1,8 +1,8 @@
 <?php namespace Backend\Classes;
 
-use Str;
-use HTML;
-use Model;
+use Html;
+use October\Rain\Database\Model;
+use October\Rain\Html\Helper as HtmlHelper;
 
 /**
  * Form Field definition
@@ -48,6 +48,16 @@ class FormField
      * @var string Model attribute to use for the display value.
      */
     public $valueFrom;
+
+    /**
+     * @var string Specifies a default value for supported fields.
+     */
+    public $defaults;
+
+    /**
+     * @var string Model attribute to use for the default value.
+     */
+    public $defaultFrom;
 
     /**
      * @var string Specifies if this field belongs to a tab.
@@ -115,11 +125,6 @@ class FormField
     public $commentHtml = false;
 
     /**
-     * @var string Specifies a default value for supported fields.
-     */
-    public $defaults;
-
-    /**
      * @var string Specifies a message to display when there is no value supplied (placeholder).
      */
     public $placeholder;
@@ -148,6 +153,16 @@ class FormField
      * @var array Other field names this field depends on, when the other fields are modified, this field will update.
      */
     public $dependsOn;
+
+    /**
+     * @var array Other field names this field can be triggered by, see the Trigger API documentation.
+     */
+    public $trigger;
+
+    /**
+     * @var array Other field names text is converted in to a URL, slug or file name value in this field.
+     */
+    public $preset;
 
     /**
      * Constructor.
@@ -239,14 +254,37 @@ class FormField
      */
     protected function evalConfig($config)
     {
+        /*
+         * Standard config:property values
+         */
+        $applyConfigValues = [
+            'context',
+            'placeholder',
+            'cssClass',
+            'dependsOn',
+            'trigger',
+            'preset',
+            'path',
+            'required',
+            'disabled',
+            'hidden',
+            'stretch',
+        ];
+
+        foreach ($applyConfigValues as $value) {
+            if (array_key_exists($value, $config)) {
+                $this->{$value} = $config[$value];
+            }
+        }
+
+        /*
+         * Custom applicators
+         */
         if (isset($config['options'])) {
             $this->options($config['options']);
         }
         if (isset($config['span'])) {
             $this->span($config['span']);
-        }
-        if (isset($config['context'])) {
-            $this->context = $config['context'];
         }
         if (isset($config['size'])) {
             $this->size($config['size']);
@@ -260,42 +298,17 @@ class FormField
         if (isset($config['comment'])) {
             $this->comment($config['comment']);
         }
-        if (isset($config['placeholder'])) {
-            $this->placeholder = $config['placeholder'];
-        }
         if (isset($config['default'])) {
             $this->defaults = $config['default'];
         }
-        if (isset($config['cssClass'])) {
-            $this->cssClass = $config['cssClass'];
+        if (isset($config['defaultFrom'])) {
+            $this->defaultFrom = $config['defaultFrom'];
         }
         if (isset($config['attributes'])) {
             $this->attributes($config['attributes']);
         }
         if (isset($config['containerAttributes'])) {
             $this->attributes($config['containerAttributes'], 'container');
-        }
-        if (isset($config['dependsOn'])) {
-            $this->dependsOn = $config['dependsOn'];
-        }
-        /* @deprecated remove if year >= 2016 */
-        elseif (isset($config['depends'])) {
-            $this->dependsOn = $config['depends'];
-        }
-        if (isset($config['path'])) {
-            $this->path = $config['path'];
-        }
-        if (array_key_exists('required', $config)) {
-            $this->required = $config['required'];
-        }
-        if (array_key_exists('disabled', $config)) {
-            $this->disabled = $config['disabled'];
-        }
-        if (array_key_exists('hidden', $config)) {
-            $this->hidden = $config['hidden'];
-        }
-        if (array_key_exists('stretch', $config)) {
-            $this->stretch = $config['stretch'];
         }
 
         if (isset($config['valueFrom'])) {
@@ -356,7 +369,109 @@ class FormField
     public function getAttributes($position = 'field', $htmlBuild = true)
     {
         $result = array_get($this->attributes, $position, []);
-        return $htmlBuild ? HTML::attributes($result) : $result;
+        $result = $this->filterAttributes($result, $position);
+        return $htmlBuild ? Html::attributes($result) : $result;
+    }
+
+    /**
+     * Adds any circumstantial attributes to the field based on other
+     * settings, such as the 'disabled' option.
+     * @param  array $attributes
+     * @param  string $position
+     * @return array
+     */
+    protected function filterAttributes($attributes, $position = 'field')
+    {
+        $position = strtolower($position);
+
+        $attributes = $this->filterTriggerAttributes($attributes, $position);
+        $attributes = $this->filterPresetAttributes($attributes, $position);
+
+        if ($position == 'field' && $this->disabled) {
+            $attributes = $attributes + ['disabled' => 'disabled'];
+        }
+
+        return $attributes;
+    }
+
+    /**
+     * Adds attributes used specifically by the Trigger API
+     * @param  array $attributes
+     * @param  string $position
+     * @return array
+     */
+    protected function filterTriggerAttributes($attributes, $position = 'field')
+    {
+        if (!$this->trigger || !is_array($this->trigger))
+            return $attributes;
+
+        $triggerAction = array_get($this->trigger, 'action');
+        $triggerField = array_get($this->trigger, 'field');
+        $triggerCondition = array_get($this->trigger, 'condition');
+
+        // Apply these to container
+        if (in_array($triggerAction, ['hide', 'show']) && $position != 'container')
+            return $attributes;
+
+        // Apply these to field/input
+        if (in_array($triggerAction, ['enable', 'disable', 'empty']) && $position != 'field')
+            return $attributes;
+
+        if ($this->arrayName) {
+            $fullTriggerField = $this->arrayName.'['.implode('][', HtmlHelper::nameToArray($triggerField)).']';
+        }
+        else {
+            $fullTriggerField = $triggerField;
+        }
+
+        $newAttributes = [
+            'data-trigger' => '[name="'.$fullTriggerField.'"]',
+            'data-trigger-action' => $triggerAction,
+            'data-trigger-condition' => $triggerCondition,
+            'data-trigger-closest-parent' => 'form'
+        ];
+
+        $attributes = $attributes + $newAttributes;
+        return $attributes;
+    }
+
+    /**
+     * Adds attributes used specifically by the Input Preset API
+     * @param  array $attributes
+     * @param  string $position
+     * @return array
+     */
+    protected function filterPresetAttributes($attributes, $position = 'field')
+    {
+        if (!$this->preset || $position != 'field')
+            return $attributes;
+
+        if (!is_array($this->preset)) {
+            $this->preset = ['field' => $this->preset, 'type' => 'slug'];
+        }
+
+        $presetField = array_get($this->preset, 'field');
+        $presetType = array_get($this->preset, 'type');
+
+        if ($this->arrayName) {
+            $fullPresetField = $this->arrayName.'['.implode('][', HtmlHelper::nameToArray($presetField)).']';
+        }
+        else {
+            $fullPresetField = $presetField;
+        }
+
+        $newAttributes = [
+            'data-input-preset' => '[name="'.$fullPresetField.'"]',
+            'data-input-preset-type' => $presetType,
+            'data-input-preset-closest-parent' => 'form'
+        ];
+
+        if ($prefixInput = array_get($this->preset, 'prefixInput')) {
+            $newAttributes['data-input-preset-prefix-input'] = $prefixInput;
+        }
+
+        $attributes = $attributes + $newAttributes;
+        return $attributes;
     }
 
     /**
@@ -371,7 +486,7 @@ class FormField
         }
 
         if ($arrayName) {
-            return $arrayName.'['.implode('][', Str::evalHtmlArray($this->fieldName)).']';
+            return $arrayName.'['.implode('][', HtmlHelper::nameToArray($this->fieldName)).']';
         }
         else {
             return $this->fieldName;
@@ -380,6 +495,8 @@ class FormField
 
     /**
      * Returns a value suitable for the field id property.
+     * @param  string $suffix Specify a suffix string
+     * @return string
      */
     public function getId($suffix = null)
     {
@@ -398,7 +515,7 @@ class FormField
             $id = $this->idPrefix . '-' . $id;
         }
 
-        return Str::evalHtmlId($id);
+        return HtmlHelper::nameToId($id);
     }
 
     /**
@@ -409,12 +526,12 @@ class FormField
      */
     public function getValueFromData($data, $default = null)
     {
-        $fieldName = $this->fieldName;
+        $fieldName = $this->valueFrom ?: $this->fieldName;
 
         /*
          * Array field name, eg: field[key][key2][key3]
          */
-        $keyParts = Str::evalHtmlArray($fieldName);
+        $keyParts = HtmlHelper::nameToArray($fieldName);
         $lastField = end($keyParts);
         $result = $data;
 
@@ -449,5 +566,27 @@ class FormField
         }
 
         return $result;
+    }
+
+    /**
+     * Returns the final model and attribute name of a nested attribute.
+     * Eg: list($model, $attribute) = $this->resolveAttribute('person[phone]');
+     * @param  string $attribute.
+     * @return array
+     */
+    public function resolveModelAttribute($model, $attribute = null)
+    {
+        if ($attribute === null) {
+            $attribute = $this->valueFrom ?: $this->fieldName;
+        }
+
+        $parts = is_array($attribute) ? $attribute : HtmlHelper::nameToArray($attribute);
+        $last = array_pop($parts);
+
+        foreach ($parts as $part) {
+            $model = $model->{$part};
+        }
+
+        return [$model, $last];
     }
 }

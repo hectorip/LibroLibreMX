@@ -40,7 +40,10 @@ return [
         'active_manually' => 'Activate this user manually',
         'delete_confirm' => 'Do you really want to delete this user?',
         'activated_success' => 'User has been activated successfully!',
-        'return_to_list' => 'Return to users list'
+        'return_to_list' => 'Return to users list',
+        'delete_selected_empty' => 'There are no selected users to delete.',
+        'delete_selected_confirm' => 'Delete the selected users?',
+        'delete_selected_success' => 'Successfully deleted the selected users.',
     ],
     'settings' => [
         'users' => 'Users',
@@ -91,6 +94,7 @@ return [
         'id' => 'ID',
         'username' => 'Username',
         'name' => 'Name',
+        'surname' => 'Surname',
         'email' => 'Email',
         'created_at' => 'Registered',
         'phone' => 'Phone',

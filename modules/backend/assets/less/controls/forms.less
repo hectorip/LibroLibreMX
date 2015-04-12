@@ -150,11 +150,14 @@ label {
         margin-top: -5px;
     }
 
-    &.no-padding, // @deprecated remove if year >= 2015
     &.field-slim {
         &.span-left, &.span-right {
             width: 50%;
         }
+    }
+
+    &.field-indent {
+        padding-left: 23px;
     }
 
     &.input-sidebar-control {
@@ -198,6 +201,40 @@ label {
     }
 }
 
+.input-with-icon {
+    position: relative;
+
+    > .icon {
+        position: absolute;
+        z-index: 2;
+        padding: 13px;
+        pointer-events: none;
+        color: @color-form-field-icon;
+        font-size: 15px;
+    }
+
+    &.right-align {
+        > .icon { right: 0; }
+        input { padding-right: 32px !important; }
+    }
+
+    &.left-align {
+        > .icon { left: 0; }
+        input { padding-left: 32px !important; }
+    }
+}
+
+.field-section {
+    border-bottom: 1px solid @color-form-field-border;
+    padding-top: 3px;
+    padding-bottom: 7px;
+
+    > p:first-child,
+    > h4:first-child {
+        margin: 0;
+    }
+}
+
 .field-textarea {
     resize: vertical;
     &.size-tiny { min-height: @size-tiny; }
@@ -205,6 +242,12 @@ label {
     &.size-large { min-height: @size-large; }
     &.size-huge { min-height: @size-huge; }
     &.size-giant { min-height: @size-giant; }
+}
+
+.field-checkboxlist {
+    .checkbox:last-of-type {
+        margin-bottom: 0;
+    }
 }
 
 .field-checkboxlist-scrollable {
@@ -290,6 +333,12 @@ label {
 
     &.buttons-offset {
         padding-left: 20px;
+    }
+}
+
+body.slim-container {
+    .form-buttons {
+        padding: 0 20px 20px;
     }
 }
 

@@ -44,7 +44,9 @@
         showInvisibles: true,
         highlightActiveLine: true,
         useSoftTabs: true,
+        autoCloseTags: true,
         showGutter: true,
+        enableEmmet: true,
         language: 'php',
         margin: 0,
         vendorPath: '/',
@@ -122,11 +124,13 @@
          */
         editor.wrapper = this
         editor.setShowInvisibles(options.showInvisibles)
+        editor.setBehavioursEnabled(options.autoCloseTags)
         editor.setHighlightActiveLine(options.highlightActiveLine)
         editor.renderer.setShowGutter(options.showGutter)
         editor.renderer.setShowPrintMargin(options.showPrintMargin)
         editor.setHighlightSelectedWord(options.highlightSelectedWord)
         editor.renderer.setHScrollBarAlwaysVisible(options.hScrollBarAlwaysVisible)
+        editor.setOption('enableEmmet', options.enableEmmet)
         editor.getSession().setUseSoftTabs(options.useSoftTabs)
         editor.getSession().setTabSize(options.tabSize)
         editor.setReadOnly(options.readOnly)

@@ -43,6 +43,7 @@ class User extends UserBase
      */
     protected $fillable = [
         'name',
+        'surname',
         'login',
         'email',
         'password',
@@ -135,21 +136,32 @@ class User extends UserBase
     public function attemptActivation($code)
     {
         $result = parent::attemptActivation($code);
-        if ($result === false)
+        if ($result === false) {
             return false;
+        }
 
-        if (!$mailTemplate = UserSettings::get('welcome_template'))
-            return;
+        if ($mailTemplate = UserSettings::get('welcome_template')) {
+            $data = [
+                'name' => $this->name,
+                'email' => $this->email
+            ];
 
-        $data = [
-            'name' => $this->name,
-            'email' => $this->email
-        ];
+            Mail::send($mailTemplate, $data, function($message) {
+                $message->to($this->email, $this->name);
+            });
+        }
 
-        Mail::send($mailTemplate, $data, function($message)
-        {
-            $message->to($this->email, $this->name);
-        });
+        return true;
+    }
+
+    /**
+     * Looks up a user by their email address.
+     * @return self
+     */
+    public static function findByEmail($email)
+    {
+        if (!$email) return;
+        return self::where('email', $email)->first();
     }
 
 }

@@ -9,70 +9,70 @@
                                                                       
 `========================== INSTALLATION LOG ========================'
 
-[2015/01/31 05:45:31] Host: Linux homestead 3.13.0-11-generic #31-Ubuntu SMP Wed Feb 19 19:57:21 UTC 2014 x86_64
-[2015/01/31 05:45:31] PHP version: 5.6.3-1+deb.sury.org~trusty+1
-[2015/01/31 05:45:31] Server software: nginx/1.6.2
-[2015/01/31 05:45:31] Operating system: Linux
-[2015/01/31 05:45:31] Memory limit: 512M
-[2015/01/31 05:45:31] Max execution time: 3600
+[2015/04/12 06:27:33] Host: Linux homestead 3.16.0-23-generic #31-Ubuntu SMP Tue Oct 21 17:56:17 UTC 2014 x86_64
+[2015/04/12 06:27:33] PHP version: 5.6.6-1+deb.sury.org~utopic+1
+[2015/04/12 06:27:33] Server software: nginx/1.6.2
+[2015/04/12 06:27:33] Operating system: Linux
+[2015/04/12 06:27:33] Memory limit: 512M
+[2015/04/12 06:27:33] Max execution time: 3600
 .============================ POST REQUEST ==========================.
-[2015/01/31 05:45:31] Postback payload: Array
+[2015/04/12 06:27:33] Postback payload: Array
 (
     [code] => phpVersion
     [handler] => onCheckRequirement
 )
 
-[2015/01/31 05:45:31] System check: phpVersion
-[2015/01/31 05:45:31] Requirement phpVersion +OK
-[2015/01/31 05:45:31] Execute handler (onCheckRequirement): Array
+[2015/04/12 06:27:33] System check: phpVersion
+[2015/04/12 06:27:33] Requirement phpVersion +OK
+[2015/04/12 06:27:33] Execute handler (onCheckRequirement): Array
 (
     [result] => 1
 )
 
 .============================ POST REQUEST ==========================.
-[2015/01/31 05:45:31] Postback payload: Array
+[2015/04/12 06:27:34] Postback payload: Array
 (
     [code] => curlLibrary
     [handler] => onCheckRequirement
 )
 
-[2015/01/31 05:45:31] System check: curlLibrary
-[2015/01/31 05:45:31] Requirement curlLibrary +OK
-[2015/01/31 05:45:31] Execute handler (onCheckRequirement): Array
+[2015/04/12 06:27:34] System check: curlLibrary
+[2015/04/12 06:27:34] Requirement curlLibrary +OK
+[2015/04/12 06:27:34] Execute handler (onCheckRequirement): Array
 (
     [result] => 1
 )
 
 .============================ POST REQUEST ==========================.
-[2015/01/31 05:45:32] Postback payload: Array
+[2015/04/12 06:27:34] Postback payload: Array
 (
     [code] => liveConnection
     [handler] => onCheckRequirement
 )
 
-[2015/01/31 05:45:32] System check: liveConnection
-[2015/01/31 05:45:32] Server request: ping
-[2015/01/31 05:45:32] Request information: Array
+[2015/04/12 06:27:34] System check: liveConnection
+[2015/04/12 06:27:35] Server request: ping
+[2015/04/12 06:27:35] Request information: Array
 (
     [url] => http://octobercms.com/api/ping
     [content_type] => application/json
     [http_code] => 200
-    [header_size] => 824
+    [header_size] => 585
     [request_size] => 167
     [filetime] => -1
     [ssl_verify_result] => 0
     [redirect_count] => 0
-    [total_time] => 0.235025
+    [total_time] => 0.215137
     [namelookup_time] => 0.004192
-    [connect_time] => 0.096603
-    [pretransfer_time] => 0.096691
+    [connect_time] => 0.084495
+    [pretransfer_time] => 0.084659
     [size_upload] => 36
     [size_download] => 14
-    [speed_download] => 59
-    [speed_upload] => 153
+    [speed_download] => 65
+    [speed_upload] => 167
     [download_content_length] => 14
     [upload_content_length] => 36
-    [starttransfer_time] => 0.235002
+    [starttransfer_time] => 0.215113
     [redirect_time] => 0
     [redirect_url] => 
     [primary_ip] => 50.116.3.170
@@ -82,101 +82,101 @@
 
     [primary_port] => 80
     [local_ip] => 10.0.2.15
-    [local_port] => 40328
+    [local_port] => 44774
 )
 
-[2015/01/31 05:45:32] Requirement liveConnection +OK
-[2015/01/31 05:45:32] Execute handler (onCheckRequirement): Array
+[2015/04/12 06:27:35] Requirement liveConnection +OK
+[2015/04/12 06:27:35] Execute handler (onCheckRequirement): Array
 (
     [result] => 1
 )
 
 .============================ POST REQUEST ==========================.
-[2015/01/31 05:45:33] Postback payload: Array
+[2015/04/12 06:27:35] Postback payload: Array
 (
     [code] => writePermission
     [handler] => onCheckRequirement
 )
 
-[2015/01/31 05:45:33] System check: writePermission
-[2015/01/31 05:45:33] Requirement writePermission +OK
-[2015/01/31 05:45:33] Execute handler (onCheckRequirement): Array
+[2015/04/12 06:27:35] System check: writePermission
+[2015/04/12 06:27:35] Requirement writePermission +OK
+[2015/04/12 06:27:35] Execute handler (onCheckRequirement): Array
 (
     [result] => 1
 )
 
 .============================ POST REQUEST ==========================.
-[2015/01/31 05:45:33] Postback payload: Array
+[2015/04/12 06:27:36] Postback payload: Array
 (
     [code] => pdoLibrary
     [handler] => onCheckRequirement
 )
 
-[2015/01/31 05:45:33] System check: pdoLibrary
-[2015/01/31 05:45:33] Requirement pdoLibrary +OK
-[2015/01/31 05:45:33] Execute handler (onCheckRequirement): Array
+[2015/04/12 06:27:36] System check: pdoLibrary
+[2015/04/12 06:27:36] Requirement pdoLibrary +OK
+[2015/04/12 06:27:36] Execute handler (onCheckRequirement): Array
 (
     [result] => 1
 )
 
 .============================ POST REQUEST ==========================.
-[2015/01/31 05:45:34] Postback payload: Array
+[2015/04/12 06:27:37] Postback payload: Array
 (
     [code] => mcryptLibrary
     [handler] => onCheckRequirement
 )
 
-[2015/01/31 05:45:34] System check: mcryptLibrary
-[2015/01/31 05:45:34] Requirement mcryptLibrary +OK
-[2015/01/31 05:45:34] Execute handler (onCheckRequirement): Array
+[2015/04/12 06:27:37] System check: mcryptLibrary
+[2015/04/12 06:27:37] Requirement mcryptLibrary +OK
+[2015/04/12 06:27:37] Execute handler (onCheckRequirement): Array
 (
     [result] => 1
 )
 
 .============================ POST REQUEST ==========================.
-[2015/01/31 05:45:34] Postback payload: Array
+[2015/04/12 06:27:38] Postback payload: Array
 (
     [code] => sslLibrary
     [handler] => onCheckRequirement
 )
 
-[2015/01/31 05:45:34] System check: sslLibrary
-[2015/01/31 05:45:34] Requirement sslLibrary +OK
-[2015/01/31 05:45:34] Execute handler (onCheckRequirement): Array
+[2015/04/12 06:27:38] System check: sslLibrary
+[2015/04/12 06:27:38] Requirement sslLibrary +OK
+[2015/04/12 06:27:38] Execute handler (onCheckRequirement): Array
 (
     [result] => 1
 )
 
 .============================ POST REQUEST ==========================.
-[2015/01/31 05:45:35] Postback payload: Array
+[2015/04/12 06:27:39] Postback payload: Array
 (
     [code] => zipLibrary
     [handler] => onCheckRequirement
 )
 
-[2015/01/31 05:45:35] System check: zipLibrary
-[2015/01/31 05:45:35] Requirement zipLibrary +OK
-[2015/01/31 05:45:35] Execute handler (onCheckRequirement): Array
+[2015/04/12 06:27:39] System check: zipLibrary
+[2015/04/12 06:27:39] Requirement zipLibrary +OK
+[2015/04/12 06:27:39] Execute handler (onCheckRequirement): Array
 (
     [result] => 1
 )
 
 .============================ POST REQUEST ==========================.
-[2015/01/31 05:45:35] Postback payload: Array
+[2015/04/12 06:27:40] Postback payload: Array
 (
     [code] => gdLibrary
     [handler] => onCheckRequirement
 )
 
-[2015/01/31 05:45:35] System check: gdLibrary
-[2015/01/31 05:45:35] Requirement gdLibrary +OK
-[2015/01/31 05:45:35] Execute handler (onCheckRequirement): Array
+[2015/04/12 06:27:40] System check: gdLibrary
+[2015/04/12 06:27:40] Requirement gdLibrary +OK
+[2015/04/12 06:27:40] Execute handler (onCheckRequirement): Array
 (
     [result] => 1
 )
 
 .============================ POST REQUEST ==========================.
-[2015/01/31 05:46:21] Postback payload: Array
+[2015/04/12 06:32:11] Postback payload: Array
 (
     [db_type] => mysql
     [db_host] => localhost
@@ -184,38 +184,10 @@
     [db_name] => librolibremx
     [db_user] => homestead
     [db_pass] => *******
-    [admin_first_name] => Héctor Iván
-    [admin_last_name] => Patricio Moreno
+    [admin_first_name] => Admin
+    [admin_last_name] => Person
     [admin_email] => *******@*****.com
-    [admin_login] => hectorip
-    [admin_password] => *******
-    [admin_confirm_password] => *******
-    [backend_uri] => /backend
-    [encryption_code] => *******
-    [file_mask] => 777
-    [folder_mask] => 777
-    [handler] => onValidateDatabase
-)
-
-[2015/01/31 05:46:21] Handler error (onValidateDatabase): Database "librolibremx" is not empty. Please empty the database or specify another database.
-[2015/01/31 05:46:21] Trace log:
-#0 /var/www/librolibremx/install_files/php/Installer.php(53): Installer->onValidateDatabase()
-#1 /var/www/librolibremx/install_files/php/boot.php(69): Installer->__construct()
-#2 /var/www/librolibremx/install.php(1): include('/var/www/librol...')
-#3 {main}
-.============================ POST REQUEST ==========================.
-[2015/01/31 05:46:42] Postback payload: Array
-(
-    [db_type] => mysql
-    [db_host] => localhost
-    [db_port] => 
-    [db_name] => librolibremx
-    [db_user] => homestead
-    [db_pass] => *******
-    [admin_first_name] => Héctor Iván
-    [admin_last_name] => Patricio Moreno
-    [admin_email] => *******@*****.com
-    [admin_login] => hectorip
+    [admin_login] => admin
     [admin_password] => *******
     [admin_confirm_password] => *******
     [backend_uri] => /backend
@@ -226,7 +198,7 @@
 )
 
 .============================ POST REQUEST ==========================.
-[2015/01/31 05:46:42] Postback payload: Array
+[2015/04/12 06:32:11] Postback payload: Array
 (
     [db_type] => mysql
     [db_host] => localhost
@@ -234,10 +206,10 @@
     [db_name] => librolibremx
     [db_user] => homestead
     [db_pass] => *******
-    [admin_first_name] => Héctor Iván
-    [admin_last_name] => Patricio Moreno
+    [admin_first_name] => Admin
+    [admin_last_name] => Person
     [admin_email] => *******@*****.com
-    [admin_login] => hectorip
+    [admin_login] => admin
     [admin_password] => *******
     [admin_confirm_password] => *******
     [backend_uri] => /backend
@@ -248,7 +220,7 @@
 )
 
 .============================ POST REQUEST ==========================.
-[2015/01/31 05:46:42] Postback payload: Array
+[2015/04/12 06:32:11] Postback payload: Array
 (
     [db_type] => mysql
     [db_host] => localhost
@@ -256,10 +228,10 @@
     [db_name] => librolibremx
     [db_user] => homestead
     [db_pass] => *******
-    [admin_first_name] => Héctor Iván
-    [admin_last_name] => Patricio Moreno
+    [admin_first_name] => Admin
+    [admin_last_name] => Person
     [admin_email] => *******@*****.com
-    [admin_login] => hectorip
+    [admin_login] => admin
     [admin_password] => *******
     [admin_confirm_password] => *******
     [backend_uri] => /backend
@@ -271,38 +243,38 @@
 
 .============================ POST REQUEST ==========================.
 .============================ POST REQUEST ==========================.
-[2015/01/31 05:46:42] Postback payload: Array
-(
-    [handler] => onGetPopularPlugins
-)
-
-[2015/01/31 05:46:42] Postback payload: Array
+[2015/04/12 06:32:11] Postback payload: Array
 (
     [handler] => onGetPopularThemes
 )
 
-[2015/01/31 05:46:42] Server request: theme/popular
-[2015/01/31 05:46:42] Request information: Array
+[2015/04/12 06:32:11] Postback payload: Array
+(
+    [handler] => onGetPopularPlugins
+)
+
+[2015/04/12 06:32:11] Server request: theme/popular
+[2015/04/12 06:32:11] Request information: Array
 (
     [url] => http://octobercms.com/api/theme/popular
     [content_type] => application/json
     [http_code] => 200
-    [header_size] => 831
+    [header_size] => 580
     [request_size] => 176
     [filetime] => -1
     [ssl_verify_result] => 0
     [redirect_count] => 0
-    [total_time] => 0.206676
-    [namelookup_time] => 1.6E-5
-    [connect_time] => 0.088362
-    [pretransfer_time] => 0.088463
+    [total_time] => 0.216312
+    [namelookup_time] => 0.004291
+    [connect_time] => 0.082909
+    [pretransfer_time] => 0.082997
     [size_upload] => 36
-    [size_download] => 295
-    [speed_download] => 1427
-    [speed_upload] => 174
-    [download_content_length] => 295
+    [size_download] => 661
+    [speed_download] => 3055
+    [speed_upload] => 166
+    [download_content_length] => 661
     [upload_content_length] => 36
-    [starttransfer_time] => 0.206648
+    [starttransfer_time] => 0.216292
     [redirect_time] => 0
     [redirect_url] => 
     [primary_ip] => 50.116.3.170
@@ -312,45 +284,55 @@
 
     [primary_port] => 80
     [local_ip] => 10.0.2.15
-    [local_port] => 40329
+    [local_port] => 44782
 )
 
-[2015/01/31 05:46:42] Execute handler (onGetPopularThemes): Array
+[2015/04/12 06:32:11] Execute handler (onGetPopularThemes): Array
 (
     [0] => Array
+        (
+            [name] => Squad
+            [description] => Squad is a free Bootstrap template from BootstrapTaste for creatives, with a simple and modern layout.
+            [code] => FabricioRabelo.Squad
+            [updated_at] => 2015-03-13 03:12:19
+            [author] => Fabricio Rabelo
+            [image] => http://octobercms.com/storage/app/uploads/public/550/1dc/ab8/thumb_1856_210x140_0_0_crop.jpg
+        )
+
+    [1] => Array
         (
             [name] => Flat UI
             [description] => A theme that uses a Flat user-interface and has no dependencies on others plugins.
             [code] => Responsiv.Flat
             [updated_at] => 2014-07-23 21:32:51
-            [image] => http://octobercms.com/uploads/public/53d/084/fbc/thumb_543_210x140_0_0_crop.jpg
-            [author] => October
+            [author] => Responsiv Internet
+            [image] => http://octobercms.com/storage/app/uploads/public/53d/084/fbc/thumb_543_210x140_0_0_crop.jpg
         )
 
 )
 
-[2015/01/31 05:46:42] Server request: plugin/popular
-[2015/01/31 05:46:42] Request information: Array
+[2015/04/12 06:32:11] Server request: plugin/popular
+[2015/04/12 06:32:11] Request information: Array
 (
     [url] => http://octobercms.com/api/plugin/popular
     [content_type] => application/json
     [http_code] => 200
-    [header_size] => 828
+    [header_size] => 587
     [request_size] => 177
     [filetime] => -1
     [ssl_verify_result] => 0
     [redirect_count] => 0
-    [total_time] => 0.220247
-    [namelookup_time] => 0.004128
-    [connect_time] => 0.095911
-    [pretransfer_time] => 0.096176
+    [total_time] => 0.221296
+    [namelookup_time] => 0.004164
+    [connect_time] => 0.085019
+    [pretransfer_time] => 0.085106
     [size_upload] => 36
-    [size_download] => 1258
-    [speed_download] => 5711
-    [speed_upload] => 163
-    [download_content_length] => 1258
+    [size_download] => 1890
+    [speed_download] => 8540
+    [speed_upload] => 162
+    [download_content_length] => 1890
     [upload_content_length] => 36
-    [starttransfer_time] => 0.218874
+    [starttransfer_time] => 0.220251
     [redirect_time] => 0
     [redirect_url] => 
     [primary_ip] => 50.116.3.170
@@ -360,92 +342,112 @@
 
     [primary_port] => 80
     [local_ip] => 10.0.2.15
-    [local_port] => 40330
+    [local_port] => 44783
 )
 
-[2015/01/31 05:46:42] Execute handler (onGetPopularPlugins): Array
+[2015/04/12 06:32:11] Execute handler (onGetPopularPlugins): Array
 (
     [0] => Array
+        (
+            [name] => Sitemap
+            [description] => Generate a sitemap.xml file for your website.
+            [code] => RainLab.Sitemap
+            [updated_at] => 2014-11-19 23:50:15
+            [author] => RainLab
+            [image] => http://octobercms.com/storage/app/uploads/public/546/c40/98b/thumb_959_64x64_0_0_auto.png
+        )
+
+    [1] => Array
+        (
+            [name] => Static Pages
+            [description] => Adds static pages, menus and breadcrumbs features to OctoberCMS.
+            [code] => RainLab.Pages
+            [updated_at] => 2014-09-18 20:26:54
+            [author] => RainLab
+            [image] => http://octobercms.com/storage/app/uploads/public/540/8f6/dd8/thumb_732_64x64_0_0_auto.png
+        )
+
+    [2] => Array
         (
             [name] => Twitter
             [description] => This plugin adds a Twitter features to your page.
             [code] => RainLab.Twitter
             [updated_at] => 2014-07-14 01:07:53
-            [image] => http://octobercms.com/uploads/public/537/288/83c/thumb_26_64x64_0_0_auto.png
-            [author] => October
+            [author] => RainLab
+            [image] => http://octobercms.com/storage/app/uploads/public/537/288/83c/thumb_26_64x64_0_0_auto.png
         )
 
-    [1] => Array
+    [3] => Array
         (
             [name] => Google Analytics
             [description] => Provides the Google Analytics tracking and reporting.
             [code] => RainLab.GoogleAnalytics
             [updated_at] => 2014-05-12 01:56:00
-            [image] => http://octobercms.com/uploads/public/540/8f0/603/thumb_727_64x64_0_0_auto.png
-            [author] => October
+            [author] => RainLab
+            [image] => http://octobercms.com/storage/app/uploads/public/540/8f0/603/thumb_727_64x64_0_0_auto.png
         )
 
-    [2] => Array
+    [4] => Array
         (
             [name] => MailChimp
             [description] => Provides MailChimp integration services.
             [code] => RainLab.MailChimp
             [updated_at] => 2014-05-12 01:53:25
-            [image] => http://octobercms.com/uploads/public/537/210/7f3/thumb_22_64x64_0_0_auto.png
-            [author] => October
+            [author] => RainLab
+            [image] => http://octobercms.com/storage/app/uploads/public/537/210/7f3/thumb_22_64x64_0_0_auto.png
         )
 
-    [3] => Array
+    [5] => Array
         (
             [name] => Blog
             [description] => A robust blogging platform.
             [code] => RainLab.Blog
             [updated_at] => 2014-05-02 01:17:59
-            [image] => http://octobercms.com/uploads/public/540/8f5/50e/thumb_729_64x64_0_0_auto.png
-            [author] => October
+            [author] => RainLab
+            [image] => http://octobercms.com/storage/app/uploads/public/540/8f5/50e/thumb_729_64x64_0_0_auto.png
         )
 
-    [4] => Array
+    [6] => Array
         (
             [name] => User
             [description] => Front-end user management.
             [code] => RainLab.User
             [updated_at] => 2014-05-02 00:49:16
-            [image] => http://octobercms.com/uploads/public/540/8f2/a51/thumb_728_64x64_0_0_auto.png
-            [author] => October
+            [author] => RainLab
+            [image] => http://octobercms.com/storage/app/uploads/public/540/8f2/a51/thumb_728_64x64_0_0_auto.png
         )
 
 )
 
 .============================ POST REQUEST ==========================.
-[2015/01/31 05:46:44] Postback payload: Array
+[2015/04/12 06:32:21] Postback payload: Array
 (
-    [name] => RainLab.Twitter
-    [handler] => onPluginDetails
+    [project_id] => *******
+    [handler] => onProjectDetails
 )
 
-[2015/01/31 05:46:44] Server request: plugin/detail
-[2015/01/31 05:46:44] Request information: Array
+[2015/04/12 06:32:22] Server request: project/detail
+[2015/04/12 06:32:22] Request information: Array
 (
-    [url] => http://octobercms.com/api/plugin/detail
+    [url] => http://octobercms.com/api/project/detail
     [content_type] => application/json
     [http_code] => 200
-    [header_size] => 823
-    [request_size] => 197
+    [header_size] => 581
+    [request_size] => 238
     [filetime] => -1
     [ssl_verify_result] => 0
     [redirect_count] => 0
-    [total_time] => 0.226752
-    [namelookup_time] => 1.5E-5
-    [connect_time] => 0.091579
-    [pretransfer_time] => 0.091664
-    [size_upload] => 57
-    [size_download] => 300
-    [speed_download] => 1323
-    [speed_upload] => 251
-    [download_content_length] => 300
-    [upload_content_length] => 57
-    [starttransfer_time] => 0.22673
+    [total_time] => 0.219422
+    [namelookup_time] => 0.004182
+    [connect_time] => 0.083993
+    [pretransfer_time] => 0.084096
+    [size_upload] => 97
+    [size_download] => 1059
+    [speed_download] => 4826
+    [speed_upload] => 442
+    [download_content_length] => 1059
+    [upload_content_length] => 97
+    [starttransfer_time] => 0.218453
     [redirect_time] => 0
     [redirect_url] => 
     [primary_ip] => 50.116.3.170
@@ -455,282 +457,71 @@
 
     [primary_port] => 80
     [local_ip] => 10.0.2.15
-    [local_port] => 40331
+    [local_port] => 44784
 )
 
-[2015/01/31 05:46:44] Execute handler (onPluginDetails): Array
+[2015/04/12 06:32:22] Execute handler (onProjectDetails): Array
 (
-    [name] => Twitter
-    [description] => This plugin adds a Twitter features to your page.
-    [code] => RainLab.Twitter
-    [updated_at] => 2014-07-14 01:07:53
-    [image] => http://octobercms.com/uploads/public/537/288/83c/thumb_26_64x64_0_0_auto.png
-    [author] => October
-    [hash] => 5fa9ba49a85143da1d6ee5e043ed20b6
-)
+    [name] => Libro Libre MX
+    [description] => Donación de Libros
+    [owner] => Héctor Iván Patricio Moreno
+    [plugins] => Array
+        (
+            [0] => Array
+                (
+                    [name] => User
+                    [description] => Front-end user management.
+                    [code] => RainLab.User
+                    [updated_at] => 2014-05-02 00:49:16
+                    [image] => http://octobercms.com/storage/app/uploads/public/540/8f2/a51/thumb_728_64x64_0_0_auto.png
+                    [author] => October
+                    [hash] => 3cbd283316db75f6e2f2c80ae7b5cd83
+                )
 
-.============================ POST REQUEST ==========================.
-[2015/01/31 05:46:45] Postback payload: Array
-(
-    [name] => RainLab.GoogleAnalytics
-    [handler] => onPluginDetails
-)
+            [1] => Array
+                (
+                    [name] => Disqus
+                    [description] => Add Disqus Commenting to your Site.
+                    [code] => Radiantweb.Disqus
+                    [updated_at] => 2014-05-12 01:57:15
+                    [image] => http://octobercms.com/storage/app/uploads/public/537/e62/502/thumb_152_64x64_0_0_auto.png
+                    [author] => October
+                    [hash] => 928e931a04867e8e6bac8e10706b0404
+                )
 
-[2015/01/31 05:46:45] Server request: plugin/detail
-[2015/01/31 05:46:45] Request information: Array
-(
-    [url] => http://octobercms.com/api/plugin/detail
-    [content_type] => application/json
-    [http_code] => 200
-    [header_size] => 823
-    [request_size] => 205
-    [filetime] => -1
-    [ssl_verify_result] => 0
-    [redirect_count] => 0
-    [total_time] => 0.214278
-    [namelookup_time] => 1.5E-5
-    [connect_time] => 0.088864
-    [pretransfer_time] => 0.08904
-    [size_upload] => 65
-    [size_download] => 322
-    [speed_download] => 1502
-    [speed_upload] => 303
-    [download_content_length] => 322
-    [upload_content_length] => 65
-    [starttransfer_time] => 0.214245
-    [redirect_time] => 0
-    [redirect_url] => 
-    [primary_ip] => 50.116.3.170
-    [certinfo] => Array
+            [2] => Array
+                (
+                    [name] => RJGallery
+                    [description] => Create a photo gallery with full screen preview and slideshow
+                    [code] => Raviraj.Rjgallery
+                    [updated_at] => 2015-03-13 20:58:19
+                    [image] => http://octobercms.com/storage/app/uploads/public/53e/ee4/908/thumb_644_64x64_0_0_auto.png
+                    [author] => October
+                    [hash] => 9b024242bbcba10ed1304fc9b4831cfd
+                )
+
+        )
+
+    [themes] => Array
         (
         )
 
-    [primary_port] => 80
-    [local_ip] => 10.0.2.15
-    [local_port] => 40332
-)
-
-[2015/01/31 05:46:45] Execute handler (onPluginDetails): Array
-(
-    [name] => Google Analytics
-    [description] => Provides the Google Analytics tracking and reporting.
-    [code] => RainLab.GoogleAnalytics
-    [updated_at] => 2014-05-12 01:56:00
-    [image] => http://octobercms.com/uploads/public/540/8f0/603/thumb_727_64x64_0_0_auto.png
-    [author] => October
-    [hash] => 4b1d3492678aa31a8c339c1559cb6abb
 )
 
 .============================ POST REQUEST ==========================.
-[2015/01/31 05:46:46] Postback payload: Array
+.============================ POST REQUEST ==========================.
+[2015/04/12 06:32:22] Postback payload: Array
 (
-    [name] => RainLab.MailChimp
-    [handler] => onPluginDetails
+    [handler] => 
 )
 
-[2015/01/31 05:46:46] Server request: plugin/detail
-[2015/01/31 05:46:46] Request information: Array
+[2015/04/12 06:32:22] Postback payload: Array
 (
-    [url] => http://octobercms.com/api/plugin/detail
-    [content_type] => application/json
-    [http_code] => 200
-    [header_size] => 827
-    [request_size] => 199
-    [filetime] => -1
-    [ssl_verify_result] => 0
-    [redirect_count] => 0
-    [total_time] => 0.217796
-    [namelookup_time] => 1.5E-5
-    [connect_time] => 0.090568
-    [pretransfer_time] => 0.090654
-    [size_upload] => 59
-    [size_download] => 295
-    [speed_download] => 1354
-    [speed_upload] => 270
-    [download_content_length] => 295
-    [upload_content_length] => 59
-    [starttransfer_time] => 0.217772
-    [redirect_time] => 0
-    [redirect_url] => 
-    [primary_ip] => 50.116.3.170
-    [certinfo] => Array
-        (
-        )
-
-    [primary_port] => 80
-    [local_ip] => 10.0.2.15
-    [local_port] => 40333
-)
-
-[2015/01/31 05:46:46] Execute handler (onPluginDetails): Array
-(
-    [name] => MailChimp
-    [description] => Provides MailChimp integration services.
-    [code] => RainLab.MailChimp
-    [updated_at] => 2014-05-12 01:53:25
-    [image] => http://octobercms.com/uploads/public/537/210/7f3/thumb_22_64x64_0_0_auto.png
-    [author] => October
-    [hash] => 2958e3c3af8117b4472e9eb890f7965d
+    [handler] => 
 )
 
 .============================ POST REQUEST ==========================.
-[2015/01/31 05:46:47] Postback payload: Array
-(
-    [name] => RainLab.Blog
-    [handler] => onPluginDetails
-)
-
-[2015/01/31 05:46:47] Server request: plugin/detail
-[2015/01/31 05:46:47] Request information: Array
-(
-    [url] => http://octobercms.com/api/plugin/detail
-    [content_type] => application/json
-    [http_code] => 200
-    [header_size] => 829
-    [request_size] => 194
-    [filetime] => -1
-    [ssl_verify_result] => 0
-    [redirect_count] => 0
-    [total_time] => 0.217648
-    [namelookup_time] => 2.3E-5
-    [connect_time] => 0.090985
-    [pretransfer_time] => 0.091058
-    [size_upload] => 54
-    [size_download] => 273
-    [speed_download] => 1254
-    [speed_upload] => 248
-    [download_content_length] => 273
-    [upload_content_length] => 54
-    [starttransfer_time] => 0.217625
-    [redirect_time] => 0
-    [redirect_url] => 
-    [primary_ip] => 50.116.3.170
-    [certinfo] => Array
-        (
-        )
-
-    [primary_port] => 80
-    [local_ip] => 10.0.2.15
-    [local_port] => 40334
-)
-
-[2015/01/31 05:46:47] Execute handler (onPluginDetails): Array
-(
-    [name] => Blog
-    [description] => A robust blogging platform.
-    [code] => RainLab.Blog
-    [updated_at] => 2014-05-02 01:17:59
-    [image] => http://octobercms.com/uploads/public/540/8f5/50e/thumb_729_64x64_0_0_auto.png
-    [author] => October
-    [hash] => 6c76c1f4253620541445f9cba74e2c40
-)
-
-.============================ POST REQUEST ==========================.
-[2015/01/31 05:46:48] Postback payload: Array
-(
-    [name] => RainLab.User
-    [handler] => onPluginDetails
-)
-
-[2015/01/31 05:46:48] Server request: plugin/detail
-[2015/01/31 05:46:48] Request information: Array
-(
-    [url] => http://octobercms.com/api/plugin/detail
-    [content_type] => application/json
-    [http_code] => 200
-    [header_size] => 825
-    [request_size] => 194
-    [filetime] => -1
-    [ssl_verify_result] => 0
-    [redirect_count] => 0
-    [total_time] => 0.23397
-    [namelookup_time] => 1.9E-5
-    [connect_time] => 0.091577
-    [pretransfer_time] => 0.091687
-    [size_upload] => 54
-    [size_download] => 272
-    [speed_download] => 1162
-    [speed_upload] => 230
-    [download_content_length] => 272
-    [upload_content_length] => 54
-    [starttransfer_time] => 0.23383
-    [redirect_time] => 0
-    [redirect_url] => 
-    [primary_ip] => 50.116.3.170
-    [certinfo] => Array
-        (
-        )
-
-    [primary_port] => 80
-    [local_ip] => 10.0.2.15
-    [local_port] => 40335
-)
-
-[2015/01/31 05:46:48] Execute handler (onPluginDetails): Array
-(
-    [name] => User
-    [description] => Front-end user management.
-    [code] => RainLab.User
-    [updated_at] => 2014-05-02 00:49:16
-    [image] => http://octobercms.com/uploads/public/540/8f2/a51/thumb_728_64x64_0_0_auto.png
-    [author] => October
-    [hash] => 170f6137087e62773f10198f64018a31
-)
-
-.============================ POST REQUEST ==========================.
-[2015/01/31 05:46:52] Postback payload: Array
-(
-    [name] => Responsiv.Flat
-    [handler] => onThemeDetails
-)
-
-[2015/01/31 05:46:52] Server request: theme/detail
-[2015/01/31 05:46:52] Request information: Array
-(
-    [url] => http://octobercms.com/api/theme/detail
-    [content_type] => application/json
-    [http_code] => 200
-    [header_size] => 823
-    [request_size] => 195
-    [filetime] => -1
-    [ssl_verify_result] => 0
-    [redirect_count] => 0
-    [total_time] => 0.222576
-    [namelookup_time] => 2.3E-5
-    [connect_time] => 0.091407
-    [pretransfer_time] => 0.091493
-    [size_upload] => 56
-    [size_download] => 335
-    [speed_download] => 1505
-    [speed_upload] => 251
-    [download_content_length] => 335
-    [upload_content_length] => 56
-    [starttransfer_time] => 0.222552
-    [redirect_time] => 0
-    [redirect_url] => 
-    [primary_ip] => 50.116.3.170
-    [certinfo] => Array
-        (
-        )
-
-    [primary_port] => 80
-    [local_ip] => 10.0.2.15
-    [local_port] => 40336
-)
-
-[2015/01/31 05:46:52] Execute handler (onThemeDetails): Array
-(
-    [name] => Flat UI
-    [description] => A theme that uses a Flat user-interface and has no dependencies on others plugins.
-    [code] => Responsiv.Flat
-    [updated_at] => 2014-07-23 21:32:51
-    [image] => http://octobercms.com/uploads/public/53d/084/fbc/thumb_543_210x140_0_0_crop.jpg
-    [author] => October
-    [hash] => 463117738421d4b358accaec12d252dd
-)
-
-.============================ POST REQUEST ==========================.
-[2015/01/31 05:46:54] Postback payload: Array
+[2015/04/12 06:32:24] Postback payload: Array
 (
     [step] => getMetaData
     [meta] => 
@@ -738,102 +529,66 @@
         (
             [0] => Array
                 (
-                    [name] => Twitter
-                    [description] => This plugin adds a Twitter features to your page.
-                    [code] => RainLab.Twitter
-                    [updated_at] => 2014-07-14 01:07:53
-                    [image] => http://octobercms.com/uploads/public/537/288/83c/thumb_26_64x64_0_0_auto.png
-                    [author] => October
-                    [hash] => 5fa9ba49a85143da1d6ee5e043ed20b6
-                )
-
-            [1] => Array
-                (
-                    [name] => Google Analytics
-                    [description] => Provides the Google Analytics tracking and reporting.
-                    [code] => RainLab.GoogleAnalytics
-                    [updated_at] => 2014-05-12 01:56:00
-                    [image] => http://octobercms.com/uploads/public/540/8f0/603/thumb_727_64x64_0_0_auto.png
-                    [author] => October
-                    [hash] => 4b1d3492678aa31a8c339c1559cb6abb
-                )
-
-            [2] => Array
-                (
-                    [name] => MailChimp
-                    [description] => Provides MailChimp integration services.
-                    [code] => RainLab.MailChimp
-                    [updated_at] => 2014-05-12 01:53:25
-                    [image] => http://octobercms.com/uploads/public/537/210/7f3/thumb_22_64x64_0_0_auto.png
-                    [author] => October
-                    [hash] => 2958e3c3af8117b4472e9eb890f7965d
-                )
-
-            [3] => Array
-                (
-                    [name] => Blog
-                    [description] => A robust blogging platform.
-                    [code] => RainLab.Blog
-                    [updated_at] => 2014-05-02 01:17:59
-                    [image] => http://octobercms.com/uploads/public/540/8f5/50e/thumb_729_64x64_0_0_auto.png
-                    [author] => October
-                    [hash] => 6c76c1f4253620541445f9cba74e2c40
-                )
-
-            [4] => Array
-                (
                     [name] => User
                     [description] => Front-end user management.
                     [code] => RainLab.User
                     [updated_at] => 2014-05-02 00:49:16
-                    [image] => http://octobercms.com/uploads/public/540/8f2/a51/thumb_728_64x64_0_0_auto.png
+                    [image] => http://octobercms.com/storage/app/uploads/public/540/8f2/a51/thumb_728_64x64_0_0_auto.png
                     [author] => October
-                    [hash] => 170f6137087e62773f10198f64018a31
+                    [hash] => 3cbd283316db75f6e2f2c80ae7b5cd83
                 )
 
-        )
-
-    [themes] => Array
-        (
-            [0] => Array
+            [1] => Array
                 (
-                    [name] => Flat UI
-                    [description] => A theme that uses a Flat user-interface and has no dependencies on others plugins.
-                    [code] => Responsiv.Flat
-                    [updated_at] => 2014-07-23 21:32:51
-                    [image] => http://octobercms.com/uploads/public/53d/084/fbc/thumb_543_210x140_0_0_crop.jpg
+                    [name] => Disqus
+                    [description] => Add Disqus Commenting to your Site.
+                    [code] => Radiantweb.Disqus
+                    [updated_at] => 2014-05-12 01:57:15
+                    [image] => http://octobercms.com/storage/app/uploads/public/537/e62/502/thumb_152_64x64_0_0_auto.png
                     [author] => October
-                    [hash] => 463117738421d4b358accaec12d252dd
+                    [hash] => 928e931a04867e8e6bac8e10706b0404
+                )
+
+            [2] => Array
+                (
+                    [name] => RJGallery
+                    [description] => Create a photo gallery with full screen preview and slideshow
+                    [code] => Raviraj.Rjgallery
+                    [updated_at] => 2015-03-13 20:58:19
+                    [image] => http://octobercms.com/storage/app/uploads/public/53e/ee4/908/thumb_644_64x64_0_0_auto.png
+                    [author] => October
+                    [hash] => 9b024242bbcba10ed1304fc9b4831cfd
                 )
 
         )
 
+    [project_id] => *******
     [handler] => onInstallStep
 )
 
-[2015/01/31 05:46:54] Install step: getMetaData
-[2015/01/31 05:46:55] Server request: core/install
-[2015/01/31 05:46:55] Request information: Array
+[2015/04/12 06:32:24] Install step: getMetaData
+[2015/04/12 06:32:24] Server request: core/install
+[2015/04/12 06:32:24] Request information: Array
 (
     [url] => http://octobercms.com/api/core/install
     [content_type] => application/json
     [http_code] => 200
-    [header_size] => 823
-    [request_size] => 364
+    [header_size] => 580
+    [request_size] => 336
     [filetime] => -1
     [ssl_verify_result] => 0
     [redirect_count] => 0
-    [total_time] => 0.270273
-    [namelookup_time] => 1.6E-5
-    [connect_time] => 0.092623
-    [pretransfer_time] => 0.092713
-    [size_upload] => 224
-    [size_download] => 410
-    [speed_download] => 1516
-    [speed_upload] => 828
-    [download_content_length] => 410
-    [upload_content_length] => 224
-    [starttransfer_time] => 0.270235
+    [total_time] => 0.270997
+    [namelookup_time] => 1.8E-5
+    [connect_time] => 0.079615
+    [pretransfer_time] => 0.079959
+    [size_upload] => 196
+    [size_download] => 293
+    [speed_download] => 1081
+    [speed_upload] => 723
+    [download_content_length] => 293
+    [upload_content_length] => 196
+    [starttransfer_time] => 0.270954
     [redirect_time] => 0
     [redirect_url] => 
     [primary_ip] => 50.116.3.170
@@ -843,32 +598,30 @@
 
     [primary_port] => 80
     [local_ip] => 10.0.2.15
-    [local_port] => 40337
+    [local_port] => 44785
 )
 
-[2015/01/31 05:46:55] Step getMetaData +OK
-[2015/01/31 05:46:55] Execute handler (onInstallStep): Array
+[2015/04/12 06:32:24] Step getMetaData +OK
+[2015/04/12 06:32:24] Execute handler (onInstallStep): Array
 (
     [result] => Array
         (
             [core] => Array
                 (
-                    [hash] => 74608467d446e1570ad8338a7a3a7f9e
-                    [build] => 184
+                    [hash] => c12e2245e13ff1d8a92a1b2d43e41fd1
+                    [build] => 240
+                    [uhash] => f1e096a33016b16eb1d20317bbbf8b4d
                 )
 
             [plugins] => Array
                 (
-                    [RainLab.Blog] => 6c76c1f4253620541445f9cba74e2c40
-                    [RainLab.GoogleAnalytics] => 4b1d3492678aa31a8c339c1559cb6abb
-                    [RainLab.MailChimp] => 2958e3c3af8117b4472e9eb890f7965d
-                    [RainLab.Twitter] => 5fa9ba49a85143da1d6ee5e043ed20b6
-                    [RainLab.User] => 170f6137087e62773f10198f64018a31
+                    [RainLab.User] => 3cbd283316db75f6e2f2c80ae7b5cd83
+                    [Radiantweb.Disqus] => 928e931a04867e8e6bac8e10706b0404
+                    [Raviraj.Rjgallery] => 9b024242bbcba10ed1304fc9b4831cfd
                 )
 
             [themes] => Array
                 (
-                    [Responsiv.Flat] => 463117738421d4b358accaec12d252dd
                 )
 
         )
@@ -876,29 +629,23 @@
 )
 
 .============================ POST REQUEST ==========================.
-[2015/01/31 05:46:55] Postback payload: Array
+[2015/04/12 06:32:25] Postback payload: Array
 (
     [step] => downloadCore
     [meta] => Array
         (
             [core] => Array
                 (
-                    [hash] => 74608467d446e1570ad8338a7a3a7f9e
-                    [build] => 184
+                    [hash] => c12e2245e13ff1d8a92a1b2d43e41fd1
+                    [build] => 240
+                    [uhash] => f1e096a33016b16eb1d20317bbbf8b4d
                 )
 
             [plugins] => Array
                 (
-                    [RainLab.Blog] => 6c76c1f4253620541445f9cba74e2c40
-                    [RainLab.GoogleAnalytics] => 4b1d3492678aa31a8c339c1559cb6abb
-                    [RainLab.MailChimp] => 2958e3c3af8117b4472e9eb890f7965d
-                    [RainLab.Twitter] => 5fa9ba49a85143da1d6ee5e043ed20b6
-                    [RainLab.User] => 170f6137087e62773f10198f64018a31
-                )
-
-            [themes] => Array
-                (
-                    [Responsiv.Flat] => 463117738421d4b358accaec12d252dd
+                    [RainLab.User] => 3cbd283316db75f6e2f2c80ae7b5cd83
+                    [Radiantweb.Disqus] => 928e931a04867e8e6bac8e10706b0404
+                    [Raviraj.Rjgallery] => 9b024242bbcba10ed1304fc9b4831cfd
                 )
 
         )
@@ -906,278 +653,137 @@
     [handler] => onInstallStep
 )
 
-[2015/01/31 05:46:55] Install step: downloadCore
-[2015/01/31 05:47:08] Saving to file (core): /var/www/librolibremx/install_files/temp/a74ad8dfacd4f985eb3977517615ce25.arc
-[2015/01/31 05:47:08] Step downloadCore +OK
-[2015/01/31 05:47:08] Execute handler (onInstallStep): Array
+[2015/04/12 06:32:25] Install step: downloadCore
+[2015/04/12 06:32:37] Saving to file (core): /var/www/LibroLibreMX/install_files/temp/a74ad8dfacd4f985eb3977517615ce25.arc
+[2015/04/12 06:32:37] Step downloadCore +OK
+[2015/04/12 06:32:37] Execute handler (onInstallStep): Array
 (
     [result] => 
 )
 
 .============================ POST REQUEST ==========================.
-[2015/01/31 05:47:09] Postback payload: Array
+[2015/04/12 06:32:38] Postback payload: Array
 (
     [step] => downloadPlugin
     [meta] => Array
         (
             [core] => Array
                 (
-                    [hash] => 74608467d446e1570ad8338a7a3a7f9e
-                    [build] => 184
+                    [hash] => c12e2245e13ff1d8a92a1b2d43e41fd1
+                    [build] => 240
+                    [uhash] => f1e096a33016b16eb1d20317bbbf8b4d
                 )
 
             [plugins] => Array
                 (
-                    [RainLab.Blog] => 6c76c1f4253620541445f9cba74e2c40
-                    [RainLab.GoogleAnalytics] => 4b1d3492678aa31a8c339c1559cb6abb
-                    [RainLab.MailChimp] => 2958e3c3af8117b4472e9eb890f7965d
-                    [RainLab.Twitter] => 5fa9ba49a85143da1d6ee5e043ed20b6
-                    [RainLab.User] => 170f6137087e62773f10198f64018a31
-                )
-
-            [themes] => Array
-                (
-                    [Responsiv.Flat] => 463117738421d4b358accaec12d252dd
-                )
-
-        )
-
-    [name] => RainLab.Twitter
-    [handler] => onInstallStep
-)
-
-[2015/01/31 05:47:09] Install step: downloadPlugin
-[2015/01/31 05:47:11] Saving to file (RainLab.Twitter-plugin): /var/www/librolibremx/install_files/temp/1767802dba0cab525320092ac5360bb5.arc
-[2015/01/31 05:47:11] Step downloadPlugin +OK
-[2015/01/31 05:47:11] Execute handler (onInstallStep): Array
-(
-    [result] => 
-)
-
-.============================ POST REQUEST ==========================.
-[2015/01/31 05:47:11] Postback payload: Array
-(
-    [step] => downloadPlugin
-    [meta] => Array
-        (
-            [core] => Array
-                (
-                    [hash] => 74608467d446e1570ad8338a7a3a7f9e
-                    [build] => 184
-                )
-
-            [plugins] => Array
-                (
-                    [RainLab.Blog] => 6c76c1f4253620541445f9cba74e2c40
-                    [RainLab.GoogleAnalytics] => 4b1d3492678aa31a8c339c1559cb6abb
-                    [RainLab.MailChimp] => 2958e3c3af8117b4472e9eb890f7965d
-                    [RainLab.Twitter] => 5fa9ba49a85143da1d6ee5e043ed20b6
-                    [RainLab.User] => 170f6137087e62773f10198f64018a31
-                )
-
-            [themes] => Array
-                (
-                    [Responsiv.Flat] => 463117738421d4b358accaec12d252dd
-                )
-
-        )
-
-    [name] => RainLab.GoogleAnalytics
-    [handler] => onInstallStep
-)
-
-[2015/01/31 05:47:11] Install step: downloadPlugin
-[2015/01/31 05:47:14] Saving to file (RainLab.GoogleAnalytics-plugin): /var/www/librolibremx/install_files/temp/04ed8aba7da9c4ab054d309449d0b8bd.arc
-[2015/01/31 05:47:14] Step downloadPlugin +OK
-[2015/01/31 05:47:14] Execute handler (onInstallStep): Array
-(
-    [result] => 
-)
-
-.============================ POST REQUEST ==========================.
-[2015/01/31 05:47:15] Postback payload: Array
-(
-    [step] => downloadPlugin
-    [meta] => Array
-        (
-            [core] => Array
-                (
-                    [hash] => 74608467d446e1570ad8338a7a3a7f9e
-                    [build] => 184
-                )
-
-            [plugins] => Array
-                (
-                    [RainLab.Blog] => 6c76c1f4253620541445f9cba74e2c40
-                    [RainLab.GoogleAnalytics] => 4b1d3492678aa31a8c339c1559cb6abb
-                    [RainLab.MailChimp] => 2958e3c3af8117b4472e9eb890f7965d
-                    [RainLab.Twitter] => 5fa9ba49a85143da1d6ee5e043ed20b6
-                    [RainLab.User] => 170f6137087e62773f10198f64018a31
-                )
-
-            [themes] => Array
-                (
-                    [Responsiv.Flat] => 463117738421d4b358accaec12d252dd
-                )
-
-        )
-
-    [name] => RainLab.MailChimp
-    [handler] => onInstallStep
-)
-
-[2015/01/31 05:47:15] Install step: downloadPlugin
-[2015/01/31 05:47:15] Saving to file (RainLab.MailChimp-plugin): /var/www/librolibremx/install_files/temp/6ab983955eb633e92147c6925b381c70.arc
-[2015/01/31 05:47:15] Step downloadPlugin +OK
-[2015/01/31 05:47:15] Execute handler (onInstallStep): Array
-(
-    [result] => 
-)
-
-.============================ POST REQUEST ==========================.
-[2015/01/31 05:47:15] Postback payload: Array
-(
-    [step] => downloadPlugin
-    [meta] => Array
-        (
-            [core] => Array
-                (
-                    [hash] => 74608467d446e1570ad8338a7a3a7f9e
-                    [build] => 184
-                )
-
-            [plugins] => Array
-                (
-                    [RainLab.Blog] => 6c76c1f4253620541445f9cba74e2c40
-                    [RainLab.GoogleAnalytics] => 4b1d3492678aa31a8c339c1559cb6abb
-                    [RainLab.MailChimp] => 2958e3c3af8117b4472e9eb890f7965d
-                    [RainLab.Twitter] => 5fa9ba49a85143da1d6ee5e043ed20b6
-                    [RainLab.User] => 170f6137087e62773f10198f64018a31
-                )
-
-            [themes] => Array
-                (
-                    [Responsiv.Flat] => 463117738421d4b358accaec12d252dd
-                )
-
-        )
-
-    [name] => RainLab.Blog
-    [handler] => onInstallStep
-)
-
-[2015/01/31 05:47:15] Install step: downloadPlugin
-[2015/01/31 05:47:16] Saving to file (RainLab.Blog-plugin): /var/www/librolibremx/install_files/temp/33b538b0804bdcfce25684369ded882c.arc
-[2015/01/31 05:47:16] Step downloadPlugin +OK
-[2015/01/31 05:47:16] Execute handler (onInstallStep): Array
-(
-    [result] => 
-)
-
-.============================ POST REQUEST ==========================.
-[2015/01/31 05:47:16] Postback payload: Array
-(
-    [step] => downloadPlugin
-    [meta] => Array
-        (
-            [core] => Array
-                (
-                    [hash] => 74608467d446e1570ad8338a7a3a7f9e
-                    [build] => 184
-                )
-
-            [plugins] => Array
-                (
-                    [RainLab.Blog] => 6c76c1f4253620541445f9cba74e2c40
-                    [RainLab.GoogleAnalytics] => 4b1d3492678aa31a8c339c1559cb6abb
-                    [RainLab.MailChimp] => 2958e3c3af8117b4472e9eb890f7965d
-                    [RainLab.Twitter] => 5fa9ba49a85143da1d6ee5e043ed20b6
-                    [RainLab.User] => 170f6137087e62773f10198f64018a31
-                )
-
-            [themes] => Array
-                (
-                    [Responsiv.Flat] => 463117738421d4b358accaec12d252dd
+                    [RainLab.User] => 3cbd283316db75f6e2f2c80ae7b5cd83
+                    [Radiantweb.Disqus] => 928e931a04867e8e6bac8e10706b0404
+                    [Raviraj.Rjgallery] => 9b024242bbcba10ed1304fc9b4831cfd
                 )
 
         )
 
     [name] => RainLab.User
+    [project_id] => *******
     [handler] => onInstallStep
 )
 
-[2015/01/31 05:47:16] Install step: downloadPlugin
-[2015/01/31 05:47:17] Saving to file (RainLab.User-plugin): /var/www/librolibremx/install_files/temp/cb06f7335746d285c7d743325010ffae.arc
-[2015/01/31 05:47:17] Step downloadPlugin +OK
-[2015/01/31 05:47:17] Execute handler (onInstallStep): Array
+[2015/04/12 06:32:38] Install step: downloadPlugin
+[2015/04/12 06:32:38] Saving to file (RainLab.User-plugin): /var/www/LibroLibreMX/install_files/temp/cb06f7335746d285c7d743325010ffae.arc
+[2015/04/12 06:32:38] Step downloadPlugin +OK
+[2015/04/12 06:32:38] Execute handler (onInstallStep): Array
 (
     [result] => 
 )
 
 .============================ POST REQUEST ==========================.
-[2015/01/31 05:47:17] Postback payload: Array
+[2015/04/12 06:32:39] Postback payload: Array
 (
-    [step] => downloadTheme
+    [step] => downloadPlugin
     [meta] => Array
         (
             [core] => Array
                 (
-                    [hash] => 74608467d446e1570ad8338a7a3a7f9e
-                    [build] => 184
+                    [hash] => c12e2245e13ff1d8a92a1b2d43e41fd1
+                    [build] => 240
+                    [uhash] => f1e096a33016b16eb1d20317bbbf8b4d
                 )
 
             [plugins] => Array
                 (
-                    [RainLab.Blog] => 6c76c1f4253620541445f9cba74e2c40
-                    [RainLab.GoogleAnalytics] => 4b1d3492678aa31a8c339c1559cb6abb
-                    [RainLab.MailChimp] => 2958e3c3af8117b4472e9eb890f7965d
-                    [RainLab.Twitter] => 5fa9ba49a85143da1d6ee5e043ed20b6
-                    [RainLab.User] => 170f6137087e62773f10198f64018a31
-                )
-
-            [themes] => Array
-                (
-                    [Responsiv.Flat] => 463117738421d4b358accaec12d252dd
+                    [RainLab.User] => 3cbd283316db75f6e2f2c80ae7b5cd83
+                    [Radiantweb.Disqus] => 928e931a04867e8e6bac8e10706b0404
+                    [Raviraj.Rjgallery] => 9b024242bbcba10ed1304fc9b4831cfd
                 )
 
         )
 
-    [name] => Responsiv.Flat
+    [name] => Radiantweb.Disqus
+    [project_id] => *******
     [handler] => onInstallStep
 )
 
-[2015/01/31 05:47:17] Install step: downloadTheme
-[2015/01/31 05:47:20] Saving to file (Responsiv.Flat-theme): /var/www/librolibremx/install_files/temp/286bd374e2836d585587f7959bd6c9a1.arc
-[2015/01/31 05:47:20] Step downloadTheme +OK
-[2015/01/31 05:47:20] Execute handler (onInstallStep): Array
+[2015/04/12 06:32:39] Install step: downloadPlugin
+[2015/04/12 06:32:39] Saving to file (Radiantweb.Disqus-plugin): /var/www/LibroLibreMX/install_files/temp/951c3fbfe6d1963e65539c8bec4c4d09.arc
+[2015/04/12 06:32:39] Step downloadPlugin +OK
+[2015/04/12 06:32:39] Execute handler (onInstallStep): Array
 (
     [result] => 
 )
 
 .============================ POST REQUEST ==========================.
-[2015/01/31 05:47:20] Postback payload: Array
+[2015/04/12 06:32:40] Postback payload: Array
+(
+    [step] => downloadPlugin
+    [meta] => Array
+        (
+            [core] => Array
+                (
+                    [hash] => c12e2245e13ff1d8a92a1b2d43e41fd1
+                    [build] => 240
+                    [uhash] => f1e096a33016b16eb1d20317bbbf8b4d
+                )
+
+            [plugins] => Array
+                (
+                    [RainLab.User] => 3cbd283316db75f6e2f2c80ae7b5cd83
+                    [Radiantweb.Disqus] => 928e931a04867e8e6bac8e10706b0404
+                    [Raviraj.Rjgallery] => 9b024242bbcba10ed1304fc9b4831cfd
+                )
+
+        )
+
+    [name] => Raviraj.Rjgallery
+    [project_id] => *******
+    [handler] => onInstallStep
+)
+
+[2015/04/12 06:32:40] Install step: downloadPlugin
+[2015/04/12 06:32:40] Saving to file (Raviraj.Rjgallery-plugin): /var/www/LibroLibreMX/install_files/temp/75b1eab0f90ab5de1ce93d07d1feb6dd.arc
+[2015/04/12 06:32:40] Step downloadPlugin +OK
+[2015/04/12 06:32:40] Execute handler (onInstallStep): Array
+(
+    [result] => 
+)
+
+.============================ POST REQUEST ==========================.
+[2015/04/12 06:32:41] Postback payload: Array
 (
     [step] => extractCore
     [meta] => Array
         (
             [core] => Array
                 (
-                    [hash] => 74608467d446e1570ad8338a7a3a7f9e
-                    [build] => 184
+                    [hash] => c12e2245e13ff1d8a92a1b2d43e41fd1
+                    [build] => 240
+                    [uhash] => f1e096a33016b16eb1d20317bbbf8b4d
                 )
 
             [plugins] => Array
                 (
-                    [RainLab.Blog] => 6c76c1f4253620541445f9cba74e2c40
-                    [RainLab.GoogleAnalytics] => 4b1d3492678aa31a8c339c1559cb6abb
-                    [RainLab.MailChimp] => 2958e3c3af8117b4472e9eb890f7965d
-                    [RainLab.Twitter] => 5fa9ba49a85143da1d6ee5e043ed20b6
-                    [RainLab.User] => 170f6137087e62773f10198f64018a31
-                )
-
-            [themes] => Array
-                (
-                    [Responsiv.Flat] => 463117738421d4b358accaec12d252dd
+                    [RainLab.User] => 3cbd283316db75f6e2f2c80ae7b5cd83
+                    [Radiantweb.Disqus] => 928e931a04867e8e6bac8e10706b0404
+                    [Raviraj.Rjgallery] => 9b024242bbcba10ed1304fc9b4831cfd
                 )
 
         )
@@ -1185,278 +791,137 @@
     [handler] => onInstallStep
 )
 
-[2015/01/31 05:47:20] Install step: extractCore
-[2015/01/31 05:47:20] Extracting file (core): a74ad8dfacd4f985eb3977517615ce25.arc
-[2015/01/31 05:47:58] Step extractCore +OK
-[2015/01/31 05:47:58] Execute handler (onInstallStep): Array
+[2015/04/12 06:32:41] Install step: extractCore
+[2015/04/12 06:32:41] Extracting file (core): a74ad8dfacd4f985eb3977517615ce25.arc
+[2015/04/12 06:33:17] Step extractCore +OK
+[2015/04/12 06:33:17] Execute handler (onInstallStep): Array
 (
     [result] => 1
 )
 
 .============================ POST REQUEST ==========================.
-[2015/01/31 05:47:58] Postback payload: Array
+[2015/04/12 06:33:18] Postback payload: Array
 (
     [step] => extractPlugin
     [meta] => Array
         (
             [core] => Array
                 (
-                    [hash] => 74608467d446e1570ad8338a7a3a7f9e
-                    [build] => 184
+                    [hash] => c12e2245e13ff1d8a92a1b2d43e41fd1
+                    [build] => 240
+                    [uhash] => f1e096a33016b16eb1d20317bbbf8b4d
                 )
 
             [plugins] => Array
                 (
-                    [RainLab.Blog] => 6c76c1f4253620541445f9cba74e2c40
-                    [RainLab.GoogleAnalytics] => 4b1d3492678aa31a8c339c1559cb6abb
-                    [RainLab.MailChimp] => 2958e3c3af8117b4472e9eb890f7965d
-                    [RainLab.Twitter] => 5fa9ba49a85143da1d6ee5e043ed20b6
-                    [RainLab.User] => 170f6137087e62773f10198f64018a31
-                )
-
-            [themes] => Array
-                (
-                    [Responsiv.Flat] => 463117738421d4b358accaec12d252dd
-                )
-
-        )
-
-    [name] => RainLab.Twitter
-    [handler] => onInstallStep
-)
-
-[2015/01/31 05:47:58] Install step: extractPlugin
-[2015/01/31 05:47:58] Extracting file (RainLab.Twitter-plugin): 1767802dba0cab525320092ac5360bb5.arc
-[2015/01/31 05:47:58] Step extractPlugin +OK
-[2015/01/31 05:47:58] Execute handler (onInstallStep): Array
-(
-    [result] => 1
-)
-
-.============================ POST REQUEST ==========================.
-[2015/01/31 05:47:59] Postback payload: Array
-(
-    [step] => extractPlugin
-    [meta] => Array
-        (
-            [core] => Array
-                (
-                    [hash] => 74608467d446e1570ad8338a7a3a7f9e
-                    [build] => 184
-                )
-
-            [plugins] => Array
-                (
-                    [RainLab.Blog] => 6c76c1f4253620541445f9cba74e2c40
-                    [RainLab.GoogleAnalytics] => 4b1d3492678aa31a8c339c1559cb6abb
-                    [RainLab.MailChimp] => 2958e3c3af8117b4472e9eb890f7965d
-                    [RainLab.Twitter] => 5fa9ba49a85143da1d6ee5e043ed20b6
-                    [RainLab.User] => 170f6137087e62773f10198f64018a31
-                )
-
-            [themes] => Array
-                (
-                    [Responsiv.Flat] => 463117738421d4b358accaec12d252dd
-                )
-
-        )
-
-    [name] => RainLab.GoogleAnalytics
-    [handler] => onInstallStep
-)
-
-[2015/01/31 05:47:59] Install step: extractPlugin
-[2015/01/31 05:47:59] Extracting file (RainLab.GoogleAnalytics-plugin): 04ed8aba7da9c4ab054d309449d0b8bd.arc
-[2015/01/31 05:48:00] Step extractPlugin +OK
-[2015/01/31 05:48:00] Execute handler (onInstallStep): Array
-(
-    [result] => 1
-)
-
-.============================ POST REQUEST ==========================.
-[2015/01/31 05:48:00] Postback payload: Array
-(
-    [step] => extractPlugin
-    [meta] => Array
-        (
-            [core] => Array
-                (
-                    [hash] => 74608467d446e1570ad8338a7a3a7f9e
-                    [build] => 184
-                )
-
-            [plugins] => Array
-                (
-                    [RainLab.Blog] => 6c76c1f4253620541445f9cba74e2c40
-                    [RainLab.GoogleAnalytics] => 4b1d3492678aa31a8c339c1559cb6abb
-                    [RainLab.MailChimp] => 2958e3c3af8117b4472e9eb890f7965d
-                    [RainLab.Twitter] => 5fa9ba49a85143da1d6ee5e043ed20b6
-                    [RainLab.User] => 170f6137087e62773f10198f64018a31
-                )
-
-            [themes] => Array
-                (
-                    [Responsiv.Flat] => 463117738421d4b358accaec12d252dd
-                )
-
-        )
-
-    [name] => RainLab.MailChimp
-    [handler] => onInstallStep
-)
-
-[2015/01/31 05:48:00] Install step: extractPlugin
-[2015/01/31 05:48:00] Extracting file (RainLab.MailChimp-plugin): 6ab983955eb633e92147c6925b381c70.arc
-[2015/01/31 05:48:00] Step extractPlugin +OK
-[2015/01/31 05:48:00] Execute handler (onInstallStep): Array
-(
-    [result] => 1
-)
-
-.============================ POST REQUEST ==========================.
-[2015/01/31 05:48:00] Postback payload: Array
-(
-    [step] => extractPlugin
-    [meta] => Array
-        (
-            [core] => Array
-                (
-                    [hash] => 74608467d446e1570ad8338a7a3a7f9e
-                    [build] => 184
-                )
-
-            [plugins] => Array
-                (
-                    [RainLab.Blog] => 6c76c1f4253620541445f9cba74e2c40
-                    [RainLab.GoogleAnalytics] => 4b1d3492678aa31a8c339c1559cb6abb
-                    [RainLab.MailChimp] => 2958e3c3af8117b4472e9eb890f7965d
-                    [RainLab.Twitter] => 5fa9ba49a85143da1d6ee5e043ed20b6
-                    [RainLab.User] => 170f6137087e62773f10198f64018a31
-                )
-
-            [themes] => Array
-                (
-                    [Responsiv.Flat] => 463117738421d4b358accaec12d252dd
-                )
-
-        )
-
-    [name] => RainLab.Blog
-    [handler] => onInstallStep
-)
-
-[2015/01/31 05:48:00] Install step: extractPlugin
-[2015/01/31 05:48:00] Extracting file (RainLab.Blog-plugin): 33b538b0804bdcfce25684369ded882c.arc
-[2015/01/31 05:48:01] Step extractPlugin +OK
-[2015/01/31 05:48:01] Execute handler (onInstallStep): Array
-(
-    [result] => 1
-)
-
-.============================ POST REQUEST ==========================.
-[2015/01/31 05:48:01] Postback payload: Array
-(
-    [step] => extractPlugin
-    [meta] => Array
-        (
-            [core] => Array
-                (
-                    [hash] => 74608467d446e1570ad8338a7a3a7f9e
-                    [build] => 184
-                )
-
-            [plugins] => Array
-                (
-                    [RainLab.Blog] => 6c76c1f4253620541445f9cba74e2c40
-                    [RainLab.GoogleAnalytics] => 4b1d3492678aa31a8c339c1559cb6abb
-                    [RainLab.MailChimp] => 2958e3c3af8117b4472e9eb890f7965d
-                    [RainLab.Twitter] => 5fa9ba49a85143da1d6ee5e043ed20b6
-                    [RainLab.User] => 170f6137087e62773f10198f64018a31
-                )
-
-            [themes] => Array
-                (
-                    [Responsiv.Flat] => 463117738421d4b358accaec12d252dd
+                    [RainLab.User] => 3cbd283316db75f6e2f2c80ae7b5cd83
+                    [Radiantweb.Disqus] => 928e931a04867e8e6bac8e10706b0404
+                    [Raviraj.Rjgallery] => 9b024242bbcba10ed1304fc9b4831cfd
                 )
 
         )
 
     [name] => RainLab.User
+    [project_id] => *******
     [handler] => onInstallStep
 )
 
-[2015/01/31 05:48:01] Install step: extractPlugin
-[2015/01/31 05:48:01] Extracting file (RainLab.User-plugin): cb06f7335746d285c7d743325010ffae.arc
-[2015/01/31 05:48:01] Step extractPlugin +OK
-[2015/01/31 05:48:01] Execute handler (onInstallStep): Array
+[2015/04/12 06:33:18] Install step: extractPlugin
+[2015/04/12 06:33:18] Extracting file (RainLab.User-plugin): cb06f7335746d285c7d743325010ffae.arc
+[2015/04/12 06:33:18] Step extractPlugin +OK
+[2015/04/12 06:33:18] Execute handler (onInstallStep): Array
 (
     [result] => 1
 )
 
 .============================ POST REQUEST ==========================.
-[2015/01/31 05:48:01] Postback payload: Array
+[2015/04/12 06:33:19] Postback payload: Array
 (
-    [step] => extractTheme
+    [step] => extractPlugin
     [meta] => Array
         (
             [core] => Array
                 (
-                    [hash] => 74608467d446e1570ad8338a7a3a7f9e
-                    [build] => 184
+                    [hash] => c12e2245e13ff1d8a92a1b2d43e41fd1
+                    [build] => 240
+                    [uhash] => f1e096a33016b16eb1d20317bbbf8b4d
                 )
 
             [plugins] => Array
                 (
-                    [RainLab.Blog] => 6c76c1f4253620541445f9cba74e2c40
-                    [RainLab.GoogleAnalytics] => 4b1d3492678aa31a8c339c1559cb6abb
-                    [RainLab.MailChimp] => 2958e3c3af8117b4472e9eb890f7965d
-                    [RainLab.Twitter] => 5fa9ba49a85143da1d6ee5e043ed20b6
-                    [RainLab.User] => 170f6137087e62773f10198f64018a31
-                )
-
-            [themes] => Array
-                (
-                    [Responsiv.Flat] => 463117738421d4b358accaec12d252dd
+                    [RainLab.User] => 3cbd283316db75f6e2f2c80ae7b5cd83
+                    [Radiantweb.Disqus] => 928e931a04867e8e6bac8e10706b0404
+                    [Raviraj.Rjgallery] => 9b024242bbcba10ed1304fc9b4831cfd
                 )
 
         )
 
-    [name] => Responsiv.Flat
+    [name] => Radiantweb.Disqus
+    [project_id] => *******
     [handler] => onInstallStep
 )
 
-[2015/01/31 05:48:01] Install step: extractTheme
-[2015/01/31 05:48:01] Extracting file (Responsiv.Flat-theme): 286bd374e2836d585587f7959bd6c9a1.arc
-[2015/01/31 05:48:02] Step extractTheme +OK
-[2015/01/31 05:48:02] Execute handler (onInstallStep): Array
+[2015/04/12 06:33:19] Install step: extractPlugin
+[2015/04/12 06:33:19] Extracting file (Radiantweb.Disqus-plugin): 951c3fbfe6d1963e65539c8bec4c4d09.arc
+[2015/04/12 06:33:19] Step extractPlugin +OK
+[2015/04/12 06:33:19] Execute handler (onInstallStep): Array
 (
     [result] => 1
 )
 
 .============================ POST REQUEST ==========================.
-[2015/01/31 05:48:03] Postback payload: Array
+[2015/04/12 06:33:20] Postback payload: Array
+(
+    [step] => extractPlugin
+    [meta] => Array
+        (
+            [core] => Array
+                (
+                    [hash] => c12e2245e13ff1d8a92a1b2d43e41fd1
+                    [build] => 240
+                    [uhash] => f1e096a33016b16eb1d20317bbbf8b4d
+                )
+
+            [plugins] => Array
+                (
+                    [RainLab.User] => 3cbd283316db75f6e2f2c80ae7b5cd83
+                    [Radiantweb.Disqus] => 928e931a04867e8e6bac8e10706b0404
+                    [Raviraj.Rjgallery] => 9b024242bbcba10ed1304fc9b4831cfd
+                )
+
+        )
+
+    [name] => Raviraj.Rjgallery
+    [project_id] => *******
+    [handler] => onInstallStep
+)
+
+[2015/04/12 06:33:20] Install step: extractPlugin
+[2015/04/12 06:33:20] Extracting file (Raviraj.Rjgallery-plugin): 75b1eab0f90ab5de1ce93d07d1feb6dd.arc
+[2015/04/12 06:33:20] Step extractPlugin +OK
+[2015/04/12 06:33:20] Execute handler (onInstallStep): Array
+(
+    [result] => 1
+)
+
+.============================ POST REQUEST ==========================.
+[2015/04/12 06:33:20] Postback payload: Array
 (
     [step] => setupConfig
     [meta] => Array
         (
             [core] => Array
                 (
-                    [hash] => 74608467d446e1570ad8338a7a3a7f9e
-                    [build] => 184
+                    [hash] => c12e2245e13ff1d8a92a1b2d43e41fd1
+                    [build] => 240
+                    [uhash] => f1e096a33016b16eb1d20317bbbf8b4d
                 )
 
             [plugins] => Array
                 (
-                    [RainLab.Blog] => 6c76c1f4253620541445f9cba74e2c40
-                    [RainLab.GoogleAnalytics] => 4b1d3492678aa31a8c339c1559cb6abb
-                    [RainLab.MailChimp] => 2958e3c3af8117b4472e9eb890f7965d
-                    [RainLab.Twitter] => 5fa9ba49a85143da1d6ee5e043ed20b6
-                    [RainLab.User] => 170f6137087e62773f10198f64018a31
-                )
-
-            [themes] => Array
-                (
-                    [Responsiv.Flat] => 463117738421d4b358accaec12d252dd
+                    [RainLab.User] => 3cbd283316db75f6e2f2c80ae7b5cd83
+                    [Radiantweb.Disqus] => 928e931a04867e8e6bac8e10706b0404
+                    [Raviraj.Rjgallery] => 9b024242bbcba10ed1304fc9b4831cfd
                 )
 
         )
@@ -1467,10 +932,10 @@
     [db_name] => librolibremx
     [db_user] => homestead
     [db_pass] => *******
-    [admin_first_name] => Héctor Iván
-    [admin_last_name] => Patricio Moreno
+    [admin_first_name] => Admin
+    [admin_last_name] => Person
     [admin_email] => *******@*****.com
-    [admin_login] => hectorip
+    [admin_login] => admin
     [admin_password] => *******
     [admin_confirm_password] => *******
     [backend_uri] => /backend
@@ -1480,37 +945,25 @@
     [handler] => onInstallStep
 )
 
-[2015/01/31 05:48:03] Install step: setupConfig
-[2015/01/31 05:48:04] Step setupConfig +OK
-[2015/01/31 05:48:04] Execute handler (onInstallStep): Array
-(
-    [result] => 
-)
-
+[2015/04/12 06:33:20] Install step: setupConfig
 .============================ POST REQUEST ==========================.
-[2015/01/31 05:48:04] Postback payload: Array
+[2015/04/12 06:36:49] Postback payload: Array
 (
-    [step] => createAdmin
+    [step] => setupConfig
     [meta] => Array
         (
             [core] => Array
                 (
-                    [hash] => 74608467d446e1570ad8338a7a3a7f9e
-                    [build] => 184
+                    [hash] => c12e2245e13ff1d8a92a1b2d43e41fd1
+                    [build] => 240
+                    [uhash] => f1e096a33016b16eb1d20317bbbf8b4d
                 )
 
             [plugins] => Array
                 (
-                    [RainLab.Blog] => 6c76c1f4253620541445f9cba74e2c40
-                    [RainLab.GoogleAnalytics] => 4b1d3492678aa31a8c339c1559cb6abb
-                    [RainLab.MailChimp] => 2958e3c3af8117b4472e9eb890f7965d
-                    [RainLab.Twitter] => 5fa9ba49a85143da1d6ee5e043ed20b6
-                    [RainLab.User] => 170f6137087e62773f10198f64018a31
-                )
-
-            [themes] => Array
-                (
-                    [Responsiv.Flat] => 463117738421d4b358accaec12d252dd
+                    [RainLab.User] => 3cbd283316db75f6e2f2c80ae7b5cd83
+                    [Radiantweb.Disqus] => 928e931a04867e8e6bac8e10706b0404
+                    [Raviraj.Rjgallery] => 9b024242bbcba10ed1304fc9b4831cfd
                 )
 
         )
@@ -1521,10 +974,10 @@
     [db_name] => librolibremx
     [db_user] => homestead
     [db_pass] => *******
-    [admin_first_name] => Héctor Iván
-    [admin_last_name] => Patricio Moreno
+    [admin_first_name] => Admin
+    [admin_last_name] => Person
     [admin_email] => *******@*****.com
-    [admin_login] => hectorip
+    [admin_login] => admin
     [admin_password] => *******
     [admin_confirm_password] => *******
     [backend_uri] => /backend
@@ -1534,70 +987,256 @@
     [handler] => onInstallStep
 )
 
-[2015/01/31 05:48:04] Install step: createAdmin
-[2015/01/31 05:48:07] Step createAdmin +OK
-[2015/01/31 05:48:08] Execute handler (onInstallStep): Array
-(
-    [result] => 
-)
-
+[2015/04/12 06:36:49] Install step: setupConfig
 .============================ POST REQUEST ==========================.
-[2015/01/31 05:48:08] Postback payload: Array
+[2015/04/12 06:36:50] Postback payload: Array
 (
-    [disableLog] => 1
-)
-
-[2015/01/31 05:48:08] Install step: setupProject
-[2015/01/31 05:48:08] Step setupProject +OK
-[2015/01/31 05:48:08] Execute handler (onInstallStep): Array
-(
-    [result] => 
-)
-
-.============================ POST REQUEST ==========================.
-[2015/01/31 05:48:08] Postback payload: Array
-(
-    [step] => finishInstall
+    [step] => setupConfig
     [meta] => Array
         (
             [core] => Array
                 (
-                    [hash] => 74608467d446e1570ad8338a7a3a7f9e
-                    [build] => 184
+                    [hash] => c12e2245e13ff1d8a92a1b2d43e41fd1
+                    [build] => 240
+                    [uhash] => f1e096a33016b16eb1d20317bbbf8b4d
                 )
 
             [plugins] => Array
                 (
-                    [RainLab.Blog] => 6c76c1f4253620541445f9cba74e2c40
-                    [RainLab.GoogleAnalytics] => 4b1d3492678aa31a8c339c1559cb6abb
-                    [RainLab.MailChimp] => 2958e3c3af8117b4472e9eb890f7965d
-                    [RainLab.Twitter] => 5fa9ba49a85143da1d6ee5e043ed20b6
-                    [RainLab.User] => 170f6137087e62773f10198f64018a31
-                )
-
-            [themes] => Array
-                (
-                    [Responsiv.Flat] => 463117738421d4b358accaec12d252dd
+                    [RainLab.User] => 3cbd283316db75f6e2f2c80ae7b5cd83
+                    [Radiantweb.Disqus] => 928e931a04867e8e6bac8e10706b0404
+                    [Raviraj.Rjgallery] => 9b024242bbcba10ed1304fc9b4831cfd
                 )
 
         )
 
-    [hash] => 74608467d446e1570ad8338a7a3a7f9e
-    [build] => 184
+    [db_type] => mysql
+    [db_host] => localhost
+    [db_port] => 
+    [db_name] => librolibremx
+    [db_user] => homestead
+    [db_pass] => *******
+    [admin_first_name] => Admin
+    [admin_last_name] => Person
+    [admin_email] => *******@*****.com
+    [admin_login] => admin
+    [admin_password] => *******
+    [admin_confirm_password] => *******
+    [backend_uri] => /backend
+    [encryption_code] => *******
+    [file_mask] => 777
+    [folder_mask] => 777
     [handler] => onInstallStep
 )
 
-[2015/01/31 05:48:08] Install step: finishInstall
-[2015/01/31 05:48:09] Cleaning up file: 04ed8aba7da9c4ab054d309449d0b8bd.arc
-[2015/01/31 05:48:09] Cleaning up file: 1767802dba0cab525320092ac5360bb5.arc
-[2015/01/31 05:48:09] Cleaning up file: 286bd374e2836d585587f7959bd6c9a1.arc
-[2015/01/31 05:48:09] Cleaning up file: 33b538b0804bdcfce25684369ded882c.arc
-[2015/01/31 05:48:09] Cleaning up file: 6ab983955eb633e92147c6925b381c70.arc
-[2015/01/31 05:48:09] Cleaning up file: a74ad8dfacd4f985eb3977517615ce25.arc
-[2015/01/31 05:48:09] Cleaning up file: cb06f7335746d285c7d743325010ffae.arc
-[2015/01/31 05:48:09] Step finishInstall +OK
-[2015/01/31 05:48:09] Execute handler (onInstallStep): Array
+[2015/04/12 06:36:50] Install step: setupConfig
+.============================ POST REQUEST ==========================.
+[2015/04/12 06:36:51] Postback payload: Array
 (
-    [result] => 
+    [step] => setupConfig
+    [meta] => Array
+        (
+            [core] => Array
+                (
+                    [hash] => c12e2245e13ff1d8a92a1b2d43e41fd1
+                    [build] => 240
+                    [uhash] => f1e096a33016b16eb1d20317bbbf8b4d
+                )
+
+            [plugins] => Array
+                (
+                    [RainLab.User] => 3cbd283316db75f6e2f2c80ae7b5cd83
+                    [Radiantweb.Disqus] => 928e931a04867e8e6bac8e10706b0404
+                    [Raviraj.Rjgallery] => 9b024242bbcba10ed1304fc9b4831cfd
+                )
+
+        )
+
+    [db_type] => mysql
+    [db_host] => localhost
+    [db_port] => 
+    [db_name] => librolibremx
+    [db_user] => homestead
+    [db_pass] => *******
+    [admin_first_name] => Admin
+    [admin_last_name] => Person
+    [admin_email] => *******@*****.com
+    [admin_login] => admin
+    [admin_password] => *******
+    [admin_confirm_password] => *******
+    [backend_uri] => /backend
+    [encryption_code] => *******
+    [file_mask] => 777
+    [folder_mask] => 777
+    [handler] => onInstallStep
 )
 
+[2015/04/12 06:36:51] Install step: setupConfig
+.============================ POST REQUEST ==========================.
+[2015/04/12 06:36:52] Postback payload: Array
+(
+    [step] => setupConfig
+    [meta] => Array
+        (
+            [core] => Array
+                (
+                    [hash] => c12e2245e13ff1d8a92a1b2d43e41fd1
+                    [build] => 240
+                    [uhash] => f1e096a33016b16eb1d20317bbbf8b4d
+                )
+
+            [plugins] => Array
+                (
+                    [RainLab.User] => 3cbd283316db75f6e2f2c80ae7b5cd83
+                    [Radiantweb.Disqus] => 928e931a04867e8e6bac8e10706b0404
+                    [Raviraj.Rjgallery] => 9b024242bbcba10ed1304fc9b4831cfd
+                )
+
+        )
+
+    [db_type] => mysql
+    [db_host] => localhost
+    [db_port] => 
+    [db_name] => librolibremx
+    [db_user] => homestead
+    [db_pass] => *******
+    [admin_first_name] => Admin
+    [admin_last_name] => Person
+    [admin_email] => *******@*****.com
+    [admin_login] => admin
+    [admin_password] => *******
+    [admin_confirm_password] => *******
+    [backend_uri] => /backend
+    [encryption_code] => *******
+    [file_mask] => 777
+    [folder_mask] => 777
+    [handler] => onInstallStep
+)
+
+[2015/04/12 06:36:52] Install step: setupConfig
+.============================ POST REQUEST ==========================.
+[2015/04/12 06:36:52] Postback payload: Array
+(
+    [step] => setupConfig
+    [meta] => Array
+        (
+            [core] => Array
+                (
+                    [hash] => c12e2245e13ff1d8a92a1b2d43e41fd1
+                    [build] => 240
+                    [uhash] => f1e096a33016b16eb1d20317bbbf8b4d
+                )
+
+            [plugins] => Array
+                (
+                    [RainLab.User] => 3cbd283316db75f6e2f2c80ae7b5cd83
+                    [Radiantweb.Disqus] => 928e931a04867e8e6bac8e10706b0404
+                    [Raviraj.Rjgallery] => 9b024242bbcba10ed1304fc9b4831cfd
+                )
+
+        )
+
+    [db_type] => mysql
+    [db_host] => localhost
+    [db_port] => 
+    [db_name] => librolibremx
+    [db_user] => homestead
+    [db_pass] => *******
+    [admin_first_name] => Admin
+    [admin_last_name] => Person
+    [admin_email] => *******@*****.com
+    [admin_login] => admin
+    [admin_password] => *******
+    [admin_confirm_password] => *******
+    [backend_uri] => /backend
+    [encryption_code] => *******
+    [file_mask] => 777
+    [folder_mask] => 777
+    [handler] => onInstallStep
+)
+
+[2015/04/12 06:36:52] Install step: setupConfig
+.============================ POST REQUEST ==========================.
+[2015/04/12 06:36:53] Postback payload: Array
+(
+    [step] => setupConfig
+    [meta] => Array
+        (
+            [core] => Array
+                (
+                    [hash] => c12e2245e13ff1d8a92a1b2d43e41fd1
+                    [build] => 240
+                    [uhash] => f1e096a33016b16eb1d20317bbbf8b4d
+                )
+
+            [plugins] => Array
+                (
+                    [RainLab.User] => 3cbd283316db75f6e2f2c80ae7b5cd83
+                    [Radiantweb.Disqus] => 928e931a04867e8e6bac8e10706b0404
+                    [Raviraj.Rjgallery] => 9b024242bbcba10ed1304fc9b4831cfd
+                )
+
+        )
+
+    [db_type] => mysql
+    [db_host] => localhost
+    [db_port] => 
+    [db_name] => librolibremx
+    [db_user] => homestead
+    [db_pass] => *******
+    [admin_first_name] => Admin
+    [admin_last_name] => Person
+    [admin_email] => *******@*****.com
+    [admin_login] => admin
+    [admin_password] => *******
+    [admin_confirm_password] => *******
+    [backend_uri] => /backend
+    [encryption_code] => *******
+    [file_mask] => 777
+    [folder_mask] => 777
+    [handler] => onInstallStep
+)
+
+[2015/04/12 06:36:53] Install step: setupConfig
+.============================ POST REQUEST ==========================.
+[2015/04/12 06:36:53] Postback payload: Array
+(
+    [step] => setupConfig
+    [meta] => Array
+        (
+            [core] => Array
+                (
+                    [hash] => c12e2245e13ff1d8a92a1b2d43e41fd1
+                    [build] => 240
+                    [uhash] => f1e096a33016b16eb1d20317bbbf8b4d
+                )
+
+            [plugins] => Array
+                (
+                    [RainLab.User] => 3cbd283316db75f6e2f2c80ae7b5cd83
+                    [Radiantweb.Disqus] => 928e931a04867e8e6bac8e10706b0404
+                    [Raviraj.Rjgallery] => 9b024242bbcba10ed1304fc9b4831cfd
+                )
+
+        )
+
+    [db_type] => mysql
+    [db_host] => localhost
+    [db_port] => 
+    [db_name] => librolibremx
+    [db_user] => homestead
+    [db_pass] => *******
+    [admin_first_name] => Admin
+    [admin_last_name] => Person
+    [admin_email] => *******@*****.com
+    [admin_login] => admin
+    [admin_password] => *******
+    [admin_confirm_password] => *******
+    [backend_uri] => /backend
+    [encryption_code] => *******
+    [file_mask] => 777
+    [folder_mask] => 777
+    [handler] => onInstallStep
+)
+
+[2015/04/12 06:36:53] Install step: setupConfig

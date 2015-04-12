@@ -17,35 +17,30 @@ class File extends FileBase
      */
     protected $table = 'system_files';
 
-    //
-    // Configuration
-    //
-
     /**
-     * Define the storage path, override this method to define.
+     * If working with local storage, determine the absolute local path.
      */
-    public function getStorageDirectory()
+    protected function getLocalRootPath()
     {
-        $uploadsDir = Config::get('cms.uploadsDir');
-        if ($this->isPublic()) {
-            return base_path() . $uploadsDir . '/public/';
-        }
-        else {
-            return base_path() . $uploadsDir . '/protected/';
-        }
+        return Config::get('filesystems.disks.local.root', storage_path().'/app');
     }
 
     /**
      * Define the public address for the storage path.
      */
-    public function getPublicDirectory()
+    public function getPublicPath()
     {
-        $uploadsDir = Config::get('cms.uploadsDir');
+        $uploadsPath = Config::get('cms.storage.uploads.path', '/storage/app/uploads');
+
+        if (!preg_match("/(\/\/|http|https)/", $uploadsPath)) {
+            $uploadsPath = Request::getBasePath() . $uploadsPath;
+        }
+
         if ($this->isPublic()) {
-            return Request::getBasePath() . $uploadsDir . '/public/';
+            return $uploadsPath . '/public/';
         }
         else {
-            return Request::getBasePath() . $uploadsDir . '/protected/';
+            return $uploadsPath . '/protected/';
         }
     }
 }

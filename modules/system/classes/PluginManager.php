@@ -49,7 +49,7 @@ class PluginManager
     /**
      * @var string Path to the disarm file.
      */
-    protected $metaPath;
+    protected $metaFile;
 
     /**
      * @var array Collection of disabled plugins
@@ -66,15 +66,26 @@ class PluginManager
      */
     protected function init()
     {
-        $this->app = App::make('app');
-        $this->metaPath = Config::get('app.manifest');
+        $this->bindContainerObjects();
+        $this->metaFile = storage_path() . '/cms/disabled.json';
         $this->loadDisabled();
         $this->loadPlugins();
         $this->loadDependencies();
     }
 
     /**
+     * These objects are "soft singletons" and may be lost when
+     * the IoC container reboots. This provides a way to rebuild
+     * for the purposes of unit testing.
+     */
+    public function bindContainerObjects()
+    {
+        $this->app = App::make('app');
+    }
+
+    /**
      * Finds all available plugins and loads them in to the $plugins array.
+     * @return array
      */
     public function loadPlugins()
     {
@@ -83,39 +94,53 @@ class PluginManager
         /**
          * Locate all plugins and binds them to the container
          */
-        foreach ($this->getPluginNamespaces() as $className => $classPath) {
-
-            $pluginClassName = $className.'\Plugin';
-
-            // Autoloader failed?
-            if (!class_exists($pluginClassName)) {
-                include_once $classPath.'/Plugin.php';
-            }
-
-            // Not a valid plugin!
-            if (!class_exists($pluginClassName)) {
-                continue;
-            }
-
-            $classObj = new $pluginClassName($this->app);
-            $classId = $this->getIdentifier($classObj);
-
-            /*
-             * Check for disabled plugins
-             */
-            if ($this->isDisabled($classId)) {
-                $classObj->disabled = true;
-            }
-
-            $this->plugins[$classId] = $classObj;
-            $this->pathMap[$classId] = $classPath;
+        foreach ($this->getPluginNamespaces() as $namespace => $path) {
+            $this->loadPlugin($namespace, $path);
         }
 
         return $this->plugins;
     }
 
     /**
+     * Loads a single plugin in to the manager.
+     * @param string $namespace Eg: Acme\Blog
+     * @param string $path Eg: plugins_path().'/acme/blog';
+     * @return void
+     */
+    public function loadPlugin($namespace, $path)
+    {
+        $className = $namespace.'\Plugin';
+        $classPath = $path.'/Plugin.php';
+
+        // Autoloader failed?
+        if (!class_exists($className)) {
+            include_once $classPath;
+        }
+
+        // Not a valid plugin!
+        if (!class_exists($className)) {
+            return;
+        }
+
+        $classObj = new $className($this->app);
+        $classId = $this->getIdentifier($classObj);
+
+        /*
+         * Check for disabled plugins
+         */
+        if ($this->isDisabled($classId)) {
+            $classObj->disabled = true;
+        }
+
+        $this->plugins[$classId] = $classObj;
+        $this->pathMap[$classId] = $path;
+
+        return $classObj;
+    }
+
+    /**
      * Runs the register() method on all plugins. Can only be called once.
+     * @return void
      */
     public function registerAll()
     {
@@ -124,59 +149,74 @@ class PluginManager
         }
 
         foreach ($this->plugins as $pluginId => $plugin) {
-            if ($plugin->disabled) {
-                continue;
-            }
-
-            if (!self::$noInit) {
-                $plugin->register();
-            }
-
-            $pluginPath = $this->getPluginPath($plugin);
-            $pluginNamespace = strtolower($pluginId);
-
-            /*
-             * Register plugin class autoloaders
-             */
-            $autoloadPath = $pluginPath . '/vendor/autoload.php';
-            if (File::isFile($autoloadPath)) {
-                require_once $autoloadPath;
-            }
-
-            /*
-             * Register language namespaces
-             */
-            $langPath = $pluginPath . '/lang';
-            if (File::isDirectory($langPath)) {
-                Lang::addNamespace($pluginNamespace, $langPath);
-            }
-
-            /*
-             * Register configuration path
-             */
-            $configPath = $pluginPath . '/config';
-            if (File::isDirectory($configPath)) {
-                Config::package($pluginNamespace, $configPath, $pluginNamespace);
-            }
-
-            /*
-             * Register views path
-             */
-            $viewsPath = $pluginPath . '/views';
-            if (File::isDirectory($viewsPath)) {
-                View::addNamespace($pluginNamespace, $viewsPath);
-            }
-
-            /*
-             * Add routes, if available
-             */
-            $routesFile = $pluginPath . '/routes.php';
-            if (File::exists($routesFile)) {
-                require $routesFile;
-            }
+            $this->registerPlugin($plugin, $pluginId);
         }
 
         $this->registered = true;
+    }
+
+    /**
+     * Registers a single plugin object.
+     * @param PluginBase $plugin
+     * @param string $pluginId
+     * @return void
+     */
+    public function registerPlugin($plugin, $pluginId = null)
+    {
+        if (!$pluginId) {
+            $pluginId = $this->getIdentifier($plugin);
+        }
+
+        if (!$plugin || $plugin->disabled) {
+            return;
+        }
+
+        $pluginPath = $this->getPluginPath($plugin);
+        $pluginNamespace = strtolower($pluginId);
+
+        /*
+         * Register plugin class autoloaders
+         */
+        $autoloadPath = $pluginPath . '/vendor/autoload.php';
+        if (File::isFile($autoloadPath)) {
+            require_once $autoloadPath;
+        }
+
+        if (!self::$noInit || $plugin->elevated) {
+            $plugin->register();
+        }
+
+        /*
+         * Register language namespaces
+         */
+        $langPath = $pluginPath . '/lang';
+        if (File::isDirectory($langPath)) {
+            Lang::addNamespace($pluginNamespace, $langPath);
+        }
+
+        /*
+         * Register configuration path
+         */
+        $configPath = $pluginPath . '/config';
+        if (File::isDirectory($configPath)) {
+            Config::package($pluginNamespace, $configPath, $pluginNamespace);
+        }
+
+        /*
+         * Register views path
+         */
+        $viewsPath = $pluginPath . '/views';
+        if (File::isDirectory($viewsPath)) {
+            View::addNamespace($pluginNamespace, $viewsPath);
+        }
+
+        /*
+         * Add routes, if available
+         */
+        $routesFile = $pluginPath . '/routes.php';
+        if (File::exists($routesFile)) {
+            require $routesFile;
+        }
     }
 
     /**
@@ -189,24 +229,26 @@ class PluginManager
         }
 
         foreach ($this->plugins as $plugin) {
-            if ($plugin->disabled) {
-                continue;
-            }
-
-            if (!self::$noInit) {
-                $plugin->boot();
-            }
+            $this->bootPlugin($plugin);
         }
 
         $this->booted = true;
     }
 
     /**
-     * Returns the absolute plugin path.
+     * Registers a single plugin object.
+     * @param PluginBase $plugin
+     * @return void
      */
-    public function getPath()
+    public function bootPlugin($plugin)
     {
-        return base_path() . Config::get('cms.pluginsDir');
+        if (!$plugin || $plugin->disabled) {
+            return;
+        }
+
+        if (!self::$noInit || $plugin->elevated) {
+            $plugin->boot();
+        }
     }
 
     /**
@@ -306,7 +348,7 @@ class PluginManager
     {
         $plugins = [];
 
-        $dirPath = $this->getPath();
+        $dirPath = plugins_path();
         if (!File::isDirectory($dirPath)) {
             return $plugins;
         }
@@ -369,7 +411,7 @@ class PluginManager
 
     public function clearDisabledCache()
     {
-        File::delete($this->metaPath.'/disabled.json');
+        File::delete($this->metaFile);
         $this->disabledPlugins = [];
     }
 
@@ -378,7 +420,7 @@ class PluginManager
      */
     protected function loadDisabled()
     {
-        $path = $this->metaPath.'/disabled.json';
+        $path = $this->metaFile;
 
         if (($configDisabled = Config::get('cms.disablePlugins')) && is_array($configDisabled)) {
             foreach ($configDisabled as $disabled) {
@@ -413,7 +455,7 @@ class PluginManager
      */
     protected function writeDisabled()
     {
-        $path = $this->metaPath.'/disabled.json';
+        $path = $this->metaFile;
         File::put($path, json_encode($this->disabledPlugins));
     }
 
@@ -469,7 +511,32 @@ class PluginManager
     //
     // Dependencies
     //
-    
+
+    /**
+     * Scans the system plugins to locate any dependencies
+     * that are not currently installed.
+     */
+    public function findMissingDependencies()
+    {
+        $missing = [];
+
+        foreach ($this->plugins as $id => $plugin) {
+            if (!$required = $this->getDependencies($plugin)) {
+                continue;
+            }
+
+            foreach ($required as $require) {
+                if ($this->hasPlugin($require)) {
+                    continue;
+                }
+
+                $missing[] = $require;
+            }
+        }
+
+        return $missing;
+    }
+
     /**
      * Cross checks all plugins and their dependancies, if not met plugins
      * are disabled and vice versa.
@@ -577,5 +644,41 @@ class PluginManager
         }
 
         return $result;
+    }
+
+    //
+    // Management
+    //
+
+    /**
+     * Completely roll back and delete a plugin from the system.
+     * @param string $id Plugin code/namespace
+     * @return void
+     */
+    public function deletePlugin($id)
+    {
+        /*
+         * Rollback plugin
+         */
+        UpdateManager::instance()->rollbackPlugin($id);
+
+        /*
+         * Delete from file system
+         */
+        if ($pluginPath = PluginManager::instance()->getPluginPath($id)) {
+            File::deleteDirectory($pluginPath);
+        }
+    }
+
+    /**
+     * Tears down a plugin's database tables and rebuilds them.
+     * @param string $id Plugin code/namespace
+     * @return void
+     */
+    public function refreshPlugin($id)
+    {
+        $manager = UpdateManager::instance();
+        $manager->rollbackPlugin($id);
+        $manager->updatePlugin($id);
     }
 }

@@ -13,15 +13,18 @@ return [
         'fa' => 'Persian',
         'fr' => 'French',
         'hu' => 'Hungarian',
+        'id' => 'Bahasa Indonesia',
         'it' => 'Italian',
         'ja' => 'Japanese',
         'nl' => 'Dutch',
+        'pl' => 'Polish',
         'pt-br' => 'Brazilian Portuguese',
         'ro' => 'Romanian',
         'ru' => 'Russian',
         'se' => 'Swedish',
+        'sk' => 'Slovak (Slovakia)',
         'tr' => 'Turkish',
-        'pl' => 'Polish',
+        'nb-no' => 'Norwegian (Bokmål)'
     ],
     'directory' => [
         'create_fail' => 'Cannot create directory: :name'
@@ -48,6 +51,12 @@ return [
             'events' => 'Events',
             'customers' => 'Customers',
             'my_settings' => 'My Settings'
+        ]
+    ],
+    'theme' => [
+        'name' => [
+            'label' => 'Theme Name',
+            'help' => 'Name the theme by its unique code. For example, RainLab.Vanilla'
         ]
     ],
     'plugin' => [
@@ -106,7 +115,6 @@ return [
         'sender_name' => 'Sender Name',
         'sender_email' => 'Sender Email',
         'php_mail' => 'PHP mail',
-        'sendmail' => 'Sendmail',
         'smtp' => 'SMTP',
         'smtp_address' => 'SMTP Address',
         'smtp_authorization' => 'SMTP authorization required',
@@ -154,7 +162,9 @@ return [
     'install' => [
         'project_label' => 'Attach to Project',
         'plugin_label' => 'Install Plugin',
+        'theme_label' => 'Install Theme',
         'missing_plugin_name' => 'Please specify a Plugin name to install.',
+        'missing_theme_name' => 'Please specify a Theme name to install.',
         'install_completing' => 'Finishing installation process',
         'install_success' => 'The plugin has been installed successfully.'
     ],
@@ -176,6 +186,7 @@ return [
         'core_downloading' => 'Downloading application files',
         'core_extracting' => 'Unpacking application files',
         'plugins' => 'Plugins',
+        'disabled' => 'Disabled',
         'plugin_downloading' => 'Downloading plugin: :name',
         'plugin_extracting' => 'Unpacking plugin: :name',
         'plugin_version_none' => 'New plugin',
@@ -251,9 +262,11 @@ return [
         'name' => 'System',
         'manage_system_settings' => 'Manage system settings',
         'manage_software_updates' => 'Manage software updates',
+        'access_logs' => 'View system logs',
         'manage_mail_templates' => 'Manage mail templates',
         'manage_mail_settings' => 'Manage mail settings',
         'manage_other_administrators' => 'Manage other administrators',
-        'view_the_dashboard' => 'View the dashboard'
+        'view_the_dashboard' => 'View the dashboard',
+        'manage_branding' => 'Customize the back-end'
     ]
 ];

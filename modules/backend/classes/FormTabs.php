@@ -1,8 +1,6 @@
 <?php namespace Backend\Classes;
 
 use Str;
-use HTML;
-use Lang;
 use IteratorAggregate;
 use ArrayIterator;
 use ArrayAccess;
@@ -29,6 +27,11 @@ class FormTabs implements IteratorAggregate, ArrayAccess
      * @var array Collection of panes fields to these tabs.
      */
     public $fields = [];
+
+    /**
+     * @var string Default tab label to use when none is specified.
+     */
+    public $defaultTab = 'backend::lang.form.undefined_tab';
 
     /**
      * @var bool Should these tabs stretch to the bottom of the page layout.
@@ -71,6 +74,10 @@ class FormTabs implements IteratorAggregate, ArrayAccess
      */
     protected function evalConfig($config)
     {
+        if (array_key_exists('defaultTab', $config)) {
+            $this->defaultTab = $config['defaultTab'];
+        }
+
         if (array_key_exists('stretch', $config)) {
             $this->stretch = $config['stretch'];
         }
@@ -93,10 +100,30 @@ class FormTabs implements IteratorAggregate, ArrayAccess
     public function addField($name, FormField $field, $tab = null)
     {
         if (!$tab) {
-            $tab = Lang::get('backend::lang.form.undefined_tab');
+            $tab = trans($this->defaultTab);
         }
 
         $this->fields[$tab][$name] = $field;
+    }
+
+    /**
+     * Remove a field from all tabs by name.
+     * @param string    $name
+     * @return boolean
+     */
+    public function removeField($name)
+    {
+        foreach ($this->fields as $tab => $fields) {
+            foreach ($fields as $fieldName => $field) {
+                if ($fieldName == $name) {
+                    unset($this->fields[$tab][$fieldName]);
+
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**

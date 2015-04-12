@@ -10,6 +10,7 @@
  * - data-handler="widget:pluginName" - October ajax request name
  * - data-keyboard="false" - Allow popup to be closed with the keyboard
  * - data-request-data="file_id: 1" - October ajax request data
+ * - data-size="large" - Popup size, available sizes: giant, huge, large, small, tiny
  *
  * JavaScript API:
  * $('a#someLink').popup({ ajax: 'popup-content.htm' })
@@ -79,7 +80,8 @@
         handler: null,
         keyboard: true,
         extraData: {},
-        content: null
+        content: null,
+        size: null
     }
 
     Popup.prototype.init = function(){
@@ -163,6 +165,9 @@
             }),
             modalDialog = $('<div />').addClass('modal-dialog'),
             modalContent = $('<div />').addClass('modal-content')
+
+        if (this.options.size)
+            modalDialog.addClass('size-' + this.options.size)
 
         return modal.append(modalDialog.append(modalContent))
     }
@@ -291,6 +296,10 @@
     }
 
     $.fn.popup.Constructor = Popup
+
+    $.popup = function (option) {
+        return $('<a />').popup(option)
+    }
 
     // POPUP NO CONFLICT
     // =================

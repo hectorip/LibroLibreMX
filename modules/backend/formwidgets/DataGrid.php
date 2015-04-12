@@ -2,11 +2,16 @@
 
 use Backend\Widgets\Grid;
 use Backend\Classes\FormWidgetBase;
-use System\Classes\ApplicationException;
+use ApplicationException;
 
 /**
  * Grid
  * Renders a grid field.
+ *
+ * !!!
+ * !!! WARNING: This class and widget is scheduled for destruction.
+ * !!! Please use DataTable form widget instead
+ * !!!
  *
  * @package october\backend
  * @author Alexey Bobkov, Samuel Georges
@@ -16,7 +21,7 @@ class DataGrid extends FormWidgetBase
     /**
      * {@inheritDoc}
      */
-    public $defaultAlias = 'datagrid';
+    protected $defaultAlias = 'datagrid';
 
     /**
      * @var string Grid size

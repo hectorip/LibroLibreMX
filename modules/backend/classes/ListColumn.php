@@ -1,5 +1,7 @@
 <?php namespace Backend\Classes;
 
+use October\Rain\Html\Helper as HtmlHelper;
+
 /**
  * List Columns definition
  * A translation of the list column configuration
@@ -57,6 +59,13 @@ class ListColumn
     public $relation;
 
     /**
+     * @var string sets the column width, can be specified in percents (10%) or pixels (50px).
+     * There could be a single column without width specified, it will be stretched to take the
+     * available space.
+     */
+    public $width;
+
+    /**
      * @var string Specify a CSS class to attach to the list cell element.
      */
     public $cssClass;
@@ -107,6 +116,9 @@ class ListColumn
      */
     protected function evalConfig($config)
     {
+        if (isset($config['width'])) {
+            $this->width = $config['width'];
+        }
         if (isset($config['cssClass'])) {
             $this->cssClass = $config['cssClass'];
         }
@@ -135,11 +147,33 @@ class ListColumn
             $this->path = $config['path'];
         }
 
-        // @todo Remove lines if year >= 2015
-        if (isset($config['nameFrom'])) {
-            $this->valueFrom = $config['nameFrom'];
+        return $config;
+    }
+
+    /**
+     * Returns a HTML valid name for the column name.
+     * @return string
+     */
+    public function getName()
+    {
+        return HtmlHelper::nameToId($this->columnName);
+    }
+
+    /**
+     * Returns a value suitable for the column id property.
+     * @param  string $suffix Specify a suffix string
+     * @return string
+     */
+    public function getId($suffix = null)
+    {
+        $id = 'column';
+
+        $id .= '-'.$this->columnName;
+
+        if ($suffix) {
+            $id .= '-'.$suffix;
         }
 
-        return $config;
+        return HtmlHelper::nameToId($id);
     }
 }

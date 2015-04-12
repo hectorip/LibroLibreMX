@@ -13,6 +13,7 @@ return [
         'file_name_required' => 'The File Name field is required.'
     ],
     'theme' => [
+        'not_found_name' => "The theme ':name' is not found.",
         'active' => [
             'not_set' => 'The active theme is not set.',
             'not_found' => 'The active theme is not found.'
@@ -24,10 +25,57 @@ return [
         ],
         'settings_menu' => 'Front-end theme',
         'settings_menu_description' => 'Preview the list of installed themes and select an active theme.',
-        'find_more_themes' => 'Find more themes on OctoberCMS Theme Marketplace.',
+        'name_label' => 'Name',
+        'name_create_placeholder' => 'New theme name',
+        'author_label' => 'Author',
+        'author_placeholder' => 'Person or company name',
+        'description_label' => 'Description',
+        'description_placeholder' => 'Theme description',
+        'homepage_label' => 'Homepage',
+        'homepage_placeholder' => 'Website URL',
+        'code_label' => 'Code',
+        'code_placeholder' => 'A unique code for this theme used for distribution',
+        'dir_name_label' => 'Directory name',
+        'dir_name_create_label' => 'The destination theme directory',
+        'theme_label' => 'Theme',
         'activate_button' => 'Activate',
         'active_button' => 'Activate',
-        'customize_button' => 'Customize'
+        'customize_button' => 'Customize',
+        'duplicate_button' => 'Duplicate',
+        'duplicate_title' => 'Duplicate theme',
+        'duplicate_theme_success' => 'Duplicated theme successfully!',
+        'manage_button' => 'Manage',
+        'manage_title' => 'Manage theme',
+        'edit_properties_title' => 'Theme',
+        'edit_properties_button' => 'Edit properties',
+        'save_properties' => 'Save properties',
+        'import_button' => 'Import',
+        'import_title' => 'Import theme',
+        'import_theme_success' => 'Imported theme successfully!',
+        'import_uploaded_file' => 'Theme archive file',
+        'import_overwrite_label' => 'Overwrite existing files',
+        'import_overwrite_comment' => 'Untick this box to only import new files',
+        'import_folders_label' => 'Folders',
+        'import_folders_comment' => 'Please select the theme folders you would like to import',
+        'export_button' => 'Export',
+        'export_title' => 'Export theme',
+        'export_folders_label' => 'Folders',
+        'export_folders_comment' => 'Please select the theme folders you would like to export',
+        'delete_button' => 'Delete',
+        'delete_confirm' => 'Are you sure you want to delete this theme? It cannot be undone!',
+        'delete_active_theme_failed' => 'Cannot delete the active theme, try making another theme active first.',
+        'delete_theme_success' => 'Deleted theme successfully!',
+        'create_title' => 'Create theme',
+        'create_button' => 'Create',
+        'create_new_blank_theme' => 'Create a new blank theme',
+        'create_theme_success' => 'Created theme successfully!',
+        'create_theme_required_name' => 'Please specify a name for the theme.',
+        'new_directory_name_label' => 'Theme directory',
+        'new_directory_name_comment' => 'Provide a new directory name for the duplicated theme.',
+        'dir_name_invalid' => 'Name can contain only digits, Latin letters and the following symbols: _-',
+        'dir_name_taken' => 'Desired theme directory already exists.',
+        'find_more_themes' => 'Find more themes',
+        'return' => 'Return to themes list',
     ],
     'maintenance' => [
         'settings_menu' => 'Maintenance mode',
@@ -36,6 +84,7 @@ return [
         'is_enabled_comment' => 'When activated website visitors will see the page chosen below.'
     ],
     'page' => [
+        'not_found_name' => "The page ':name' is not found",
         'not_found' => [
             'label' => 'Page not found',
             'help' => 'The requested page cannot be found.'
@@ -54,7 +103,7 @@ return [
         'no_layout' => '-- no layout --'
     ],
     'layout' => [
-        'not_found' => "The layout ':name' is not found",
+        'not_found_name' => "The layout ':name' is not found",
         'menu_label' => 'Layouts',
         'unsaved_label' => 'Unsaved layout(s)',
         'no_list_records' => 'No layouts found',
@@ -63,8 +112,8 @@ return [
         'delete_confirm_single' => 'Do you really want delete this layout?'
     ],
     'partial' => [
+        'not_found_name' => "The partial ':name' is not found.",
         'invalid_name' => 'Invalid partial name: :name.',
-        'not_found' => "The partial ':name' is not found.",
         'menu_label' => 'Partials',
         'unsaved_label' => 'Unsaved partial(s)',
         'no_list_records' => 'No partials found',
@@ -73,7 +122,7 @@ return [
         'new' => 'New partial'
     ],
     'content' => [
-        'not_found' => "The content file ':name' is not found.",
+        'not_found_name' => "The content file ':name' is not found.",
         'menu_label' => 'Content',
         'unsaved_label' => 'Unsaved content',
         'no_list_records' => 'No content files found',

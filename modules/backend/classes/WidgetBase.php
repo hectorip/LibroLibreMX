@@ -2,8 +2,9 @@
 
 use Str;
 use File;
-use stdClass;
 use Session;
+use October\Rain\Html\Helper as HtmlHelper;
+use stdClass;
 
 /**
  * Widget base class.
@@ -13,14 +14,14 @@ use Session;
  */
 abstract class WidgetBase
 {
+    use \System\Traits\ViewMaker;
     use \System\Traits\AssetMaker;
     use \System\Traits\ConfigMaker;
-    use \System\Traits\ViewMaker;
     use \Backend\Traits\WidgetMaker;
     use \October\Rain\Support\Traits\Emitter;
 
     /**
-     * @var array Supplied configuration.
+     * @var object Supplied configuration.
      */
     public $config;
 
@@ -30,14 +31,14 @@ abstract class WidgetBase
     protected $controller;
 
     /**
-     * @var string A unique alias to identify this widget.
-     */
-    public $defaultAlias = 'widget';
-
-    /**
      * @var string Defined alias used for this widget.
      */
     public $alias;
+
+    /**
+     * @var string A unique alias to identify this widget.
+     */
+    protected $defaultAlias = 'widget';
 
     /**
      * Constructor
@@ -48,27 +49,16 @@ abstract class WidgetBase
     public function __construct($controller, $configuration = [])
     {
         $this->controller = $controller;
-
-        // Option A: (@todo Determine which is faster by benchmark)
-        // $relativePath = strtolower(str_replace('\\', '/', get_called_class()));
-        // $this->viewPath = $this->configPath = [
-        //     'modules/' . $relativePath . '/partials',
-        //     'plugins/' . $relativePath . '/partials'
-        // ];
-        // $this->assetPath = ['modules/' . $relativePath . '/assets', 'plugins/' . $relativePath . '/assets'];
-
-        // Option B:
         $this->viewPath = $this->configPath = $this->guessViewPath('/partials');
         $this->assetPath = $this->guessViewPath('/assets', true);
 
         /*
-         * Apply configuration values to a new config object.
+         * Apply configuration values to a new config object, if a parent
+         * consutrctor hasn't done it already.
          */
-        if (!$configuration) {
-            $configuration = [];
+        if ($this->config === null) {
+            $this->config = $this->makeConfig($configuration);
         }
-
-        $this->config = $this->makeConfig($configuration);
 
         /*
          * If no alias is set by the configuration.
@@ -129,6 +119,26 @@ abstract class WidgetBase
     }
 
     /**
+     * Transfers config values stored inside the $config property directly
+     * on to the root object properties. If no properties are defined
+     * all config will be transferred if it finds a matching property.
+     * @param array $properties
+     * @return void
+     */
+    protected function fillFromConfig($properties = null)
+    {
+        if ($properties === null) {
+            $properties = array_keys((array) $this->config);
+        }
+
+        foreach ($properties as $property) {
+            if (property_exists($this, $property)) {
+                $this->{$property} = $this->getConfig($property, $this->{$property});
+            }
+        }
+    }
+
+    /**
      * Returns a unique ID for this widget. Useful in creating HTML markup.
      * @param string $suffix An extra string to append to the ID.
      * @return string A unique identifier.
@@ -145,7 +155,7 @@ abstract class WidgetBase
             $id .= '-' . $suffix;
         }
 
-        return Str::evalHtmlId($id);
+        return HtmlHelper::nameToId($id);
     }
 
     /**
@@ -169,7 +179,7 @@ abstract class WidgetBase
         /*
          * Array field name, eg: field[key][key2][key3]
          */
-        $keyParts = Str::evalHtmlArray($name);
+        $keyParts = HtmlHelper::nameToArray($name);
 
         /*
          * First part will be the field name, pop it off
