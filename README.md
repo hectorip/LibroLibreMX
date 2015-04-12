@@ -4,8 +4,6 @@ Es la base para la comunidad para compartir libros libremente. Basada en October
 
 TODO:
 -------
-- Publicación de Libros (Detallar)
-- Página de Libro publicado
 - Completar Perfil, foto. (Dirección puede esperar)
 - Mostrar libros
 - Pedir libro
