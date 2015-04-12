@@ -1,8 +1,0 @@
-# ===================================
-#  Field Definitions
-# ===================================
-
-fields:
-
-    disquskey:
-      label: Disqus API Site Key
