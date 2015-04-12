@@ -4,6 +4,7 @@ Es la base para la comunidad para compartir libros libremente. Basada en October
 
 TODO:
 -------
+- Registro y login Social. Fb y Tw
 - Completar Perfil, foto. (Dirección puede esperar)
 - Mostrar libros
 - Pedir libro
@@ -14,5 +15,4 @@ TODO:
 - Plantillas de Correos(Bienvenida, Libro pedido, comentario)
 - Comentarios
 - Terminos y condiciones
-- Registro y login Social. Fb y Tw(Puede esperar)
 - FAQ
