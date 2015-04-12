@@ -1,0 +1,20 @@
+<div class="book-shower">
+    <!-- TODO: limit -->
+    {% for book in  books %}
+
+        <div class="book-presentation">
+            <div class="book-presentation-left">
+                <img class="book-presentation-cover" src="{{ book.image_url }}" alt="Imagen del libro" />
+            </div>
+            <div class="book-presentation-right">
+                        <span class="book-title">
+                            {{ book.title }}
+                        </span>
+                        <span class="book-publish-date">
+                            {{ book.publish_date }}
+                        </span>
+            </div>
+        </div>
+
+    {% endfor %}
+</div>
