@@ -8,7 +8,6 @@ TODO:
 - Completar Perfil, foto. (Dirección puede esperar)
 - Mostrar libros
 - Pedir libro
-- Comentar acerca de pedido
 - Completar pedido y calificar
 - Ver Libros publicados y Pedidos
 - Quitar libro (Movido a segunda versión)
@@ -16,3 +15,4 @@ TODO:
 - Comentarios
 - Terminos y condiciones
 - FAQ
+- Conectar con fuente de datos de libros
