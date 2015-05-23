@@ -1,6 +1,7 @@
 <?php namespace Hectorip\Books\Components;
 
 use Cms\Classes\ComponentBase;
+use Hectorip\Books\Models\Book as Book;
 
 class AvailableBooks extends ComponentBase {
 	/**
@@ -19,6 +20,6 @@ class AvailableBooks extends ComponentBase {
 		return [];
 	}
 	public function onRun() {
-
+        $this->page['books'] = Book::all();
 	}
 }

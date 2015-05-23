@@ -6,7 +6,6 @@ o a través del correo electrónico: hectorivanpatriciomoreno@gmail.com
 
 TODO:
 -------
-- Registro y login Social. Fb y Tw
 - Completar Perfil, foto. (Dirección puede esperar)
 - Mostrar libros
 - Pedir libro
@@ -16,5 +15,4 @@ TODO:
 - Plantillas de Correos(Bienvenida, Libro pedido, comentario)
 - Comentarios
 - Terminos y condiciones
-- FAQ
 - Conectar con fuente de datos de libros

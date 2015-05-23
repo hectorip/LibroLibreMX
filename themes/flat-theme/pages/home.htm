@@ -9,6 +9,7 @@ paramCode = "home"
 
 [availableBooks]
 ==
+{% component 'facebookSession::fb-sdk' %}
 <section class="home-title">
     <div class="container">
         <div class="row">
@@ -20,10 +21,11 @@ paramCode = "home"
                     {% component 'availableBooks' %}
                 {% else%}
                     {% component 'account' %}
-                {%endif%}
-                </div>
-                <div class="additional-links">
+                    {% component 'facebookSession::login-button' %}
+                    <div class="additional-links">
                     Al registrarte indicas que concuerdas con nuestros <a href="#">Términos y condiciones</a> y <a href="#">Política de Privacidad</a>
+                    </div>
+                {%endif%}
                 </div>
             </div>
 

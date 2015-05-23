@@ -3,7 +3,9 @@
 return [
     'plugin' => [
         'name' => 'Usuário',
-        'description' => 'Gerenciamento de usuários de front-end.'
+        'description' => 'Gerenciamento de usuários de front-end.',
+        'tab' => 'Usuário',
+        'access_users' => 'Gerenciar usuários'
     ],
     'location' => [
         'label' => 'Local',
@@ -43,7 +45,7 @@ return [
         'return_to_list' => 'Retornar à lista de usuários',
         'delete_selected_empty' => 'Não há usuários selecionados para deletar.',
         'delete_selected_confirm' => 'Deletar os usuários selecionados?',
-        'delete_selected_success' => 'Usuários selecionados deletados com sucesso.',
+        'delete_selected_success' => 'Usuários selecionados deletados com sucesso.'
     ],
     'settings' => [
         'users' => 'Usuários',
@@ -162,6 +164,7 @@ return [
         'users' => 'Usuários',
         'guests' => 'Visitantes',
         'redirect_title' => 'Redirecionar para',
-        'redirect_desc' => 'Nome da página para qual redirecionar se o acesso for negado.'
+        'redirect_desc' => 'Nome da página para qual redirecionar se o acesso for negado.',
+        'logout' => 'Você foi desconectado com sucesso!'
     ]
 ];

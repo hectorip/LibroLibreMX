@@ -3,7 +3,9 @@
 return [
     'plugin' => [
         'name' => 'User',
-        'description' => 'Front-end user management.'
+        'description' => 'Front-end user management.',
+        'tab' => 'Users',
+        'access_users' => 'Manage Users'
     ],
     'location' => [
         'label' => 'Location',
@@ -43,7 +45,7 @@ return [
         'return_to_list' => 'Return to users list',
         'delete_selected_empty' => 'There are no selected users to delete.',
         'delete_selected_confirm' => 'Delete the selected users?',
-        'delete_selected_success' => 'Successfully deleted the selected users.',
+        'delete_selected_success' => 'Successfully deleted the selected users.'
     ],
     'settings' => [
         'users' => 'Users',
@@ -162,6 +164,7 @@ return [
         'users' => 'Users',
         'guests' => 'Guests',
         'redirect_title' => 'Redirect to',
-        'redirect_desc' => 'Page name to redirect if access is denied.'
+        'redirect_desc' => 'Page name to redirect if access is denied.',
+        'logout' => 'You have been successfully logged out!'
     ]
 ];
