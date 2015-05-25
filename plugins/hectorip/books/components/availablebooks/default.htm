@@ -1,10 +1,9 @@
 <div class="book-shower">
-    <!-- TODO: limit -->
     {% for book in  books %}
 
         <div class="book-presentation">
             <div class="book-presentation-left">
-                <img class="book-presentation-cover" src="{{ book.image_url }}" alt="Imagen del libro" />
+                <img class="book-presentation-cover" src="{{  book.cover_url.path|default('/themes/flat-theme/assets/images/book_placeholder.jpg')  }}" alt="Imagen del libro" />
             </div>
             <div class="book-presentation-right">
                         <span class="book-title">
