@@ -19,3 +19,12 @@
     position: relative;
     margin: 5px;
 }
+.book-presentation {
+    max-width: 200px;
+    overflow: hidden;
+    display: inline-block;
+    height: 350px;
+}
+.book-presentation-cover{
+    max-width: 150px;
+}
