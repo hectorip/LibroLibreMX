@@ -20,6 +20,7 @@
     margin: 5px;
 }
 .book-presentation {
+    margin: 5px;
     max-width: 200px;
     overflow: hidden;
     display: inline-block;
@@ -27,4 +28,8 @@
 }
 .book-presentation-cover{
     max-width: 150px;
+}
+.book-title{
+    font-weight: 600;
+    color: #008000;
 }

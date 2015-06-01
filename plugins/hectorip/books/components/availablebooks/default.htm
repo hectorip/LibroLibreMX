@@ -1,4 +1,5 @@
 <div class="book-shower">
+    <h4>Tenemos estos libros disponibles: </h4>
     {% for book in  books %}
 
         <div class="book-presentation">
@@ -6,9 +7,11 @@
                 <img class="book-presentation-cover" src="{{  book.cover_url.path|default('/themes/flat-theme/assets/images/book_placeholder.jpg')  }}" alt="Imagen del libro" />
             </div>
             <div class="book-presentation-right">
-                        <span class="book-title">
-                            {{ book.title }}
-                        </span>
+                        <a href="/book-detail/{{book.id}}">
+                            <span class="book-title">
+                                {{ book.title }}
+                            </span>
+                        </a>
                         <br/> <strong>{{ book.points|default('0') }}</strong>
                         <span class="book-publish-date">
                             {{ book.publish_date }}
